@@ -118,7 +118,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
 
     private LocationManager locationManager;
     private double speed;
-    LocationListener locationListener;
+
 
 
     @Override
@@ -241,26 +241,34 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
         }
     };
 
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        double deltaTime;
 
-        double getSpeed = Double.parseDouble(String.format("%.3f", location.getSpeed()));
-        now_speed.setText(""+getSpeed);
-
-        if(mLastlocation != null){
-            deltaTime = (location.getTime() - mLastlocation.getTime()) / 1000.0;
-            speed = mLastlocation.distanceTo(location) / deltaTime;
-            now_speed.setText(""+speed);
+        @Override
+        public void onLocationChanged(@NonNull Location location) {
+            
+            double mSpeed = location.getSpeed() * 3600 / 1000;
+            if (location.getSpeed() != 0) {
+                now_speed.setText("" + mSpeed + " km/h");
+            } else {
+                now_speed.setText("0 km/h");
+            }
 
         }
 
-        mLastlocation = location;
-
-
-
-    }
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//        double deltaTime;
+//
+//        double getSpeed = Double.parseDouble(String.format("%.3f", location.getSpeed()));
+//            now_speed.setText(""+getSpeed);
+//
+//            if(mLastlocation != null){
+//            deltaTime = (location.getTime() - mLastlocation.getTime()) / 1000.0;
+//            speed = mLastlocation.distanceTo(location) / deltaTime;
+//            now_speed.setText(""+speed);
+//
+//        }
+//
+//        mLastlocation = location;
+//    }
 
 
     public class timeThread implements Runnable {
