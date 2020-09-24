@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_1"
+    >
+
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.teambell_3.FragmentPage1"
+        android:fontFamily="@font/nexongothiclight"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_page_1" />
+
+    <fragment
+        android:id="@+id/navigation_riding"
+        android:name="com.example.teambell_3.FragmentPage2"
+        android:fontFamily="@font/nexongothiclight"
+        android:label="@string/title_riding"
+        tools:layout="@layout/fragment_page_2" />
+
+    <fragment
+        android:id="@+id/navigation_menu"
+        android:name="com.example.teambell_3.FragmentPage3"
+        android:fontFamily="@font/nexongothiclight"
+        android:label="@string/title_menu"
+        tools:layout="@layout/fragment_page_3" />
+</navigation>

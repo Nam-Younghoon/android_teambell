@@ -11,7 +11,7 @@
     tools:openDrawer="start"
     >
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -37,7 +37,8 @@
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 style="@style/AppTheme"
                 app:titleTextColor="#000000"
-                app:title="@string/app_name">
+                app:title="@string/app_name"
+                >
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -54,7 +55,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
-            app:menu="@menu/bottom_nav" />
+            app:menu="@menu/bottom_nav"
+            />
+
 
     </LinearLayout>
 

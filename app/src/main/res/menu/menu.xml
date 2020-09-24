@@ -6,6 +6,7 @@
             android:id="@+id/menu"
             app:showAsAction="always"
             android:icon="@drawable/ic_baseline_menu_24"
+            android:fontFamily="@font/nexongothiclight"
             android:title="Menu" />
 
 </menu>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TeamBell_3</string>
+    <string name="title_home">메인</string>
+    <string name="title_riding">라이딩</string>
+    <string name="title_menu">메뉴</string>
+    <string name="personal_riding">개인 라이딩</string>
+    <string name="group_riding">그룹 라이딩</string>
 </resources>

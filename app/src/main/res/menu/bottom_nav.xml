@@ -2,20 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_1"
+        android:id="@+id/navigation_2"
         android:icon="@drawable/ic_baseline_home_24"
-        android:title="Home" />
+        android:fontFamily="@font/nexongothiclight"
+        android:title="Record" />
 
     <item
-        android:id="@+id/navigation_2"
+        android:id="@+id/navigation_1"
         android:icon="@drawable/ic_baseline_sports_kabaddi_24"
-        android:title="라이딩"
+        android:title="Home"
         android:visible="true"
+        android:fontFamily="@font/nexongothiclight"
         />
 
     <item
         android:id="@+id/navigation_3"
         android:icon="@drawable/ic_baseline_apps_24"
+        android:fontFamily="@font/nexongothiclight"
         android:title="Menu" />
 
 </menu>

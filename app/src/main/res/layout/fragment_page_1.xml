@@ -4,16 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="top"
+    android:label="@string/title_home">
 
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="LARGE_BANNER"
+        ads:adUnitId="ca-app-pub-6798935567491638/5661392810">
+    </com.google.android.gms.ads.AdView>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Page_1"
-        android:textSize="100dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="안전한 그룹 라이딩 App"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:background="#0E1A5C"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/nexongothiclight"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="212dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="170dp"
+        >
+
+        <Button
+            android:id="@+id/button_single"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/button_background"
+            android:fontFamily="@font/nexongothiclight"
+            android:gravity="center"
+            android:shadowRadius="30"
+            android:text="개인 \n 라이딩"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="personal_activity"/>
+
+        <Button
+            android:id="@+id/button_group"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/button_background"
+            android:fontFamily="@font/nexongothiclight"
+            android:gravity="center"
+            android:shadowRadius="30"
+            android:text="그룹 \n 라이딩"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_single"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>

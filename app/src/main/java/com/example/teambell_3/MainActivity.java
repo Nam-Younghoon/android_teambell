@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,11 +26,12 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private BottomNavigationView mBottomNV;
     private DrawerLayout mDrawerLayout;
     private Context context = this;
-    ListView listview = null ;
+    ListView listview = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,45 +51,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        mDrawerLayout =  findViewById(R.id.mDrawerLayout);
+        mDrawerLayout = findViewById(R.id.mDrawerLayout);
 
         //드로어 메뉴
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-
-                int id = item.getItemId();
-                String title = item.getTitle().toString();
-
-                if(id == R.id.personal_Riding){
-
-                }
-                else if(id == R.id.group_Riding){
-
-                }
-                else if(id == R.id.my_Record){
-
-                }
-                else if(id == R.id.my_Statistics){
-
-                }
-                else if(id == R.id.my_info){
-
-                }
-                else if(id == R.id.setting){
-
-                }
-                else if(id == R.id.help_me){
-
-                }
-                return true;
-            }
-        });
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void BottomNavigate(int id) {  //BottomNavigation 페이지 변경
@@ -101,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         if (fragment == null) {
             if (id == R.id.navigation_1) {
                 fragment = new FragmentPage1();
-            } else if (id == R.id.navigation_2){
+            } else if (id == R.id.navigation_2) {
                 fragment = new FragmentPage2();
-            }else {
+            } else {
                 fragment = new FragmentPage3();
             }
             fragmentTransaction.add(R.id.content_layout, fragment, tag);
@@ -118,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.menu:{
+        switch (item.getItemId()) {
+            case R.id.menu: {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             }
@@ -133,7 +113,25 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void setActionBarTitle(int title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+            switch(item.getItemId()){
+                case R.id.personal_Riding:
+                    Intent intent = new Intent(MainActivity.this, PersonalRiding.class);
+                   startActivity(intent);
+                    break;
+            }
+
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+            return false;
+        }
 
 }
