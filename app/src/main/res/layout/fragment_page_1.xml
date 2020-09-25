@@ -17,7 +17,7 @@
 <!--        android:layout_centerHorizontal="true"-->
 <!--        android:layout_alignParentBottom="true"-->
 <!--        ads:adSize="LARGE_BANNER"-->
-<!--        ads:adUnitId="ca-app-pub-6798935567491638/5661392810">-->
+<!--        ads:adUnitId="">-->
 <!--    </com.google.android.gms.ads.AdView>-->
 
     <ViewFlipper
