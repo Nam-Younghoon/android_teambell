@@ -24,12 +24,17 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/map"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="430dp"
-        tools:context=".PersonalRiding"/>
+        android:layout_height="420dp"
+        android:orientation="vertical"
+        tools:context="com.example.teambell_3.PersonalRiding"
+        android:id="@+id/linearLayoutTmap">
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,8 +44,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/stopwatch"
             android:gravity="center"
+            android:id="@+id/stopwatch"
             android:text="00:00:00"
             android:textSize="35dp"
             android:textColor="#000000"
@@ -58,24 +63,26 @@
             android:text="0.0 km/h"
             android:textSize="20dp"
             android:paddingLeft="50dp"
-            android:textColor="#000010"/>
+            android:textColor="#000010"
+            android:id="@+id/avg_speed"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0.0 km/h"
+            android:text="0 km/h"
             android:textSize="25dp"
-            android:paddingLeft="30dp"
+            android:paddingLeft="31dp"
             android:textColor="#000010"
             android:id="@+id/now_speed"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0.0 km"
+            android:text="0.0 m"
             android:textSize="20dp"
-            android:paddingLeft="42dp"
-            android:textColor="#000010"/>
+            android:paddingLeft="50dp"
+            android:textColor="#000010"
+            android:id="@+id/riding_dist"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

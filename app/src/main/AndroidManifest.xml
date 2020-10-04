@@ -3,14 +3,9 @@
     package="com.example.teambell_3">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission
-        android:name="android.permission.android.permission.INTERNET" />
-
-    <uses-permission
-        android:name="android.permission.android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -19,22 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <uses-library
-            android:name="com.google.android.maps"
-            android:required="true" />
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="APIKEY"/>
-
+        <activity android:name=".Tmap"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,9 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PersonalRiding">
-
-        </activity>
+        <activity android:name=".PersonalRiding"></activity>
     </application>
 
 </manifest>

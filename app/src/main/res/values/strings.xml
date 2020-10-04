@@ -5,4 +5,8 @@
     <string name="title_menu">메뉴</string>
     <string name="personal_riding">개인 라이딩</string>
     <string name="group_riding">그룹 라이딩</string>
+    <string name="gps_not_found_title">위치 비활성화</string>
+    <string name="gps_not_found_message">위치가 켜져있지 않습니다. 켜시겠습니까?</string>
+    <string name="yes">네</string>
+    <string name="no">아니요</string>
 </resources>
