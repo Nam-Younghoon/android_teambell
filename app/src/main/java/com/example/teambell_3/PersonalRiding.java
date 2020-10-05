@@ -35,7 +35,7 @@ import com.skt.Tmap.TMapView;
 public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
 
     private Button mStartBtn, mStopBtn, mPauseBtn;
-    private TextView mTimeTextView, nowSpeed, ridingDist, avgSpeed, stopwatch;
+    private TextView mTimeTextView, nowSpeed, ridingDist, avgSpeed;
     private Thread timeThread = null;
     private Boolean isRunning = true;
     private TMapGpsManager tmapgps;
@@ -43,13 +43,16 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
     private boolean m_bTrackingMode = true;
     private LocationListener locationListener;
     private Context mContext;
-    private double sum_dist, bef_lat, bef_long, cur_lat, cur_long, avg_speed;
+    private double sum_dist, bef_lat, bef_long, cur_lat, cur_long;
+    private Location mLastlocation = null;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personal_riding);
+
 
         // 현재속도
         nowSpeed = (TextView) findViewById(R.id.now_speed);
@@ -173,14 +176,11 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int mSec = msg.arg1 % 100;
             int sec = (msg.arg1 / 100) % 60;
             int min = (msg.arg1 / 100) / 60;
             int hour = (msg.arg1 / 100) / 360;
             //1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
-
-            @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d:%02d", hour, min, sec, mSec);
-
+            @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
             mTimeTextView.setText(result);
         }
     };
@@ -192,9 +192,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
             // 첫 위치에 대한 Log
             TMapPoint tp = new TMapPoint(location.getLongitude(), location.getLatitude());
             Log.d("debug", tp.toString());
-
             tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
-
             bef_lat = location.getLatitude();
             bef_long = location.getLongitude();
         }
@@ -206,6 +204,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
 
         @Override
         public void onLocationChanged(@NonNull Location location) {
+            double deltaTime = 0;
             if (location != null) {
                 if(location.hasSpeed()){
                     // 현 위치 저장하기.
@@ -218,8 +217,8 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
 
                     // 현재 속도
                     double mySpeed = location.getSpeed() * 3.6;
-                    String speed = String.format("%.0f", mySpeed);
-                    nowSpeed.setText(speed+"km/h");
+                    String mspeed = String.format("%.0f", mySpeed);
+                    nowSpeed.setText(mspeed+"km/h");
 
                     // 누적 이동 거리
                     cur_lat = latitude;
@@ -230,8 +229,15 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
                     sum_dist += dist;
                     ridingDist.setText(String.format("%.1f", sum_dist)+" m");
 
+                    if (mLastlocation != null){
+                        deltaTime = (location.getTime() - mLastlocation.getTime()) / 1000.0;
+                        double aspeed = mLastlocation.distanceTo(location) / deltaTime;
+                        double avspeed = Double.parseDouble(String.format("%.1f", aspeed));
+                        avgSpeed.setText(avspeed+"m/s");
+                    }
                     bef_lat = cur_lat;
                     bef_long = cur_long;
+                    mLastlocation = location;
                 }
 
 
@@ -246,7 +252,6 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
         @Override
         public void run() {
             int i = 0;
-
             while (true) {
                 while (isRunning) { //일시정지를 누르면 멈춤
                     Message msg = new Message();
@@ -260,7 +265,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
                             @Override
                             public void run() {
                                 mTimeTextView.setText("");
-                                mTimeTextView.setText("00:00:00:00");
+                                mTimeTextView.setText("00:00:00");
                             }
                         });
                         return;
@@ -269,6 +274,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
             }
         }
     }
+
     // 상단 뒤로가기 클릭 시
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
