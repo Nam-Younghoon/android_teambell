@@ -8,23 +8,11 @@
     android:layout_gravity="top"
     android:label="@string/title_home">
 
-
-<!--    <com.google.android.gms.ads.AdView-->
-<!--        xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-<!--        android:id="@+id/adView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        ads:adSize="LARGE_BANNER"-->
-<!--        ads:adUnitId="">-->
-<!--    </com.google.android.gms.ads.AdView>-->
-
-    <ViewFlipper
-        android:id="@+id/image_slide"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
-
+        android:layout_height="300dp"
+        android:src="@drawable/team_bell"
+        android:background="#000000"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -40,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="212dp"
         android:layout_gravity="center"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="50dp"
         >
 
         <Button
@@ -65,7 +53,7 @@
             android:id="@+id/button_group"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginBottom="100dp"
             android:background="@drawable/button_background"
             android:fontFamily="@font/nexongothiclight"

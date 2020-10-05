@@ -3,28 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_1"
+    app:startDestination="@+id/home_navigation"
     >
 
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.teambell_3.FragmentPage1"
+        android:id="@+id/navigation_riding"
         android:fontFamily="@font/nexongothiclight"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_page_1" />
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        tools:layout="@layout/home_fragment" />
 
     <fragment
-        android:id="@+id/navigation_riding"
-        android:name="com.example.teambell_3.FragmentPage2"
+        android:id="@+id/navigation_group"
         android:fontFamily="@font/nexongothiclight"
-        android:label="@string/title_riding"
-        tools:layout="@layout/fragment_page_2" />
+        android:label="@string/title_group"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        tools:layout="@layout/group__fragment" />
 
     <fragment
-        android:id="@+id/navigation_menu"
-        android:name="com.example.teambell_3.FragmentPage3"
+        android:id="@+id/navigation_setting"
         android:fontFamily="@font/nexongothiclight"
-        android:label="@string/title_menu"
-        tools:layout="@layout/fragment_page_3" />
+        android:label="@string/title_setting"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        tools:layout="@layout/setting__fragment" />
+
+    <fragment
+        android:id="@+id/navigation_statistic"
+        android:fontFamily="@font/nexongothiclight"
+        android:label="@string/title_statistic"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        tools:layout="@layout/statistic_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_record"
+        android:fontFamily="@font/nexongothiclight"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:label="@string/title_record"
+        tools:layout="@layout/record_fragment" />
+
 </navigation>

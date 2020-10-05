@@ -32,10 +32,12 @@ import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import org.w3c.dom.Text;
+
 public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
 
     private Button mStartBtn, mStopBtn, mPauseBtn;
-    private TextView mTimeTextView, nowSpeed, ridingDist, avgSpeed;
+    private TextView mTimeTextView, nowSpeed, ridingDist, avgSpeed, findLocation;
     private Thread timeThread = null;
     private Boolean isRunning = true;
     private TMapGpsManager tmapgps;
@@ -59,6 +61,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
         ridingDist = (TextView) findViewById(R.id.riding_dist);
         avgSpeed = (TextView) findViewById(R.id.avg_speed);
         mTimeTextView = (TextView) findViewById(R.id.stopwatch);
+        findLocation = (TextView) findViewById(R.id.find_location);
 
         // 상단바
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,15 +92,22 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
         final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         // GPS 비활성화시, 켜기
         if( !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
+            findLocation.setText("※ 위치 꺼짐, 사용 불가. 위치를 켜주세요.");
             new AlertDialog.Builder(mContext)
                     .setTitle(R.string.gps_not_found_title)  // GPS not found
                     .setMessage(R.string.gps_not_found_message) // Want to enable?
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             mContext.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            findLocation.setText("위치 잡는중... 기다려주세요..");
                         }
                     })
-                    .setNegativeButton(R.string.no, null)
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    })
                     .show();
         }
         // TMap용 GPS 매니저
@@ -139,16 +149,16 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
 
         // 라이딩 중지버튼
         mStopBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setVisibility(View.GONE);
-                mStartBtn.setVisibility(View.VISIBLE);
-                mPauseBtn.setVisibility(View.GONE);
-                locationManager.removeUpdates(locationListener);
-                sum_dist = 0;
-                timeThread.interrupt();
-            }
-        });
+                                        @Override
+                                        public void onClick(final View v) {
+                                            v.setVisibility(View.GONE);
+                                            mStartBtn.setVisibility(View.VISIBLE);
+                                            mPauseBtn.setVisibility(View.GONE);
+                                            locationManager.removeUpdates(locationListener);
+                                            sum_dist = 0;
+                                            timeThread.interrupt();
+                                        }
+                                    });
 
         // 라이딩 일시정지 버튼
         mPauseBtn.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +203,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
             TMapPoint tp = new TMapPoint(location.getLongitude(), location.getLatitude());
             Log.d("debug", tp.toString());
             tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
+            findLocation.setText("※ 위치 최신화 완료.. 시작 가능합니다.");
             bef_lat = location.getLatitude();
             bef_long = location.getLongitude();
         }

@@ -2,11 +2,17 @@
     <string name="app_name">TeamBell_3</string>
     <string name="title_home">메인</string>
     <string name="title_riding">라이딩</string>
+    <string name="title_setting">설정</string>
+    <string name="title_statistic">통계</string>
+    <string name="title_record">기록</string>
     <string name="title_menu">메뉴</string>
+    <string name="title_group">그룹</string>
     <string name="personal_riding">개인 라이딩</string>
     <string name="group_riding">그룹 라이딩</string>
     <string name="gps_not_found_title">위치 비활성화</string>
-    <string name="gps_not_found_message">위치가 켜져있지 않습니다. 켜시겠습니까?</string>
+    <string name="gps_not_found_message">위치가 켜져있지 않습니다. \n위치를 키지 않을 시 사용할 수 없습니다. \n켜시겠습니까?</string>
+    <string name="end_riding">라이딩을 종료하시겠습니까?</string>
+    <string name="end_riding_title">라이딩 종료</string>
     <string name="yes">네</string>
     <string name="no">아니요</string>
 </resources>

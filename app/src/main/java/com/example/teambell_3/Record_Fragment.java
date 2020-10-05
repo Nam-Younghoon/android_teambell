@@ -9,15 +9,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.teambell_3.R;
 
-public class FragmentPage2 extends Fragment {
+public class Record_Fragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_page_2, container, false);
+        return inflater.inflate(R.layout.record_fragment, container, false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -29,7 +28,7 @@ public class FragmentPage2 extends Fragment {
         super.onResume();
         FragmentActivity activity = getActivity();
         if(activity != null){
-            ((MainActivity) activity).setActionBarTitle(R.string.title_riding);
+            ((MainActivity) activity).setActionBarTitle(R.string.title_record);
         }
     }
 }
