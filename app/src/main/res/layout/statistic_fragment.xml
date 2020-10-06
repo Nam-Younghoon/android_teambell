@@ -1,18 +1,118 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="top"
     android:orientation="vertical"
-    >
+    android:background="#FFFFFF">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="statistic"
-        android:textSize="100dp"/>
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FFFFFF"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            style="@style/AppTheme"
+            app:titleTextColor="#5C5B5B"
+            app:title="@string/title_statistic"
+            >
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="109dp"
+            android:background="#FFFFFF">
+
+            <Button
+                android:id="@+id/button_day"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="100dp"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/nexongothiclight"
+                android:gravity="center"
+                android:shadowRadius="30"
+                android:text="일"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:onClick="stat_day"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/button_week"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/nexongothiclight"
+                android:gravity="center"
+                android:shadowRadius="30"
+                android:text="주"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:onClick="stat_week"
+                app:layout_constraintLeft_toRightOf="@+id/button_day"
+                app:layout_constraintTop_toTopOf="@+id/button_day"
+                app:layout_constraintBottom_toBottomOf="@+id/button_day"
+                android:layout_marginLeft="30dp"/>
+
+            <Button
+                android:id="@+id/button_month"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/nexongothiclight"
+                android:gravity="center"
+                android:shadowRadius="30"
+                android:text="월"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:onClick="stat_month"
+                app:layout_constraintLeft_toRightOf="@+id/button_week"
+                app:layout_constraintTop_toTopOf="@+id/button_week"
+                app:layout_constraintBottom_toBottomOf="@+id/button_week"
+                android:layout_marginLeft="30dp"/>
+
+            <Button
+                android:id="@+id/button_year"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/nexongothiclight"
+                android:gravity="center"
+                android:shadowRadius="30"
+                android:text="년"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:onClick="stat_year"
+                app:layout_constraintLeft_toRightOf="@+id/button_month"
+                app:layout_constraintTop_toTopOf="@+id/button_month"
+                app:layout_constraintBottom_toBottomOf="@+id/button_month"
+                android:layout_marginLeft="30dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        android:background="#DAD8D8"/>
+
+    <fragment
+        android:id="@+id/call_stat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
 
 
 
