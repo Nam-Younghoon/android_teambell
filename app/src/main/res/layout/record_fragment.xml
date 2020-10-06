@@ -4,15 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="top"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FFFFFF"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            style="@style/AppTheme"
+            app:titleTextColor="#5C5B5B"
+            app:title="@string/title_record"
+            >
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ListView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="record"
-        android:textSize="100dp"/>
+        android:id="@+id/record_listView"/>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        android:background="#DAD8D8"/>
 
 </LinearLayout>

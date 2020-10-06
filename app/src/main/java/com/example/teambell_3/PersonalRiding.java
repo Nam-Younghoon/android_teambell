@@ -78,7 +78,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
         tMapView = new TMapView(this);
 
         // Tmap 키
-        tMapView.setSKTMapApiKey("");
+        tMapView.setSKTMapApiKey("l7xx7d4b54bafdb64e8089e1e1876637c9c1");
         // Tmap 보이기
         linearLayoutTmap.addView(tMapView);
         // Tmap 설정

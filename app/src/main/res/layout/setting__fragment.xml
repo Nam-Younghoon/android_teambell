@@ -1,18 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="top"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FFFFFF"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            style="@style/AppTheme"
+            app:titleTextColor="#5C5B5B"
+            app:title="@string/title_setting"
+            >
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="setting"
-        android:textSize="100dp"/>
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원\n정보"
+            android:textSize="100dp"
+            android:textAlignment="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="#DAD8D8"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <Button
+            android:id="@+id/serviceOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="서비스 이용약관"
+            android:layout_gravity="bottom"
+            android:textAlignment="textStart"
+            android:paddingLeft="15dp"
+            android:theme="@style/AppTheme.BlueRipple"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/personalOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="개인정보 처리방침"
+            android:textAlignment="textStart"
+            android:paddingLeft="15dp"
+            android:theme="@style/AppTheme.BlueRipple"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/locationOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="위치기반 서비스 이용약관"
+            android:textAlignment="textStart"
+            android:paddingLeft="15dp"
+            android:theme="@style/AppTheme.BlueRipple"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/helpOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="도움말"
+            android:textAlignment="textStart"
+            android:paddingLeft="15dp"
+            android:theme="@style/AppTheme.BlueRipple"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/logoutOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:textAlignment="textStart"
+            android:paddingLeft="15dp"
+            android:theme="@style/AppTheme.BlueRipple"
+            android:background="@android:color/transparent"/>
 
 
+    </LinearLayout>
 
 </LinearLayout>

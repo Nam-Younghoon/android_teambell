@@ -9,15 +9,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.ArrayList;
+
 
 public class Group_Fragment extends Fragment {
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.group__fragment, container, false);
+
+
+        return inflater.inflate(R.layout.group_fragment, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -27,7 +33,7 @@ public class Group_Fragment extends Fragment {
     public void onResume() {
         super.onResume();
         FragmentActivity activity = getActivity();
-        if(activity != null){
+        if (activity != null) {
             ((MainActivity) activity).setActionBarTitle(R.string.title_group);
         }
     }

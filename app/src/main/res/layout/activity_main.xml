@@ -8,23 +8,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".MainActivity">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="#FFFFFF"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                style="@style/AppTheme"
-                app:titleTextColor="#000000"
-                app:title="@string/app_name"
-                >
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             android:id="@+id/content_layout"

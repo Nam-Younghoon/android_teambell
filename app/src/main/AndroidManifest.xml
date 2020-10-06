@@ -14,10 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Setting_Fragment"></activity>
-        <activity android:name=".Group_Fragment" />
+        <activity android:name=".HelpOK" />
+        <activity android:name=".LocationOK" />
+        <activity android:name=".PersonalOK" />
+        <activity android:name=".ServiceOK" />
         <activity android:name=".Tmap" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+        <activity
+            android:name=".Splash"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
