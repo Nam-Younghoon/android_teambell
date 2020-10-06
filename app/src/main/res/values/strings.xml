@@ -15,4 +15,6 @@
     <string name="end_riding_title">라이딩 종료</string>
     <string name="yes">네</string>
     <string name="no">아니요</string>
+    <string name="title_personal_record">개인 기록</string>
+    <string name="title_group_record">그룹 기록</string>
 </resources>

@@ -4,15 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class HelpOK extends AppCompatActivity {
+public class PersonalOK extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help_o_k);
+        setContentView(R.layout.activity_personal_o_k);
 
         // 상단바
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -25,9 +27,9 @@ public class HelpOK extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home:{
-                finish();
+                        finish();
+                    }
             }
-        }
         return super.onOptionsItemSelected(item);
     }
 }

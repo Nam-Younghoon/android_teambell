@@ -1,11 +1,13 @@
 package com.example.teambell_3;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,9 +22,7 @@ import java.util.ArrayList;
 
 public class Record_Fragment extends Fragment {
 
-    ArrayList<RecordData> records;
-    RecordAdapter adapter;
-    ListView listview;
+    private Button personal_record, group_record;
 
     @Nullable
     @Override
@@ -30,22 +30,23 @@ public class Record_Fragment extends Fragment {
         View v = inflater.inflate(R.layout.record_fragment, container, false);
         setHasOptionsMenu(true);
 
-        records = new ArrayList<>();
-        records.add(new RecordData("2020.00.00", "30km", "00:00:01", "4.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        listview = (ListView) v.findViewById(R.id.record_listView);
-        adapter = new RecordAdapter(getContext(), records);
-        listview.setAdapter(adapter);
+        personal_record = v.findViewById(R.id.personal_record);
+        personal_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Personal_record.class);
+                startActivityForResult(intent, 1001);
+            }
+        });
 
-
+        group_record = v.findViewById(R.id.group_record);
+        group_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Group_record.class);
+                startActivityForResult(intent, 1001);
+            }
+        });
 
         return v;
 

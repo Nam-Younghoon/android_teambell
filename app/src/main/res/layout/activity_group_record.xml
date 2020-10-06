@@ -1,10 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top"
-    android:weightSum="10"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -18,15 +18,10 @@
             android:background="#FFFFFF"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             style="@style/AppTheme"
+            app:titleTextColor="#5C5B5B"
+            app:title="@string/title_group_record"
             >
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="도움말"
-        android:textSize="100dp"/>
-
 </LinearLayout>

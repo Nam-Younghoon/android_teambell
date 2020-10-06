@@ -7,17 +7,20 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class HelpOK extends AppCompatActivity {
+public class Group_record extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help_o_k);
+        setContentView(R.layout.activity_group_record);
 
         // 상단바
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
     }
 
     // 상단 뒤로가기 클릭 시
@@ -30,4 +33,5 @@ public class HelpOK extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

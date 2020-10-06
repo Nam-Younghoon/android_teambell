@@ -56,7 +56,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="서비스 이용약관"
-            android:layout_gravity="bottom"
             android:textAlignment="textStart"
             android:paddingLeft="15dp"
             android:theme="@style/AppTheme.BlueRipple"
