@@ -107,11 +107,13 @@
         android:layout_centerInParent="true"
         android:background="#DAD8D8"/>
 
-    <fragment
-        android:id="@+id/call_stat"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/child_fragment">
+
+    </LinearLayout>
 
 
 

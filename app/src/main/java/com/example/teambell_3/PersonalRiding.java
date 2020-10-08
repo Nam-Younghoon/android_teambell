@@ -47,6 +47,9 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
     private Context mContext;
     private double sum_dist, bef_lat, bef_long, cur_lat, cur_long;
     private Location mLastlocation = null;
+    private Location mFirstlocation = null;
+    public String result, mspeed;
+    public double avspeed, final_avspeed;
 
 
 
@@ -78,7 +81,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
         tMapView = new TMapView(this);
 
         // Tmap 키
-        tMapView.setSKTMapApiKey("");
+        tMapView.setSKTMapApiKey("l7xx7d4b54bafdb64e8089e1e1876637c9c1");
         // Tmap 보이기
         linearLayoutTmap.addView(tMapView);
         // Tmap 설정
@@ -155,8 +158,18 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
                                             mStartBtn.setVisibility(View.VISIBLE);
                                             mPauseBtn.setVisibility(View.GONE);
                                             locationManager.removeUpdates(locationListener);
-                                            sum_dist = 0;
                                             timeThread.interrupt();
+                                            if (mLastlocation != null){
+                                                double deltaTime = (mLastlocation.getTime() - mFirstlocation.getTime()) / 1000.0;
+                                                double aspeed = mLastlocation.distanceTo(mFirstlocation) / deltaTime;
+                                                final_avspeed = Double.parseDouble(String.format("%.1f", aspeed));
+                                            }
+                                            Intent intent = new Intent(getApplicationContext(), PR_result.class);
+                                            intent.putExtra("timer", result);
+                                            intent.putExtra("AvgSpeed", final_avspeed);
+                                            intent.putExtra("SumDist", sum_dist);
+                                            startActivity(intent);
+                                            finish();
                                         }
                                     });
 
@@ -190,7 +203,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
             int min = (msg.arg1 / 100) / 60;
             int hour = (msg.arg1 / 100) / 360;
             //1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
-            @SuppressLint("DefaultLocale") String result = String.format("%02d:%02d:%02d", hour, min, sec);
+            result = String.format("%02d:%02d:%02d", hour, min, sec);
             mTimeTextView.setText(result);
         }
     };
@@ -202,6 +215,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
             // 첫 위치에 대한 Log
             TMapPoint tp = new TMapPoint(location.getLongitude(), location.getLatitude());
             Log.d("debug", tp.toString());
+            mFirstlocation = location;
             tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
             findLocation.setText("※ 위치 최신화 완료.. 시작 가능합니다.");
             bef_lat = location.getLatitude();
@@ -228,7 +242,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
 
                     // 현재 속도
                     double mySpeed = location.getSpeed() * 3.6;
-                    String mspeed = String.format("%.0f", mySpeed);
+                    mspeed = String.format("%.0f", mySpeed);
                     nowSpeed.setText(mspeed+"km/h");
 
                     // 누적 이동 거리
@@ -243,7 +257,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
                     if (mLastlocation != null){
                         deltaTime = (location.getTime() - mLastlocation.getTime()) / 1000.0;
                         double aspeed = mLastlocation.distanceTo(location) / deltaTime;
-                        double avspeed = Double.parseDouble(String.format("%.1f", aspeed));
+                        avspeed = Double.parseDouble(String.format("%.1f", aspeed));
                         avgSpeed.setText(avspeed+"m/s");
                     }
                     bef_lat = cur_lat;

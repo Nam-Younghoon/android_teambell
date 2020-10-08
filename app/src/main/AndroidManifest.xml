@@ -14,7 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".stat_day"></activity>
+        <activity android:name=".Stat_Year"></activity>
+        <activity android:name=".Stat_Week" />
+        <activity android:name=".Stat_Month" />
+        <activity android:name=".Stat_Day" />
+        <activity android:name=".PR_result" />
+        <activity android:name=".stat_day" />
         <activity android:name=".HelpOK" />
         <activity android:name=".LocationOK" />
         <activity android:name=".PersonalOK" />

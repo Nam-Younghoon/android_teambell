@@ -14,7 +14,7 @@ public class PersonalOK extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_o_k);
+        setContentView(R.layout.activity_help_o_k);
 
         // 상단바
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);

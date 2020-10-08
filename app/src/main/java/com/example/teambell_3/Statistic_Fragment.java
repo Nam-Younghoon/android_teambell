@@ -22,19 +22,39 @@ public class Statistic_Fragment extends Fragment {
         setHasOptionsMenu(true);
         View v = inflater.inflate(R.layout.statistic_fragment, container, false);
 
+        getChildFragmentManager().beginTransaction().add(R.id.child_fragment, new Stat_Day()).commit();
+
         dayStat = v.findViewById(R.id.button_day);
         weekStat = v.findViewById(R.id.button_week);
         monthStat = v.findViewById(R.id.button_month);
         yearStat = v.findViewById(R.id.button_year);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        final FragmentTransaction ftrans = fragmentManager.beginTransaction();
-        final Fragment fragment = fragmentManager.findFragmentById(getId());
 
         dayStat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.call_stat, new stat_day()).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.child_fragment, new Stat_Day()).commit();
+            }
+        });
+
+        weekStat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChildFragmentManager().beginTransaction().replace(R.id.child_fragment, new Stat_Week()).commit();
+            }
+        });
+
+        monthStat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChildFragmentManager().beginTransaction().replace(R.id.child_fragment, new Stat_Month()).commit();
+            }
+        });
+
+        yearStat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getChildFragmentManager().beginTransaction().replace(R.id.child_fragment, new Stat_Year()).commit();
             }
         });
 
