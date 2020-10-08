@@ -10,6 +10,9 @@
     <style name="AppTheme.BlueRipple">
         <item name="colorControlHighlight">#0000ff</item>
     </style>
+    <style name="defaultButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:colorAccent">#283268</item>
+    </style>
 
 
 
