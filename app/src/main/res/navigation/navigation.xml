@@ -19,7 +19,7 @@
         android:fontFamily="@font/nexongothiclight"
         android:label="@string/title_group"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        tools:layout="@layout/group__fragment" />
+        tools:layout="@layout/group_fragment" />
 
     <fragment
         android:id="@+id/navigation_setting"

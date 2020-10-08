@@ -138,7 +138,7 @@
             android:id="@+id/btn_start"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="#0E1A5C"
+            android:background="@drawable/button_click_event"
             android:textColor="#FFFFFF"
             android:text="시작" />
 
@@ -155,7 +155,7 @@
                 android:layout_weight="1"
                 android:layout_marginRight="3dp"
                 android:text="일시정지"
-                android:background="#0E1A5C"
+                android:background="@drawable/button_click_event"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible" />
 
@@ -164,7 +164,7 @@
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"
-                android:background="#0E1A5C"
+                android:background="@drawable/button_click_event"
                 android:text="중지"
                 android:textColor="#FFFFFF"
                 android:visibility="invisible" />

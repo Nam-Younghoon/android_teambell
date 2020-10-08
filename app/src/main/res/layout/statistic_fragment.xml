@@ -24,98 +24,74 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="109dp"
-            android:background="#FFFFFF">
-
-            <Button
-                android:id="@+id/button_day"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="55dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="100dp"
-                android:background="@drawable/button_background"
-                android:fontFamily="@font/nexongothiclight"
-                android:gravity="center"
-                android:shadowRadius="30"
-                android:text="일"
-                android:textColor="#FFFFFF"
-                android:textSize="25dp"
-                android:onClick="stat_day"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <Button
-                android:id="@+id/button_week"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/button_background"
-                android:fontFamily="@font/nexongothiclight"
-                android:gravity="center"
-                android:shadowRadius="30"
-                android:text="주"
-                android:textColor="#FFFFFF"
-                android:textSize="25dp"
-                android:onClick="stat_week"
-                app:layout_constraintLeft_toRightOf="@+id/button_day"
-                app:layout_constraintTop_toTopOf="@+id/button_day"
-                app:layout_constraintBottom_toBottomOf="@+id/button_day"
-                android:layout_marginLeft="30dp"/>
-
-            <Button
-                android:id="@+id/button_month"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/button_background"
-                android:fontFamily="@font/nexongothiclight"
-                android:gravity="center"
-                android:shadowRadius="30"
-                android:text="월"
-                android:textColor="#FFFFFF"
-                android:textSize="25dp"
-                android:onClick="stat_month"
-                app:layout_constraintLeft_toRightOf="@+id/button_week"
-                app:layout_constraintTop_toTopOf="@+id/button_week"
-                app:layout_constraintBottom_toBottomOf="@+id/button_week"
-                android:layout_marginLeft="30dp"/>
-
-            <Button
-                android:id="@+id/button_year"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/button_background"
-                android:fontFamily="@font/nexongothiclight"
-                android:gravity="center"
-                android:shadowRadius="30"
-                android:text="년"
-                android:textColor="#FFFFFF"
-                android:textSize="25dp"
-                android:onClick="stat_year"
-                app:layout_constraintLeft_toRightOf="@+id/button_month"
-                app:layout_constraintTop_toTopOf="@+id/button_month"
-                app:layout_constraintBottom_toBottomOf="@+id/button_month"
-                android:layout_marginLeft="30dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_centerInParent="true"
-        android:background="#DAD8D8"/>
+        android:layout_weight="1"/>
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/child_fragment">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/button_day"
+            android:layout_width="0dip"
+            android:layout_height="50dp"
+            android:fontFamily="@font/nexongothiclight"
+            android:textColor="@drawable/tab_color_selector"
+            android:background="@drawable/tab_bg_selector"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="일" />
+
+        <TextView
+            android:id="@+id/button_week"
+            android:layout_width="0dip"
+            android:layout_height="50dp"
+            android:textColor="@drawable/tab_color_selector"
+            android:background="@drawable/tab_bg_selector"
+            android:fontFamily="@font/nexongothiclight"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="주" />
+
+        <TextView
+            android:id="@+id/button_month"
+            android:layout_width="0dip"
+            android:layout_height="50dp"
+            android:fontFamily="@font/nexongothiclight"
+            android:textColor="@drawable/tab_color_selector"
+            android:background="@drawable/tab_bg_selector"
+            android:gravity="center"
+            android:layout_weight="1"
+
+            android:text="월" />
+
+        <TextView
+            android:id="@+id/button_year"
+            android:layout_width="0dip"
+            android:layout_height="50dp"
+            android:fontFamily="@font/nexongothiclight"
+            android:textColor="@drawable/tab_color_selector"
+            android:background="@drawable/tab_bg_selector"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="년" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"/>
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll">
 
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
