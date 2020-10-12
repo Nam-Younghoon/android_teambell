@@ -200,9 +200,9 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int sec = (msg.arg1 / 100) % 60;
-            int min = (msg.arg1 / 100) / 60;
-            int hour = (msg.arg1 / 100) / 360;
+            int sec = (msg.arg1) % 60;
+            int min = (msg.arg1 % 3600) / 60;
+            int hour = (msg.arg1) / 3600;
             //1000이 1초 1000*60 은 1분 1000*60*10은 10분 1000*60*60은 한시간
             result = String.format("%02d:%02d:%02d", hour, min, sec);
             mTimeTextView.setText(result);
@@ -284,7 +284,7 @@ public class PersonalRiding extends AppCompatActivity implements TMapGpsManager.
                     handler.sendMessage(msg);
                     msg.arg1 = i++;
                     try {
-                        Thread.sleep(10);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         runOnUiThread(new Runnable() {
