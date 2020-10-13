@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -49,6 +50,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -97,6 +100,9 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
     private Location location;
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
     // (참고로 Toast에서는 Context가 필요했습니다.)
+    private LatLng startPoly;
+    private LatLng endPoly;
+    private List<Polyline> polylines;
 
 
     @Override
@@ -253,10 +259,13 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
             double maxSpeed = 0;
             if (location != null) {
                 if(location.hasSpeed()){
-                    if(location.getAccuracy() < 10){
+//                    if(location.getAccuracy() < 10){
                         // 현 위치 저장하기.
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
+                        endPoly = new LatLng(latitude, longitude);
+                        drawPath();
+                        startPoly = new LatLng(latitude, longitude);
 
                         // 현재 속도
                         double mySpeed = location.getSpeed() * 3.6;
@@ -294,10 +303,19 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                         bef_long = cur_long;
                         mLastlocation = location;
                      }
-                    }
+//                    }
             }
         }
     }
+
+    private void drawPath(){        //polyline을 그려주는 메소드
+        PolylineOptions options = new PolylineOptions().add(startPoly).add(endPoly).width(15).color(Color.BLACK).geodesic(true);
+//        polylines.add(mMap.addPolyline(options));
+        mMap.addPolyline(options);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoly, 18));
+    }
+
+
 
 
 
@@ -457,14 +475,15 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
                 if(mFirstlocation == null){
-                    if(location.getAccuracy() < 10){
+//                    if(location.getAccuracy() < 10){
                         mFirstlocation = location;
+                        startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
                         Log.e("첫 위치 : ", mFirstlocation.toString());
                         bef_lat = location.getLatitude();
                         bef_long = location.getLongitude();
                         findLocation.setText("첫 위치 잡음. 시작하세요.");
                     }
-                }
+//                }
                 currentPosition
                         = new LatLng(location.getLatitude(), location.getLongitude());
 

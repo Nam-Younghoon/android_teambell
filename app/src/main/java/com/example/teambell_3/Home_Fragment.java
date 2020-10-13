@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 public class Home_Fragment extends Fragment {
 
     private Button personal_button;
+    private Button group_button;
 
 
     @Nullable
@@ -30,6 +31,15 @@ public class Home_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PersonalRiding.class);
+                startActivityForResult(intent, 1001);
+            }
+        });
+
+        group_button = v.findViewById(R.id.button_group);
+        group_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GroupRiding.class);
                 startActivityForResult(intent, 1001);
             }
         });
