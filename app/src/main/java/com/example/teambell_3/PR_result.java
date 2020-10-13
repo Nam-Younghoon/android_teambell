@@ -40,10 +40,10 @@ public class PR_result extends AppCompatActivity {
         timer.setText(result);
 
         double sumDist = intent.getExtras().getDouble("SumDist");
-        dist.setText(String.format(""+sumDist +" m"));
+        dist.setText(String.format("%.1f km", sumDist));
 
         double avspeed = intent.getExtras().getDouble("AvgSpeed");
-        speed.setText(String.format(""+avspeed+" m/s"));
+        speed.setText(String.format(""+avspeed+" km/h"));
 
 
 

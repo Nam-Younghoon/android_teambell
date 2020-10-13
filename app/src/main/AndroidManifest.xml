@@ -14,6 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDHjXhHsGdaqqkXxt50neC-WXWP0j_-Lw0"/>
+
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity android:name=".MapActivity"></activity>
         <activity android:name=".Join" />
         <activity android:name=".Login" />
         <activity android:name=".Stat_Year" />
@@ -21,12 +31,10 @@
         <activity android:name=".Stat_Month" />
         <activity android:name=".Stat_Day" />
         <activity android:name=".PR_result" />
-        <activity android:name=".stat_day" />
         <activity android:name=".HelpOK" />
         <activity android:name=".LocationOK" />
         <activity android:name=".PersonalOK" />
         <activity android:name=".ServiceOK" />
-        <activity android:name=".Tmap" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".Splash"
@@ -38,7 +46,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PersonalRiding" />
+        <activity android:name=".PersonalRiding">
+        </activity>
     </application>
 
 </manifest>
