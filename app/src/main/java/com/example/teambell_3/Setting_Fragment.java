@@ -71,7 +71,10 @@ public class Setting_Fragment extends Fragment {
         logoutOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SaveSharedPreference.clearUserName(getContext());
+                Intent logoutIntent = new Intent(getContext(), Login.class);
+                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(logoutIntent);
             }
         });
 

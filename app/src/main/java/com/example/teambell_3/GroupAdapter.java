@@ -42,16 +42,12 @@ public class GroupAdapter extends BaseAdapter {
 
         TextView GTitle = (TextView)view.findViewById(R.id.group_title);
         TextView GNumber = (TextView)view.findViewById(R.id.group_number);
-        TextView GLocation = (TextView)view.findViewById(R.id.group_location);
-        TextView GDistance = (TextView)view.findViewById(R.id.group_distance);
         TextView GLeader = (TextView)view.findViewById(R.id.group_leader);
         TextView GDate = (TextView)view.findViewById(R.id.group_date);
 
 
         GTitle.setText(sample.get(position).getGTitle());
         GNumber.setText(String.format(sample.get(position).getGNumber()+""));
-        GLocation.setText(sample.get(position).getGLocation());
-        GDistance.setText(sample.get(position).getGDistance());
         GLeader.setText(sample.get(position).getGLeader());
         GDate.setText(sample.get(position).getGDate());
 
