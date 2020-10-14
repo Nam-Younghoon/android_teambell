@@ -84,6 +84,8 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
 
     private GoogleMap mMap;
     private Marker currentMarker = null;
+    private Marker startPointMarker = null;
+    private Marker endPointMarker = null;
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
@@ -95,6 +97,10 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};  // 외부 저장소
     Location mCurrentLocatiion;
     LatLng currentPosition;
+    LatLng mFirstPointPosition;
+    LatLng mLastPointPosition;
+    String startPointTitle;
+    String endPointTitle;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest locationRequest;
     private Location location;
@@ -202,6 +208,12 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                                                     double deltaTime = (mLastlocation.getTime() - mFirstlocation.getTime()) / 1000.0;
                                                     double aspeed = (sum_dist / deltaTime) * 3.6;
                                                     final_avspeed = Double.parseDouble(String.format("%.1f", aspeed));
+
+                                                    // 종료 지점 마커 생성
+                                                    mLastPointPosition = new LatLng(mLastlocation.getLatitude(), mLastlocation.getLongitude());
+                                                    endPointTitle = getCurrentAddress(mLastPointPosition);
+                                                    String endPointSnippet = "위도:" + String.valueOf(mLastlocation.getLatitude()) + "경도:" + String.valueOf(mLastlocation.getLongitude());
+                                                    setEndLocation(mLastlocation, endPointTitle, endPointSnippet);
                                                 } catch (NullPointerException e){
                                                     Log.e("널 포인트 예외 발생", e.toString());
                                                 }
@@ -210,6 +222,8 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                                             intent.putExtra("timer", result);
                                             intent.putExtra("AvgSpeed", final_avspeed);
                                             intent.putExtra("SumDist", sum_dist/1000);
+                                            intent.putExtra("startADD", startPointTitle);
+                                            intent.putExtra("endADD", endPointTitle);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -259,7 +273,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
             double maxSpeed = 0;
             if (location != null) {
                 if(location.hasSpeed()){
-//                    if(location.getAccuracy() < 10){
+                    if(location.getAccuracy() < 10){
                         // 현 위치 저장하기.
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
@@ -303,7 +317,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                         bef_long = cur_long;
                         mLastlocation = location;
                      }
-//                    }
+                }
             }
         }
     }
@@ -312,7 +326,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
         PolylineOptions options = new PolylineOptions().add(startPoly).add(endPoly).width(15).color(Color.BLACK).geodesic(true);
 //        polylines.add(mMap.addPolyline(options));
         mMap.addPolyline(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoly, 18));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoly, 15));
     }
 
 
@@ -475,29 +489,37 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
                 if(mFirstlocation == null){
-//                    if(location.getAccuracy() < 10){
+                    if(location.getAccuracy() < 10){
                         mFirstlocation = location;
                         startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
                         Log.e("첫 위치 : ", mFirstlocation.toString());
                         bef_lat = location.getLatitude();
                         bef_long = location.getLongitude();
                         findLocation.setText("첫 위치 잡음. 시작하세요.");
+
+                        // 출발점 마커 생성
+                        mFirstPointPosition = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                        startPointTitle = getCurrentAddress(mFirstPointPosition);
+                        String startPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) +
+                                "경도:" + String.valueOf(mFirstlocation.getLongitude());
+                        setFirstLocation(mFirstlocation, startPointTitle, startPointSnippet);
                     }
-//                }
-                currentPosition
-                        = new LatLng(location.getLatitude(), location.getLongitude());
+                }
 
-
-
-                String markerTitle = getCurrentAddress(currentPosition);
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
 
-                //현재 위치에 마커 생성하고 이동
-                setCurrentLocation(location, markerTitle, markerSnippet);
+                // 다른 사용자의 위치 표시
+                LatLng someone = new LatLng (37.466573, 126.889245);
+                LatLng someone2 = new LatLng (37.467161, 126.889294);
+                setOthersLocation(someone, "사용자1");
+                setOthersLocation(someone2, "사용자2");
+
+                //이동 위치 변경
+                setCurrentLocation(location);
 
                 mCurrentLocatiion = location;
             }
@@ -623,26 +645,42 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
     }
 
 
-    public void setCurrentLocation(Location location, String markerTitle, String markerSnippet) {
-
-
-        if (currentMarker != null) currentMarker.remove();
-
+    public void setCurrentLocation(Location location) {
 
         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
+        mMap.moveCamera(cameraUpdate);
 
+    }
+
+    public void setOthersLocation(LatLng latlng, String name){
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(currentLatLng);
+        markerOptions.position(latlng);
+        markerOptions.title(name);
+        markerOptions.alpha(0.5f);
+        mMap.addMarker(markerOptions);
+    }
+
+    public void setFirstLocation(Location location, String markerTitle, String markerSnippet){
+        LatLng startLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(startLatLng);
         markerOptions.title(markerTitle);
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
 
+        startPointMarker = mMap.addMarker(markerOptions);
+    }
 
-        currentMarker = mMap.addMarker(markerOptions);
+    public void setEndLocation(Location location, String markerTitle, String markerSnippet){
+        LatLng endLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(endLatLng);
+        markerOptions.title(markerTitle);
+        markerOptions.snippet(markerSnippet);
+        markerOptions.draggable(true);
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
-        mMap.moveCamera(cameraUpdate);
-
+        endPointMarker = mMap.addMarker(markerOptions);
     }
 
 

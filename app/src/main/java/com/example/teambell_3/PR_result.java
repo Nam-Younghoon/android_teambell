@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class PR_result extends AppCompatActivity {
 
-    TextView timer, speed, dist;
+    TextView timer, speed, dist, startPoint, endPoint;
     Button record, cancel;
 
     @Override
@@ -26,6 +26,9 @@ public class PR_result extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         speed = (TextView) findViewById(R.id.speed);
         dist = (TextView) findViewById(R.id.dist);
+        startPoint = (TextView) findViewById(R.id.startPoint);
+        endPoint = (TextView) findViewById(R.id.endPoint);
+
 
         record = (Button) findViewById(R.id.submit_record);
         cancel = (Button) findViewById(R.id.nosubmit_record);
@@ -38,6 +41,12 @@ public class PR_result extends AppCompatActivity {
         Intent intent = getIntent();
         String result = intent.getExtras().getString("timer");
         timer.setText(result);
+
+        String startLocation = intent.getExtras().getString("startADD");
+        startPoint.setText(startLocation);
+
+        String endLocation = intent.getExtras().getString("endADD");
+        endPoint.setText(endLocation);
 
         double sumDist = intent.getExtras().getDouble("SumDist");
         dist.setText(String.format("%.1f km", sumDist));

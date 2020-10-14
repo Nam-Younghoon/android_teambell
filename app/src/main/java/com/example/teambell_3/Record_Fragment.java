@@ -32,18 +32,12 @@ public class Record_Fragment extends Fragment {
 
         records = new ArrayList<>();
         records.add(new RecordData("2020.00.00", "30km", "00:00:01", "4.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
-        records.add(new RecordData("2020.00.00", "40km", "00:00:11", "5.8km/h"));
+
         listview = (ListView) v.findViewById(R.id.record_listView);
         adapter = new RecordAdapter(getContext(), records);
         listview.setAdapter(adapter);
+
+
 
 
 
