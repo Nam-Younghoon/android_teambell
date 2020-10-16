@@ -130,6 +130,7 @@ public class Group_Fragment extends Fragment {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(Group_Fragment.this).attach(Group_Fragment.this).commit();
                 refreshLayout.setRefreshing(false);
+
             }
         });
 

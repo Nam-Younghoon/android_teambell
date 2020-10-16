@@ -22,7 +22,7 @@
             app:titleTextColor="#5C5B5B">
 
             <View
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 

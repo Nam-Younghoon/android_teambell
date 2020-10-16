@@ -1,12 +1,15 @@
 package com.example.teambell_3;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,6 +56,11 @@ public class AddGroup extends AppCompatActivity {
                 finish();
             }
         });
+
+        // 상단바
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public class JSONTask extends AsyncTask<String, String, String>{
@@ -103,7 +111,7 @@ public class AddGroup extends AppCompatActivity {
                         @Override
                         public void run() {
                             if(status < 400){
-                                Toast.makeText(getApplication(), "그룹에 가입되었습니다.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplication(), "그룹을 생성하였습니다.", Toast.LENGTH_LONG).show();
                             } else if (status == 600){
                                 Toast.makeText(getApplication(), "데이터베이스 에러.", Toast.LENGTH_LONG).show();
                             } else if (status == 500){
@@ -138,5 +146,16 @@ public class AddGroup extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
         }
+    }
+
+    // 상단 뒤로가기 클릭 시
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:{
+                finish();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
