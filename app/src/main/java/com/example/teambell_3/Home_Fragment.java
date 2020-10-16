@@ -39,7 +39,7 @@ public class Home_Fragment extends Fragment {
         group_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), GroupRiding.class);
+                Intent intent = new Intent(getActivity(), MyGroupList.class);
                 startActivityForResult(intent, 1001);
             }
         });

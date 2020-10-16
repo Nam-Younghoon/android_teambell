@@ -14,6 +14,7 @@ public class GroupAdapter extends BaseAdapter {
     Context mContext = null;
     LayoutInflater mLayoutInflater = null;
     ArrayList<GroupData> sample;
+    String idx;
 
     public GroupAdapter(Context context, ArrayList<GroupData> data){
         mContext = context;
@@ -28,7 +29,7 @@ public class GroupAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return sample.get(position);
+        return sample.get(position).getGIndex();
     }
 
     @Override
@@ -43,14 +44,14 @@ public class GroupAdapter extends BaseAdapter {
         TextView GTitle = (TextView)view.findViewById(R.id.group_title);
         TextView GNumber = (TextView)view.findViewById(R.id.group_number);
         TextView GLeader = (TextView)view.findViewById(R.id.group_leader);
-        TextView GDate = (TextView)view.findViewById(R.id.group_date);
 
 
         GTitle.setText(sample.get(position).getGTitle());
         GNumber.setText(String.format(sample.get(position).getGNumber()+""));
         GLeader.setText(sample.get(position).getGLeader());
-        GDate.setText(sample.get(position).getGDate());
+
 
         return view;
     }
+
 }

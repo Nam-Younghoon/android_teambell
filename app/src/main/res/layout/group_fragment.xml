@@ -38,7 +38,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:textSize="9pt"/>
                     <Button
-                        android:id="@+id/group_search_icon"
+                        android:id="@+id/group_add_icon"
                         android:background="@android:color/transparent"
                         android:layout_width="50dp"
                         android:layout_marginLeft="20dp"
@@ -54,16 +54,24 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ListView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/group_listview"/>
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_centerInParent="true"
-        android:background="#DAD8D8"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/group_listview"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="#DAD8D8"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 

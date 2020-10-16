@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,7 +48,8 @@ public class Login extends AppCompatActivity {
                             if(success) {//로그인 성공시
                                 Intent intent = new Intent( Login.this, MainActivity.class );
                                 startActivity( intent );
-                                SaveSharedPreference.setUserName(Login.this, UserEmail, UserPwd);
+                                SaveSharedPreference.setUserName(Login.this, UserEmail, UserPwd, jsonObject.getJSONObject("data").getString("accessToken"));
+                                Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
                                 finish();
 
                             } else {//로그인 실패시

@@ -40,7 +40,7 @@ public class Splash extends Activity {
     private class splashhandler2 implements Runnable{
         public void run(){
             Intent intent = new Intent(Splash.this, MainActivity.class);
-//            intent.putExtra("STD_NUM", SaveSharedPreference.getUserName(mContext).toString());
+            intent.putExtra("Token", SaveSharedPreference.getUserName(mContext).toString());
             startActivity(intent); //로딩이 끝난 후, ChoiceFunction 이동
             Splash.this.finish(); // 로딩페이지 Activity stack에서 제거
         }
