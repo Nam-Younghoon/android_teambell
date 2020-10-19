@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,12 +15,15 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.ParcelUuid;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +65,13 @@ import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,12 +82,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -93,6 +109,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     public double avspeed, final_avspeed;
     private LocationManager locationManager;
 
+    Home_Fragment hf = new Home_Fragment();
 
 
     private GoogleMap mMap;
@@ -126,6 +143,12 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     private Intent beforIntent;
     private String mJsonString;
     ArrayList<GroupLocationData> groups;
+    private MqttClient mqttClient;
+    private BluetoothSPP bt;
+    String ReceivedMsg;
+    String SendMsg;
+    String gIdx;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,6 +171,116 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         groups = new ArrayList<>();
+
+        ///////////////////////////////////////////////////////////////////////////////////////
+        /////////MQTT 통신연결/////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////
+
+        bt = MyApplication.bt;
+        Log.e("블루투스 ", bt.toString());
+
+        if (!bt.isBluetoothAvailable()) { //블루투스 사용 불가
+            Toast.makeText(getApplicationContext()
+                    , "Bluetooth is not available"
+                    , Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        gIdx = beforIntent.getStringExtra("GroupIdx");
+        try {
+            mqttClient = new MqttClient("tcp://192.168.11.44:1883", "", new MemoryPersistence());
+            mqttClient.connect();
+            mqttClient.subscribe(String.format("%s", gIdx));
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+
+        bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() { //데이터 수신
+            public void onDataReceived(byte[] data, String message) {
+                Log.e("버튼누름", message);
+                Toast.makeText(GroupRiding.this, message, Toast.LENGTH_LONG).show();
+                ReceivedMsg = message;
+                try{
+                    mqttClient.publish(String.format("%s", gIdx), new MqttMessage(ReceivedMsg.getBytes()));
+                } catch(MqttException e){
+                    e.printStackTrace();
+                }
+
+                mqttClient.setCallback(new MqttCallback() {
+                    @Override
+                    public void connectionLost(Throwable cause) {
+
+                    }
+
+                    @Override
+                    public void messageArrived(final String topic, final MqttMessage message) throws Exception {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (topic.equals(String.format("%s", gIdx))){
+                                    SendMsg = new String(message.getPayload());
+                                    Log.e("보낼 메세지", SendMsg);
+                                    Toast.makeText(getApplication(), SendMsg, Toast.LENGTH_LONG).show();
+                                    ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_ALARM,100);
+                                    toneGen1.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 300);
+                                    byte[] send = SendMsg.getBytes();
+                                    bt.send(send, true);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void deliveryComplete(IMqttDeliveryToken token) {
+
+                    }
+                });
+            }
+        });
+
+        bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() { //연결됐을 때
+            public void onDeviceConnected(String name, String address) {
+                Toast.makeText(getApplicationContext()
+                        , "Connected to " + name + "\n" + address
+                        , Toast.LENGTH_SHORT).show();
+
+                try {
+                    BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+                    Method getUuidsMethod = BluetoothAdapter.class.getDeclaredMethod("getUuids", null);
+                    ParcelUuid[] uuids = (ParcelUuid[]) getUuidsMethod.invoke(adapter, null);
+
+                    if(uuids != null) {
+                        for (ParcelUuid uuid : uuids) {
+                            Log.d(TAG, "UUID: " + uuid.getUuid().toString());
+                        }
+                    }else{
+                        Log.d(TAG, "Uuids not found, be sure to enable Bluetooth!");
+                    }
+
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onDeviceDisconnected() { //연결해제
+                Toast.makeText(getApplicationContext()
+                        , "Connection lost", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onDeviceConnectionFailed() { //연결실패
+                Toast.makeText(getApplicationContext()
+                        , "Unable to connect", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        /////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
         // 현재속도
@@ -245,6 +378,13 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 Log.e("그룹 인덱스 가져오기", gIdx);
                 new STOPgroupTask().execute(String.format("http://192.168.11.44:3000/member/status/%s", gIdx));
                 startActivity(intent);
+                try{
+                    mqttClient.disconnect();
+                    bt.disconnect();
+                } catch(MqttException e){
+                    e.printStackTrace();
+                }
+
                 finish();
 
             }
@@ -284,6 +424,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             mTimeTextView.setText(result);
         }
     };
+
 
     // 현재 속도용 위치 변화 감지
     public class SpeedActionListener implements LocationListener{
@@ -397,6 +538,12 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                         String gIdx = beforIntent.getStringExtra("GroupIdx");
                         Log.e("그룹 인덱스 가져오기", gIdx);
                         new STOPgroupTask().execute(String.format("http://192.168.11.44:3000/member/status/%s", gIdx));
+                        try{
+                            mqttClient.disconnect();
+                            bt.disconnect();
+                        } catch(MqttException e){
+                            e.printStackTrace();
+                        }
                         finish();
                     }
                 });
@@ -420,6 +567,12 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
                 new STOPgroupTask().execute(String.format("http://192.168.11.44:3000/member/status/%s", gIdx));
+                try{
+                    mqttClient.disconnect();
+                    bt.disconnect();
+                } catch(MqttException e){
+                    e.printStackTrace();
+                }
                 finish();
             }
         });
@@ -626,6 +779,16 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             if (mMap!=null)
                 mMap.setMyLocationEnabled(true);
 
+        }
+
+        if (!bt.isBluetoothEnabled()) { //
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
+        } else {
+            if (!bt.isServiceAvailable()) {
+                bt.setupService();
+                bt.startService(BluetoothState.DEVICE_OTHER); //DEVICE_ANDROID는 안드로이드 기기 끼리
+            }
         }
 
 
@@ -1012,7 +1175,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                         @Override
                         public void run() {
                             if(status < 400){
-                                Toast.makeText(getApplication(), "내 위치 보냄.", Toast.LENGTH_LONG).show();
+
                             } else if (status == 600){
                                 Toast.makeText(getApplication(), "데이터베이스 에러.", Toast.LENGTH_LONG).show();
                             } else if (status == 500){
@@ -1159,4 +1322,6 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         }
 
     }
+
+
 }
