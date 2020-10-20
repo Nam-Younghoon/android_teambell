@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 public class Statistic_Fragment extends Fragment {
@@ -35,6 +36,8 @@ public class Statistic_Fragment extends Fragment {
         vp = v.findViewById(R.id.vp);
         ll = v.findViewById(R.id.ll);
 
+        final SwipeRefreshLayout refreshLayout = v.findViewById(R.id.swipe_refresh3);
+
         vp.setAdapter(new pagerAdapter(getChildFragmentManager()));
         vp.setCurrentItem(0);
 
@@ -52,6 +55,16 @@ public class Statistic_Fragment extends Fragment {
         yearStat.setTag(3);
 
         dayStat.setSelected(true);
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(Statistic_Fragment.this).attach(Statistic_Fragment.this).commit();
+                refreshLayout.setRefreshing(false);
+
+            }
+        });
 
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

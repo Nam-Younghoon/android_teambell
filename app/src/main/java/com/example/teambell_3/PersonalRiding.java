@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -114,6 +115,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.personal_riding);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
@@ -511,12 +513,6 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
-
-                // 다른 사용자의 위치 표시
-                LatLng someone = new LatLng (37.466573, 126.889245);
-                LatLng someone2 = new LatLng (37.467161, 126.889294);
-                setOthersLocation(someone, "사용자1");
-                setOthersLocation(someone2, "사용자2");
 
                 //이동 위치 변경
                 setCurrentLocation(location);

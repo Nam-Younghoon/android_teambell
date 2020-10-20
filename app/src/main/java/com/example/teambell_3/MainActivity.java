@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
 
@@ -56,10 +58,10 @@ public class MainActivity extends AppCompatActivity{
         String tag = String.valueOf(id);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment currentFragment = fragmentManager.getPrimaryNavigationFragment();
-        if (currentFragment != null) {
-            fragmentTransaction.hide(currentFragment);
-        }
+//        Fragment currentFragment = fragmentManager.getPrimaryNavigationFragment();
+//        if (currentFragment != null) {
+//            fragmentTransaction.hide(currentFragment);
+//        }
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
         if (fragment == null) {
             if (id == R.id.home_navigation) {
@@ -74,13 +76,15 @@ public class MainActivity extends AppCompatActivity{
                 fragment = new Group_Fragment();
             fragmentTransaction.add(R.id.content_layout, fragment, tag);
         } else {
-            fragmentTransaction.show(fragment);
+//            fragmentTransaction.remove(fragment);
+            fragmentTransaction.replace(R.id.content_layout, fragment, tag);
         }
-        fragmentTransaction.setPrimaryNavigationFragment(fragment);
+//        fragmentTransaction.setPrimaryNavigationFragment(fragment);
         fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.commitNow();
-    }
 
+
+    }
 
 
     public void setActionBarTitle(int title) {

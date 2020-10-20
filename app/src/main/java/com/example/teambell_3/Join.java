@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -30,6 +32,7 @@ public class Join extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_join);
 
         joinName = (EditText) findViewById(R.id.join_name);
@@ -46,6 +49,9 @@ public class Join extends AppCompatActivity {
                 String UserEmail = joinEmail.getText().toString();
                 Log.e("이메일 String화", UserEmail);
                 if(validate){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Join.this);
+                    dialog = builder.setMessage("이미 존재하는 아이디입니다.").setNegativeButton("확인", null).create();
+                    dialog.show();
                     return;
                 }
 
@@ -62,7 +68,8 @@ public class Join extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            Log.e("응답하다. ", String.format("성공", success));
+                            int status = jsonResponse.getInt("status");
+                            Log.e("응답하다. ", response);
                             if (success) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(Join.this);
                                 dialog = builder.setMessage("사용할 수 있는 아이디입니다.").setPositiveButton("확인", null).create();
@@ -72,6 +79,7 @@ public class Join extends AppCompatActivity {
                                 checkButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                             }
                             else {
+                                Log.e("반응", String.format(""+status));
                                 AlertDialog.Builder builder = new AlertDialog.Builder(Join.this);
                                 dialog = builder.setMessage("이미 존재하는 아이디입니다.").setNegativeButton("확인", null).create();
                                 dialog.show();

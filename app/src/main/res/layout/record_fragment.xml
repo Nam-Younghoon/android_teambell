@@ -25,15 +25,20 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ListView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/record_listView"/>
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh2">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_centerInParent="true"
-        android:background="#DAD8D8"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/record_listView"/>
+
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 </LinearLayout>

@@ -4,14 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.MediaParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -43,6 +47,7 @@ public class MyGroupList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_my_group_list);
 
         new GetData().execute("http://192.168.11.44:3000/user/myGroup");
@@ -55,6 +60,40 @@ public class MyGroupList extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           final int position, long id) {
+                if (! MyGroupList.this.isFinishing()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyGroupList.this);
+                    builder.setMessage("삭제하시겠습니까?");
+                    builder.setPositiveButton("예",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    final String idx = (String) listview.getAdapter().getItem(position);
+                                    Log.e("확인", idx);
+                                    mIdx = idx;
+                                    new JSONTaskDel().execute(String.format("http://192.168.11.44:3000/group/delete/%s", idx));
+                                    groups.remove(position);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                    builder.setNegativeButton("아니오",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.show();
+
+                }
+                // 이벤트 처리 종료 , 여기만 리스너 적용시키고 싶으면 true , 아니면 false
+                return true;
+            }
+        });
+
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,7 +136,7 @@ public class MyGroupList extends AppCompatActivity {
             Log.e("응답 ", "response - " + result);
             mJsonString = result;
             showResult();
-            }
+        }
 
 
 
@@ -257,6 +296,73 @@ public class MyGroupList extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+    }
+
+    public class JSONTaskDel extends AsyncTask<String, String, String>{
+        @Override
+        protected String doInBackground(String... urls) {
+            URL url;
+            HttpURLConnection conn = null;
+            OutputStream os = null;
+
+            try {
+                url = new URL(urls[0]);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("DELETE");
+                conn.setRequestProperty("Content-Type", "application/json");
+                String token = SaveSharedPreference.getUserName(getApplication());
+                conn.setRequestProperty("token", token);
+                Log.e("JSONTask 실행됨", "ok");
+
+                os = conn.getOutputStream();
+                os.flush();
+                os.close();
+
+                final int status = conn.getResponseCode();
+                InputStream inputStream;
+                if( status != HttpURLConnection.HTTP_OK ) {
+                    inputStream = conn.getErrorStream();
+
+                    Log.e("에러", inputStream.toString());
+                } else {
+                    inputStream = conn.getInputStream();
+                }
+                Log.e("응답코드", String.format(""+status));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(status < 400){
+                            Toast.makeText(getApplication(), "그룹에서 탈퇴했습니다.", Toast.LENGTH_LONG).show();
+                        } else if (status == 600){
+                            Toast.makeText(getApplication(), "데이터베이스 에러.", Toast.LENGTH_LONG).show();
+                        } else if (status == 500){
+                            Toast.makeText(getApplication(), "서버 에러..", Toast.LENGTH_LONG).show();
+                        } else if (status == 405){
+                            Toast.makeText(getApplication(), "메소드 에러.", Toast.LENGTH_LONG).show();
+                        } else if (status == 404){
+                            Toast.makeText(getApplication(), "경로 에러.", Toast.LENGTH_LONG).show();
+                        } else if (status == 400){
+                            Toast.makeText(getApplication(), "데이터 오류.", Toast.LENGTH_LONG).show();
+                        } else{
+                            Toast.makeText(getApplication(), "알 수 없는 오류.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
             return null;
         }
 

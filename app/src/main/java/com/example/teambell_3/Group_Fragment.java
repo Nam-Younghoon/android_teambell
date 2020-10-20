@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,14 +57,12 @@ public class Group_Fragment extends Fragment {
 
     EditText search;
 
-    ArrayList<GroupData> groups;
+    ArrayList<GroupData> groups, save;
     GroupAdapter adapter;
     ListView listview;
-    private ArrayAdapter<String> arrayAdapter;
     Button createGroup;
     SwipeRefreshLayout refreshLayout;
     EditText writePassword;
-    private AlertDialog dialog2;
 
     @Nullable
     @Override
@@ -76,12 +76,32 @@ public class Group_Fragment extends Fragment {
         writePassword = (EditText)layout.findViewById(R.id.getinpassword);
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
 
+
         new loadDB().execute(url);
         groups = new ArrayList<>();
+        save = new ArrayList<>();
 
         listview = (ListView) v.findViewById(R.id.group_listview);
         adapter = new GroupAdapter(getContext(), groups);
         listview.setAdapter(adapter);
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchUser(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = search.getText().toString();
+
+            }
+        });
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -136,6 +156,18 @@ public class Group_Fragment extends Fragment {
 
         return v;
     }
+
+    public void searchUser(String search){
+        groups.clear();
+        for(int i=0; i<save.size(); i++){
+            if(save.get(i).getGTitle().contains(search)){
+                groups.add(save.get(i));
+            }
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+
     private class loadDB extends AsyncTask<String,Void,String> {
 
         //주요 내용 실행
@@ -187,6 +219,7 @@ public class Group_Fragment extends Fragment {
                     String index = json.getString("groupIdx");
                     //name을 ArrayList에 추가
                     groups.add(new GroupData(name,count,leader, index));
+                    save.add(new GroupData(name, count, leader, index));
                     adapter.notifyDataSetChanged();//변경내용 반영
                 }
             } catch (Exception e) {
@@ -292,5 +325,10 @@ public class Group_Fragment extends Fragment {
         if (activity != null) {
             ((MainActivity) activity).setActionBarTitle(R.string.title_group);
         }
+        refresh();
+    }
+
+    public void refresh(){
+        adapter.notifyDataSetChanged();
     }
 }

@@ -1,4 +1,6 @@
 package com.example.teambell_3;
+import androidx.annotation.Nullable;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,8 +21,17 @@ public class ValidateRequest extends StringRequest {
         map.put("email", UserEmail);
     }
 
+    @Nullable
+    @Override
+    public Response.ErrorListener getErrorListener() {
+        return super.getErrorListener();
+    }
+
     @Override
     protected Map<String, String> getParams() throws AuthFailureError {
         return map;
     }
+
+
+
 }

@@ -1,20 +1,17 @@
 package com.example.teambell_3;
 
-public class RecordData {
+public class StatData {
     private String RDate;
     private String RDistance;
     private String RTime;
     private String RSpeed;
-    private String RDep;
-    private String RArr;
 
-    public RecordData(String RDate, String RDistance, String RTime, String RSpeed, String RDep, String RArr){
+
+    public StatData(String RDate, String RDistance, String RTime, String RSpeed){
         this.RDate = RDate;
         this.RDistance = RDistance;
         this.RTime = RTime;
         this.RSpeed = RSpeed;
-        this.RDep = RDep;
-        this.RArr = RArr;
     }
 
     public String getRDate(){
@@ -31,13 +28,5 @@ public class RecordData {
 
     public String getRSpeed(){
         return this.RSpeed;
-    }
-
-    public String getRDep(){
-        return  this.RDep;
-    }
-
-    public String getRArr(){
-        return this.RArr;
     }
 }

@@ -44,13 +44,15 @@ public class RecordAdapter extends BaseAdapter {
         TextView RTime = (TextView)view.findViewById(R.id.riding_time);
         TextView RSpeed = (TextView)view.findViewById(R.id.riding_speed);
         TextView RDistance = (TextView)view.findViewById(R.id.riding_distance);
-
+        TextView RDep = (TextView)view.findViewById(R.id.dep);
+        TextView RArr = (TextView)view.findViewById(R.id.arr);
 
         RDate.setText(sample.get(position).getRDate());
+        RDistance.setText(sample.get(position).getRDistance()+"km");
         RTime.setText(sample.get(position).getRTime());
-        RSpeed.setText(sample.get(position).getRSpeed());
-        RDistance.setText(sample.get(position).getRDistance());
-
+        RSpeed.setText(sample.get(position).getRSpeed()+"km/h");
+        RDep.setText(sample.get(position).getRDep());
+        RArr.setText(sample.get(position).getRArr());
         return view;
     }
 }

@@ -64,11 +64,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/group_listview"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_centerInParent="true"
-            android:background="#DAD8D8"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
