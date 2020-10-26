@@ -102,6 +102,16 @@
             android:theme="@style/AppTheme.BlueRipple"
             android:background="@android:color/transparent"/>
 
+        <Button
+            android:id="@+id/deleteOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원탈퇴"
+            android:textAlignment="textStart"
+            android:paddingLeft="15dp"
+            android:theme="@style/AppTheme.BlueRipple"
+            android:background="@android:color/transparent"/>
+
 
     </LinearLayout>
 

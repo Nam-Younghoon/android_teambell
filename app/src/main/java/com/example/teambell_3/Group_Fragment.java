@@ -1,20 +1,17 @@
 package com.example.teambell_3;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,16 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,11 +38,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.security.acl.Group;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
-public class Group_Fragment extends Fragment {
+public class Group_Fragment extends Fragment{
 
     EditText search;
 
@@ -63,6 +52,9 @@ public class Group_Fragment extends Fragment {
     Button createGroup;
     SwipeRefreshLayout refreshLayout;
     EditText writePassword;
+    String mJsonString;
+    boolean success;
+    private String idx;
 
     @Nullable
     @Override
@@ -70,7 +62,7 @@ public class Group_Fragment extends Fragment {
         setHasOptionsMenu(true);
         final View v = inflater.inflate(R.layout.group_fragment, container, false);
         final View layout = inflater.inflate(R.layout.get_in_group_dialog, (ViewGroup) v.findViewById(R.id.layout_root));
-        final String url="http://192.168.11.44:3000/group/groupList";
+        final String url="http://192.168.11.58:3000/group/groupList";
         search = v.findViewById(R.id.group_search);
         createGroup = v.findViewById(R.id.group_add_icon);
         writePassword = (EditText)layout.findViewById(R.id.getinpassword);
@@ -78,6 +70,7 @@ public class Group_Fragment extends Fragment {
 
 
         new loadDB().execute(url);
+
         groups = new ArrayList<>();
         save = new ArrayList<>();
 
@@ -98,7 +91,6 @@ public class Group_Fragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String text = search.getText().toString();
 
             }
         });
@@ -106,29 +98,59 @@ public class Group_Fragment extends Fragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//여기서buttontest는 패키지이름
-                builder.setTitle("방 입장하기");
-                builder.setView(layout);
-                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                final String idx = (String) listview.getAdapter().getItem(position);
-                                Log.e("확인", idx);
-                                new JSONTask().execute(String.format("http://192.168.11.44:3000/group/join/%s",idx));
-                                dialog.dismiss();
-                                ((ViewGroup)layout.getParent()).removeAllViews();
-                            }
-                        });
+                idx = (String) listview.getAdapter().getItem(position);
 
-                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-                        ((ViewGroup)layout.getParent()).removeAllViews();
+                try {
+                    String result = new checkTask().execute(String.format("http://192.168.11.58:3000/group/member/%s", idx)).get();
+                    mJsonString = result;
+                    JSONObject jsonObject = new JSONObject(mJsonString);
+                    success = jsonObject.getBoolean( "data" );
+                    Log.e("완료함", String.format(""+success));
                     }
-                });
-                builder.show();
+                catch (JSONException e) {
+                    Log.e("JSONException 발생", "showResult : ", e);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                Log.e("받아옴", "받아옴");
+
+                Log.e("444444", "4444444444");
+                if(!success){
+                    Log.e("111111111", "11111111111");
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//여기서buttontest는 패키지이름
+                    builder.setTitle("방 입장하기");
+                    builder.setView(layout);
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.e("확인", idx);
+                            new JSONTask().execute(String.format("http://192.168.11.58:3000/group/join/%s",idx));
+                            dialog.dismiss();
+                            ((ViewGroup)layout.getParent()).removeAllViews();
+
+                        }
+                    });
+
+                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                            ((ViewGroup)layout.getParent()).removeAllViews();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    Log.e("111122222211111", "11112222222221111111");
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//여기서buttontest는 패키지이름
+                    builder.setTitle("방 입장하기");
+                    builder.setMessage("이미 속해있는 그룹입니다.");
+                    builder.setPositiveButton("확인", null);
+                    builder.show();
+                }
+
             }
 
         });
@@ -166,6 +188,7 @@ public class Group_Fragment extends Fragment {
             adapter.notifyDataSetChanged();
         }
     }
+
 
 
     private class loadDB extends AsyncTask<String,Void,String> {
@@ -248,7 +271,7 @@ public class Group_Fragment extends Fragment {
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json");
-                    String token = SaveSharedPreference.getUserName(getContext());
+                    String token = SaveSharedPreference.getUserToken(getContext());
                     conn.setRequestProperty("token", token);
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
@@ -330,5 +353,93 @@ public class Group_Fragment extends Fragment {
 
     public void refresh(){
         adapter.notifyDataSetChanged();
+    }
+
+    private class checkTask extends AsyncTask<String, Void, String>{
+
+        ProgressDialog progressDialog;
+        String errorString = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(getContext(),
+                    "Please Wait", null, true, true);
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            Log.e("응답 ", "response - " + result);
+            mJsonString = result;
+            try {
+                JSONObject jsonObject = new JSONObject(mJsonString);
+                success = jsonObject.getBoolean( "data" );
+
+
+            } catch (JSONException e) {
+
+                Log.e("JSONException 발생", "showResult : ", e);
+            }
+        }
+
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            String serverURL = params[0];
+            try {
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestMethod("GET");
+                httpURLConnection.setRequestProperty("Content-Type", "application/json");
+                String token = SaveSharedPreference.getUserToken(getContext());
+                Log.e("토큰 ", token);
+                httpURLConnection.setRequestProperty("token", token);
+                httpURLConnection.setDoInput(true);
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.e("응답", "response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                Log.e("버퍼리더", sb.toString().trim());
+
+                return sb.toString().trim();
+
+
+            } catch (Exception e) {
+
+                Log.e("오류", "GetData : Error ", e);
+                errorString = e.toString();
+
+                return null;
+            }
+
+        }
     }
 }

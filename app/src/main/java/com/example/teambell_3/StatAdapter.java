@@ -44,11 +44,13 @@ public class StatAdapter extends BaseAdapter {
         TextView RTime = (TextView)view.findViewById(R.id.stat_day_time);
         TextView RSpeed = (TextView)view.findViewById(R.id.stat_day_avgspeed);
         TextView RDistance = (TextView)view.findViewById(R.id.stat_day_distance);
+        TextView RCount = (TextView)view.findViewById(R.id.stat_day_count);
 
         RDate.setText(sample.get(position).getRDate());
         RDistance.setText("거리: "+sample.get(position).getRDistance()+"km");
         RTime.setText("시간: "+sample.get(position).getRTime());
         RSpeed.setText("평균 속도: "+sample.get(position).getRSpeed()+"km/h");
+        RCount.setText("횟수: "+sample.get(position).getRCount()+"회");
         return view;
     }
 

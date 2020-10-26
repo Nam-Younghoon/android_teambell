@@ -11,20 +11,24 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:name=".MyApplication">
-        <activity android:name=".MyGroupList"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".AddGroup"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".GroupRiding"
-            android:screenOrientation="portrait"/>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".RecordDetail"></activity>
+        <activity
+            android:name=".MyGroupList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddGroup"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GroupRiding"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -33,22 +37,30 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".Join"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Login"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PR_result"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".HelpOK"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LocationOK"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PersonalOK"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ServiceOK"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Join"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PR_result"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HelpOK"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LocationOK"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PersonalOK"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ServiceOK"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Splash"
             android:screenOrientation="portrait"
@@ -59,8 +71,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PersonalRiding"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PersonalRiding"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

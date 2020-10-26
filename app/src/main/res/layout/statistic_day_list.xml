@@ -9,6 +9,7 @@
     android:background="#FFFFFF">
 
     <LinearLayout
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -52,7 +53,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <TextView
+                android:id="@+id/stat_day_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="5dp"
+                android:text="횟수 2"
+                android:textSize="17dp" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
             <TextView
                 android:id="@+id/stat_day_distance"
                 android:layout_width="wrap_content"
@@ -75,19 +88,6 @@
                 android:text="평균 00 Km/h"
                 android:textSize="17dp"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/stat_day_maxspeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="5dp"
-                android:text="최고 00 Km/h"
-                android:textSize="17dp"/>
 
         </LinearLayout>
 

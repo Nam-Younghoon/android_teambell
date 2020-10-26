@@ -56,13 +56,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.skt.Tmap.TMapGpsManager;
-import com.skt.Tmap.TMapPoint;
-import com.skt.Tmap.TMapView;
 
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -110,6 +108,8 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
     private LatLng startPoly;
     private LatLng endPoly;
     private List<Polyline> polylines;
+
+    private ArrayList<LatLng> mLocationList = null;
 
 
     @Override
@@ -178,7 +178,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
 
         // 속도용 LocationListener
         locationListener = new SpeedActionListener();
-
+        mLocationList = new ArrayList<>();
 
         // 라이딩 시작버튼
         mStartBtn.setOnClickListener(new View.OnClickListener() {
@@ -226,6 +226,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                                             intent.putExtra("SumDist", sum_dist/1000);
                                             intent.putExtra("startADD", startPointTitle);
                                             intent.putExtra("endADD", endPointTitle);
+                                            intent.putParcelableArrayListExtra("mLocationRecord", mLocationList);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -275,8 +276,13 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
             double maxSpeed = 0;
             if (location != null) {
                 if(location.hasSpeed()){
-                    if(location.getAccuracy() < 10){
+//                    if(location.getAccuracy() < 10){
                         // 현 위치 저장하기.
+                    if(mFirstlocation != null){
+                        LatLng mLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        mLocationList.add(mLocation);
+                        Log.e("위치 리스트 삽입", mLocationList.toString());
+                    }
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
                         endPoly = new LatLng(latitude, longitude);
@@ -320,7 +326,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                         mLastlocation = location;
                      }
                 }
-            }
+//            }
         }
     }
 
@@ -491,8 +497,14 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
                 if(mFirstlocation == null){
-                    if(location.getAccuracy() < 10){
+                    Toast.makeText(getApplicationContext(), "첫 위치 잡는중.. 시작마세요", Toast.LENGTH_SHORT).show();
+//                    if(location.getAccuracy() < 10){
                         mFirstlocation = location;
+                        LatLng mLocation = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                        mLocationList.add(mLocation);
+                        String r = mLocationList.get(0).toString();
+                        Log.e("위치 리스트 출력 : ", r);
+
                         startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
                         Log.e("첫 위치 : ", mFirstlocation.toString());
                         bef_lat = location.getLatitude();
@@ -505,7 +517,8 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                         String startPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) +
                                 "경도:" + String.valueOf(mFirstlocation.getLongitude());
                         setFirstLocation(mFirstlocation, startPointTitle, startPointSnippet);
-                    }
+                        Toast.makeText(getApplicationContext(), "첫 위치 잡음. 시작버튼을 누르세요", Toast.LENGTH_LONG).show();
+//                    }
                 }
 
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())

@@ -11,16 +11,16 @@ public class SaveSharedPreference {
     }
 
     // 계정 정보 저장
-    public static void setUserName(Context ctx, String userID, String userPW, String userToken) {
+    public static void setUserToken(Context ctx, String userToken) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
-        editor.putString("ID", userID);
-        editor.putString("PW", userPW);
         editor.putString("Token", userToken);
         editor.commit();
     }
 
+
+
     // 저장된 정보 가져오기
-    public static String getUserName(Context ctx) {
+    public static String getUserToken(Context ctx) {
         return getSharedPreferences(ctx).getString("Token", "");
     }
 

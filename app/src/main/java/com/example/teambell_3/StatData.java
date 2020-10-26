@@ -5,13 +5,15 @@ public class StatData {
     private String RDistance;
     private String RTime;
     private String RSpeed;
+    private String RCount;
 
 
-    public StatData(String RDate, String RDistance, String RTime, String RSpeed){
+    public StatData(String RDate, String RDistance, String RTime, String RSpeed, String RCount){
         this.RDate = RDate;
         this.RDistance = RDistance;
         this.RTime = RTime;
         this.RSpeed = RSpeed;
+        this.RCount = RCount;
     }
 
     public String getRDate(){
@@ -29,4 +31,6 @@ public class StatData {
     public String getRSpeed(){
         return this.RSpeed;
     }
+
+    public String getRCount(){ return this.RCount; }
 }

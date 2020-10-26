@@ -36,7 +36,7 @@ public class Stat_Month extends Fragment {
         setHasOptionsMenu(true);
 
         records = new ArrayList<>();
-        new GetData().execute("http://192.168.11.44:3000/record/month");
+        new GetData().execute("http://192.168.11.58:3000/record/month");
         listview = (ListView) v.findViewById(R.id.stat_listView);
         adapter = new StatAdapter(getContext(), records);
         listview.setAdapter(adapter);
@@ -77,7 +77,7 @@ public class Stat_Month extends Fragment {
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
-                String token = SaveSharedPreference.getUserName(getContext());
+                String token = SaveSharedPreference.getUserToken(getContext());
                 Log.e("토큰 ", token);
                 httpURLConnection.setRequestProperty("token", token);
                 //httpURLConnection.setDoOutput(true);
@@ -129,6 +129,7 @@ public class Stat_Month extends Fragment {
         String TAG_DISTANCE = "distance";
         String TAG_RTIME = "time";
         String TAG_RSPEED = "avgSpeed";
+        String TAG_RCOUNT = "count";
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
@@ -140,8 +141,8 @@ public class Stat_Month extends Fragment {
                 String time = item.getString(TAG_RTIME);
                 String distance = item.getString(TAG_DISTANCE);
                 String avgSpeed = item.getString(TAG_RSPEED);
-
-                records.add(new StatData(date, distance, time, avgSpeed));
+                String count = item.getString(TAG_RCOUNT);
+                records.add(new StatData(date, distance, time, avgSpeed, count));
                 adapter.notifyDataSetChanged();//변경내용 반영
 
             }

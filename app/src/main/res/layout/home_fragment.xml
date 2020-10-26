@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="212dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         >
 
         <Button

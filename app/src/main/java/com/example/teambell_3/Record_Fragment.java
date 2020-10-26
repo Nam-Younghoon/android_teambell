@@ -2,6 +2,7 @@ package com.example.teambell_3;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +41,7 @@ public class Record_Fragment extends Fragment {
     RecordAdapter adapter;
     ListView listview;
     private String mJsonString;
+    String mIdx;
 
 
     @Nullable
@@ -50,7 +52,7 @@ public class Record_Fragment extends Fragment {
 
         final SwipeRefreshLayout refreshLayout = v.findViewById(R.id.swipe_refresh2);
         records = new ArrayList<>();
-        new GetData().execute("http://192.168.11.44:3000/record/today");
+        new GetData().execute("http://192.168.11.58:3000/record/today");
         listview = (ListView) v.findViewById(R.id.record_listView);
         adapter = new RecordAdapter(getContext(), records);
         listview.setAdapter(adapter);
@@ -62,6 +64,28 @@ public class Record_Fragment extends Fragment {
                 ft.detach(Record_Fragment.this).attach(Record_Fragment.this).commit();
                 refreshLayout.setRefreshing(false);
 
+            }
+        });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final long idx =  listview.getAdapter().getItemId(position);
+                Log.e("확인", String.format(""+idx));
+                String dist = records.get((int)idx).getRDistance();
+                String time = records.get((int)idx).getRTime();
+                String avgSpeed = records.get((int)idx).getRSpeed();
+                String dep = records.get((int)idx).getRDep();
+                String arr = records.get((int)idx).getRArr();
+                String path = records.get((int)idx).getRGpx();
+                Log.e("주소", path);
+
+                Intent intent = new Intent(getContext(), RecordDetail.class);
+                intent.putExtra("dist", dist);
+                intent.putExtra("time", time);
+                intent.putExtra("avgSpeed", avgSpeed);
+                intent.putExtra("path", path);
+                startActivity(intent);
             }
         });
 
@@ -105,7 +129,7 @@ public class Record_Fragment extends Fragment {
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
-                String token = SaveSharedPreference.getUserName(getContext());
+                String token = SaveSharedPreference.getUserToken(getContext());
                 Log.e("토큰 ", token);
                 httpURLConnection.setRequestProperty("token", token);
                 //httpURLConnection.setDoOutput(true);
@@ -162,6 +186,8 @@ public class Record_Fragment extends Fragment {
         String TAG_RSPEED = "avgSpeed";
         String TAG_RDEP ="dep";
         String TAG_RARR = "arr";
+        String TAG_RIDX = "idx";
+        String TAG_RPATH = "gpx";
 
 
         try {
@@ -178,8 +204,10 @@ public class Record_Fragment extends Fragment {
                 String avgSpeed = item.getString(TAG_RSPEED);
                 String dep = item.getString(TAG_RDEP);
                 String arr = item.getString(TAG_RARR);
+                String idx = item.getString(TAG_RIDX);
+                String gpx = item.getString(TAG_RPATH);
 
-                records.add(new RecordData(date, distance, time, avgSpeed, dep, arr));
+                records.add(new RecordData(date, distance, time, avgSpeed, dep, arr, idx, gpx));
 
             }
 

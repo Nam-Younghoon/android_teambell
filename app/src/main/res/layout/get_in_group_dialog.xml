@@ -12,7 +12,7 @@
 
     <EditText android:id="@+id/getinpassword"
         android:layout_width="200dip"
-        android:layout_height="35dip"
+        android:layout_height="50dip"
         android:layout_marginRight="10dp" />
 
 </LinearLayout>

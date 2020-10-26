@@ -8,24 +8,39 @@ import android.nfc.cardemulation.HostNfcFService;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 public class Splash extends Activity {
 
+    private FirebaseAuth mAuth = null;
     Context mContext;
+    String idToken;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_splash);
+//        SaveSharedPreference.clearUserName(getApplication());
 
         mContext = this;
+        mAuth = FirebaseAuth.getInstance();
 
-        if (SaveSharedPreference.getUserName(Splash.this).length() == 0) {
+        if (SaveSharedPreference.getUserToken(Splash.this).length() == 0) {
             // call Login Activity
             Handler hd = new Handler();
             hd.postDelayed(new splashhandler(), 2000); // 1초 후에 hd handler 실행  3000ms = 3초
         }
+//        else if (mAuth.getCurrentUser() != null) {
+//            Handler hd3 = new Handler();
+//            hd3.postDelayed(new splashhandler3(), 2000);
+//        }
         else {
             Handler hd2 = new Handler();
             hd2.postDelayed(new splashhandler2(), 2000);
@@ -42,11 +57,21 @@ public class Splash extends Activity {
     private class splashhandler2 implements Runnable{
         public void run(){
             Intent intent = new Intent(Splash.this, MainActivity.class);
-            intent.putExtra("Token", SaveSharedPreference.getUserName(mContext).toString());
+            intent.putExtra("Token", SaveSharedPreference.getUserToken(mContext).toString());
             startActivity(intent); //로딩이 끝난 후, ChoiceFunction 이동
             Splash.this.finish(); // 로딩페이지 Activity stack에서 제거
         }
     }
+
+//    private class splashhandler3 implements Runnable{
+//        @Override
+//        public void run() {
+//            Intent intent = new Intent(Splash.this, MainActivity.class);
+//            intent.putExtra("Token", idToken);
+//            startActivity(intent);
+//            Splash.this.finish();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

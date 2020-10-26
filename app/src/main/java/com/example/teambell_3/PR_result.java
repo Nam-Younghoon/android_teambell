@@ -8,8 +8,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,16 +22,24 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class PR_result extends AppCompatActivity {
 
@@ -37,6 +47,9 @@ public class PR_result extends AppCompatActivity {
     Button record, cancel;
     String result, startLocation, endLocation;
     double sumDist, avgSpeed;
+    ArrayList<LatLng> mLocationList = null;
+    String fileName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +64,7 @@ public class PR_result extends AppCompatActivity {
 
         record = (Button) findViewById(R.id.submit_record);
         cancel = (Button) findViewById(R.id.nosubmit_record);
+
 
         // 상단바
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,14 +107,59 @@ public class PR_result extends AppCompatActivity {
         }
         Log.d("avgspeed: ", String.valueOf(avgSpeed));
         speed.setText(String.format(String.valueOf(avgSpeed)));
+
+        mLocationList = intent.getParcelableArrayListExtra("mLocationRecord");
+        Log.e("위치 기록 리스트 ", mLocationList.toString());
+        Log.e("위치 기록 크기", String.format(""+mLocationList.size()));
+
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new JSONTask().execute("http://192.168.11.44:3000/member/personal");
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd_HHmss");
+                String time = mFormat.format(date);
+                Log.e("directory", getExternalFilesDir(null).toString());
+                fileName = String.format("/storage/emulated/0/Android/data/com.example.teambell_3/files/%s.gpx", time);
+                try{
+                    File file = new File(fileName);
+                    if(!file.exists()){
+                        try{
+                            file.createNewFile();
+                        } catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    FileWriter fw = new FileWriter(file, true);
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n" +
+                            "<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\" " +
+                            "xmlns:gpxtpx=\"http://www.garmin.com/xmlschemas/TrackPointExtension/v1\" creator=\"mapstogpx.com\" " +
+                            "version=\"1.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+                            "xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 " +
+                            "http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3" +
+                            " http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 " +
+                            "http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd\">\n");
+                    sb.append("<trk>\n<trkseg>\n");
+                    for(int i=0; i<mLocationList.size(); i++){
+                        sb.append(String.format("<trkpt lat=\"%s\" lon=\"%s\">\n" +
+                                "  </trkpt>", mLocationList.get(i).latitude, mLocationList.get(i).longitude));
+                    }
+                    sb.append("</trkseg></trk></gpx>\n");
+                    fw.write(sb.toString());
+                    fw.flush();
+                    fw.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                new JSONTask().execute("http://192.168.11.58:3000/member/personal");
                 finish();
             }
 
         });
+
+
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +180,7 @@ public class PR_result extends AppCompatActivity {
                 record.put("avgSpeed", avgSpeed);
                 record.put("dep", startLocation);
                 record.put("arr", endLocation);
+                record.put("gpx", fileName);
 
                 URL url;
                 HttpURLConnection conn = null;
@@ -133,7 +193,7 @@ public class PR_result extends AppCompatActivity {
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json");
-                    String token = SaveSharedPreference.getUserName(PR_result.this);
+                    String token = SaveSharedPreference.getUserToken(PR_result.this);
                     conn.setRequestProperty("token", token);
                     conn.setDoOutput(true);
                     conn.setDoInput(true);

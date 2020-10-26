@@ -62,9 +62,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.skt.Tmap.TMapGpsManager;
-import com.skt.Tmap.TMapPoint;
-import com.skt.Tmap.TMapView;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -378,7 +375,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 intent.putExtra("endADD", endPointTitle);
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
-                new STOPgroupTask().execute(String.format("http://192.168.11.44:3000/member/status/%s", gIdx));
+                new STOPgroupTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", gIdx));
                 startActivity(intent);
                 try{
                     mqttClient.disconnect();
@@ -539,7 +536,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String gIdx = beforIntent.getStringExtra("GroupIdx");
                         Log.e("그룹 인덱스 가져오기", gIdx);
-                        new STOPgroupTask().execute(String.format("http://192.168.11.44:3000/member/status/%s", gIdx));
+                        new STOPgroupTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", gIdx));
                         try{
                             mqttClient.disconnect();
                             bt.disconnect();
@@ -568,7 +565,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(DialogInterface dialogInterface, int i) {
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
-                new STOPgroupTask().execute(String.format("http://192.168.11.44:3000/member/status/%s", gIdx));
+                new STOPgroupTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", gIdx));
                 try{
                     mqttClient.disconnect();
                     bt.disconnect();
@@ -671,6 +668,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
                 if(mFirstlocation == null){
+                    Toast.makeText(getApplicationContext(), "첫 위치 잡는중.. 시작마세요", Toast.LENGTH_SHORT).show();
                     if(location.getAccuracy() < 10){
                         mFirstlocation = location;
                         startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
@@ -685,6 +683,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                         String startPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) +
                                 "경도:" + String.valueOf(mFirstlocation.getLongitude());
                         setFirstLocation(mFirstlocation, startPointTitle, startPointSnippet);
+                        Toast.makeText(getApplicationContext(), "첫 위치 잡음. 시작버튼을 누르세요", Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -720,8 +719,8 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
-                new LOCATIONTask().execute(String.format("http://192.168.11.44:3000/member/input/%s", gIdx));
-                new GetLocationGroupTask().execute(String.format("http://192.168.11.44:3000/member/output/%s", gIdx));
+                new LOCATIONTask().execute(String.format("http://192.168.11.58:3000/member/input/%s", gIdx));
+                new GetLocationGroupTask().execute(String.format("http://192.168.11.58:3000/member/output/%s", gIdx));
 
             }
 
@@ -1074,7 +1073,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("PUT");
                     conn.setRequestProperty("Content-Type", "application/json");
-                    String token = SaveSharedPreference.getUserName(getApplication());
+                    String token = SaveSharedPreference.getUserToken(getApplication());
                     conn.setRequestProperty("token", token);
                     Log.e("STOPridingTask 실행됨", "ok");
 
@@ -1150,7 +1149,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("PUT");
                     conn.setRequestProperty("Content-Type", "application/json");
-                    String token = SaveSharedPreference.getUserName(getApplication());
+                    String token = SaveSharedPreference.getUserToken(getApplication());
                     conn.setRequestProperty("token", token);
                     Log.e("LOCATIONTask 실행됨", "ok");
 
@@ -1240,7 +1239,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
-                String token = SaveSharedPreference.getUserName(getApplication());
+                String token = SaveSharedPreference.getUserToken(getApplication());
                 Log.e("토큰 ", token);
                 httpURLConnection.setRequestProperty("token", token);
                 httpURLConnection.setDoInput(true);

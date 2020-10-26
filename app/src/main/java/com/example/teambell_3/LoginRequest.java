@@ -10,7 +10,7 @@ import com.android.volley.AuthFailureError;
 public class LoginRequest extends StringRequest {
 
     //서버 URL 설정(php 파일 연동)
-    final static private String URL = "http://192.168.11.44:3000/user/signin";
+    final static private String URL = "http://192.168.11.58:3000/user/signin";
     private Map<String, String> map;
 
     public LoginRequest(String UserEmail, String UserPwd, Response.Listener<String> listener) {

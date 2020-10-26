@@ -50,7 +50,7 @@ public class MyGroupList extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_my_group_list);
 
-        new GetData().execute("http://192.168.11.44:3000/user/myGroup");
+        new GetData().execute("http://192.168.11.58:3000/user/myGroup");
         groups = new ArrayList<>();
         listview = (ListView) findViewById(R.id.mygroup_list);
         adapter = new GroupAdapter(this, groups);
@@ -75,7 +75,7 @@ public class MyGroupList extends AppCompatActivity {
                                     final String idx = (String) listview.getAdapter().getItem(position);
                                     Log.e("확인", idx);
                                     mIdx = idx;
-                                    new JSONTaskDel().execute(String.format("http://192.168.11.44:3000/group/delete/%s", idx));
+                                    new JSONTaskDel().execute(String.format("http://192.168.11.58:3000/group/delete/%s", idx));
                                     groups.remove(position);
                                     adapter.notifyDataSetChanged();
                                 }
@@ -101,7 +101,7 @@ public class MyGroupList extends AppCompatActivity {
                 final String idx = (String) listview.getAdapter().getItem(position);
                 Log.e("확인", idx);
                 mIdx = idx;
-                new JSONTask().execute(String.format("http://192.168.11.44:3000/member/status/%s", idx));
+                new JSONTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", idx));
                 Intent intent = new Intent(MyGroupList.this, GroupRiding.class);
                 intent.putExtra("GroupIdx", idx);
                 startActivity(intent);
@@ -148,7 +148,7 @@ public class MyGroupList extends AppCompatActivity {
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
-                String token = SaveSharedPreference.getUserName(getApplication());
+                String token = SaveSharedPreference.getUserToken(getApplication());
                 Log.e("토큰 ", token);
                 httpURLConnection.setRequestProperty("token", token);
                 httpURLConnection.setDoInput(true);
@@ -243,7 +243,7 @@ public class MyGroupList extends AppCompatActivity {
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("PUT");
                     conn.setRequestProperty("Content-Type", "application/json");
-                    String token = SaveSharedPreference.getUserName(getApplication());
+                    String token = SaveSharedPreference.getUserToken(getApplication());
                     conn.setRequestProperty("token", token);
                     Log.e("JSONTask 실행됨", "ok");
 
@@ -317,7 +317,7 @@ public class MyGroupList extends AppCompatActivity {
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
                 conn.setRequestProperty("Content-Type", "application/json");
-                String token = SaveSharedPreference.getUserName(getApplication());
+                String token = SaveSharedPreference.getUserToken(getApplication());
                 conn.setRequestProperty("token", token);
                 Log.e("JSONTask 실행됨", "ok");
 

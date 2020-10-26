@@ -57,7 +57,7 @@ public class AddGroup extends AppCompatActivity {
         mkGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new JSONTask().execute("http://192.168.11.44:3000/group/make");
+                new JSONTask().execute("http://192.168.11.58:3000/group/make");
                 finish();
             }
         });
@@ -89,7 +89,7 @@ public class AddGroup extends AppCompatActivity {
                     conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json");
-                    String token = SaveSharedPreference.getUserName(AddGroup.this);
+                    String token = SaveSharedPreference.getUserToken(AddGroup.this);
                     conn.setRequestProperty("token", token);
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
