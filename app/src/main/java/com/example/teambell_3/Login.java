@@ -182,6 +182,7 @@ public class Login extends AppCompatActivity {
                                     JSONObject jsonObject = new JSONObject( response );
                                     boolean success = jsonObject.getBoolean( "success" );
                                     Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
+                                    Log.e("리플래시 토큰값", jsonObject.getJSONObject("data").getString("refreshToken"));
                                     if(success) {//로그인 성공시
                                         Intent intent = new Intent( Login.this, MainActivity.class );
                                         startActivity( intent );

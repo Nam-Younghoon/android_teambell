@@ -1,4 +1,5 @@
 package com.example.teambell_3;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -119,7 +120,7 @@ public class Group_Fragment extends Fragment{
                 Log.e("444444", "4444444444");
                 if(!success){
                     Log.e("111111111", "11111111111");
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//여기서buttontest는 패키지이름
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//
                     builder.setTitle("방 입장하기");
                     builder.setView(layout);
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -247,6 +248,18 @@ public class Group_Fragment extends Fragment{
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//
+                builder.setTitle("오류 발생");
+                builder.setMessage("오류가 발생하여 앱을 종료합니다. 관리자에게 문의하세요.");
+                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Activity mActivity = getActivity();
+                        mActivity.finish();
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
             }
         }
     }
@@ -317,6 +330,7 @@ public class Group_Fragment extends Fragment{
 
                 } catch (ProtocolException e) {
                     e.printStackTrace();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

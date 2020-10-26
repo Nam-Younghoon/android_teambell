@@ -23,6 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,14 +46,16 @@ public class Setting_Fragment extends Fragment {
     private EditText writePassword;
     private boolean success;
     private String mJsonString;
+    private FirebaseAuth mAuth;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View v = inflater.inflate(R.layout.setting__fragment, container, false);
-        final View layout = inflater.inflate(R.layout.get_in_group_dialog, (ViewGroup) v.findViewById(R.id.layout_root));
-        writePassword = (EditText) layout.findViewById(R.id.getinpassword);
+//        final View layout = inflater.inflate(R.layout.get_in_group_dialog, (ViewGroup) v.findViewById(R.id.layout_root));
+        mAuth = FirebaseAuth.getInstance();
+//        writePassword = (EditText) layout.findViewById(R.id.getinpassword);
         serviceOK = v.findViewById(R.id.serviceOK);
         serviceOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,17 +107,10 @@ public class Setting_Fragment extends Fragment {
         deleteOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//여기서buttontest는 패키지이름
-                builder.setTitle("회원탈퇴");
-                builder.setView(layout);
-                builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
                         try {
                             new DELETETask().execute("http://192.168.11.58:3000/user/withdrawal").get();
                             SaveSharedPreference.clearUserName(getContext());
-                            dialog.dismiss();
-                            ((ViewGroup) layout.getParent()).removeAllViews();
+                            revokeAccess();
                             Intent intent = new Intent(getContext(), Login.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -121,21 +119,8 @@ public class Setting_Fragment extends Fragment {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
-
-                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-                        ((ViewGroup) layout.getParent()).removeAllViews();
-                    }
-                });
-                builder.show();
-            }
-        });
 
 
         return v;
@@ -159,12 +144,7 @@ public class Setting_Fragment extends Fragment {
 
         @Override
         protected String doInBackground(String... urls) {
-            final String password = writePassword.getText().toString();
-
             try {
-                JSONObject group = new JSONObject();
-                group.put("password", password);
-
                 URL url;
                 HttpURLConnection conn = null;
                 OutputStream os = null;
@@ -181,14 +161,6 @@ public class Setting_Fragment extends Fragment {
                     conn.setRequestProperty("token", token);
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
-
-
-                    os = conn.getOutputStream();
-                    os.write(group.toString().getBytes());
-                    Log.e("패스워드 : ", group.toString());
-                    os.flush();
-                    os.close();
-
 
                     final int status = conn.getResponseCode();
                     InputStream inputStream;
@@ -228,10 +200,14 @@ public class Setting_Fragment extends Fragment {
                 }
 
 
-            } catch (JSONException e) {
+            } catch(Exception e){
                 e.printStackTrace();
             }
             return null;
         }
+    }
+
+    private void revokeAccess(){
+        mAuth.getCurrentUser().delete();
     }
 }

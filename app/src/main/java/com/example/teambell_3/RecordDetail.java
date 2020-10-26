@@ -169,17 +169,7 @@ public class RecordDetail extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case android.R.id.home:{
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("알림");
-                builder.setMessage("라이딩을 종료하시겠습니까?");
-                builder.setNegativeButton("취소", null);
-                builder.setPositiveButton("종료", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
-                    }
-                });
-                builder.show();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -188,17 +178,6 @@ public class RecordDetail extends AppCompatActivity implements OnMapReadyCallbac
     // 뒤로가기 물리키 클릭 시
     @Override
     public void onBackPressed() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("알림");
-        builder.setMessage("라이딩을 종료하시겠습니까?");
-        builder.setNegativeButton("취소", null);
-        builder.setPositiveButton("종료", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-        builder.show();
+        finish();
     }
 }

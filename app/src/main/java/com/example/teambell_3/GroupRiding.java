@@ -187,7 +187,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
         gIdx = beforIntent.getStringExtra("GroupIdx");
         try {
-            mqttClient = new MqttClient("tcp://192.168.11.44:1883", "", new MemoryPersistence());
+            mqttClient = new MqttClient("tcp://192.168.11.58:1883", "", new MemoryPersistence());
             mqttClient.connect();
             mqttClient.subscribe(String.format("%s", gIdx));
         } catch (MqttException e) {
