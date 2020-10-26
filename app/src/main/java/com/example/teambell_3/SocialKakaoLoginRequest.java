@@ -7,17 +7,20 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SocialLoginRequest extends StringRequest {
+public class SocialKakaoLoginRequest extends StringRequest {
 
     //서버 URL 설정(php 파일 연동)
-    final static private String URL = "http://192.168.11.58:3000/social/signin";
+    final static private String URL = "http://192.168.11.58:3000/social/kakao";
     private Map<String, String> map;
 
-    public SocialLoginRequest(String token, Response.Listener<String> listener) {
+    public SocialKakaoLoginRequest(String id, String email, String name, String token, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
         map = new HashMap<>();
-        map.put("idToken", token);
+        map.put("id", id);
+        map.put("email", email);
+        map.put("name", name);
+        map.put("refreshToken", token);
     }
 
     @Override

@@ -80,7 +80,7 @@ public class PR_result extends AppCompatActivity {
 
         startLocation = intent.getExtras().getString("startADD");
         if (startLocation == null){
-            startLocation = "대한민국 서울특별시 금천구";
+            startLocation = "      위치를 잡지 못했습니다.";
             startLocation = startLocation.substring(5);
         } else {startLocation = startLocation.substring(5);}
         Log.e("start: ", startLocation);
@@ -88,7 +88,7 @@ public class PR_result extends AppCompatActivity {
 
         endLocation = intent.getExtras().getString("endADD");
         if (endLocation == null){
-            endLocation = "대한민국 서울특별시 성북구";
+            endLocation = "      위치를 잡지 못했습니다.";
             endLocation = endLocation.substring(5);
         } else {endLocation = endLocation.substring(5);}
         Log.d("end: ", endLocation);

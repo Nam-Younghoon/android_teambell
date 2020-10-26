@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -70,11 +71,25 @@ public class RecordDetail extends AppCompatActivity implements OnMapReadyCallbac
         String myTime = intent.getStringExtra("time");
         File gpxFile = new File(myGpx);
         gpxList = decodeGPX(gpxFile);
-        Log.e("", gpxList.get(0).toString());
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        if(gpxList != null){
+        Log.e("", gpxList.toString());
+
+        if(gpxList.size() > 0){
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
+        } else {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);//
+            builder.setTitle("오류");
+            builder.setMessage("이동 기록이 없어 종료합니다.");
+            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            builder.show();
         }
 
 

@@ -146,6 +146,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     String ReceivedMsg;
     String SendMsg;
     String gIdx;
+    private ArrayList<LatLng> mLocationList = null;
 
 
     @Override
@@ -325,6 +326,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
         // 속도용 LocationListener
         locationListener = new SpeedActionListener();
+        mLocationList = new ArrayList<>();
 
 
         // 라이딩 시작버튼
@@ -366,6 +368,19 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     } catch (NullPointerException e){
                         Log.e("널 포인트 예외 발생", e.toString());
                     }
+                } else if (mLastlocation == null){
+                    try{
+                        double aspeed = 0.0;
+                        final_avspeed = Double.parseDouble(String.format("%.1f", aspeed));
+
+                        // 종료 지점 마커 생성
+                        mLastPointPosition = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                        endPointTitle = getCurrentAddress(mLastPointPosition);
+                        String endPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) + "경도:" + String.valueOf(mFirstlocation.getLongitude());
+                        setEndLocation(mFirstlocation, endPointTitle, endPointSnippet);
+                    } catch (NullPointerException e){
+                        Log.e("널 포인트 예외 발생", e.toString());
+                    }
                 }
                 Intent intent = new Intent(getApplicationContext(), PR_result.class);
                 intent.putExtra("timer", result);
@@ -373,6 +388,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 intent.putExtra("SumDist", sum_dist/1000);
                 intent.putExtra("startADD", startPointTitle);
                 intent.putExtra("endADD", endPointTitle);
+                intent.putParcelableArrayListExtra("mLocationRecord", mLocationList);
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
                 new STOPgroupTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", gIdx));
@@ -434,52 +450,57 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             double maxSpeed = 0;
             if (location != null) {
                 if(location.hasSpeed()){
-                    if(location.getAccuracy() < 10){
-                        // 현 위치 저장하기.
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-                        endPoly = new LatLng(latitude, longitude);
-                        drawPath();
-                        startPoly = new LatLng(latitude, longitude);
-
-                        // 현재 속도
-                        double mySpeed = location.getSpeed() * 3.6;
-                        // 최고 속도
-                        if (maxSpeed < mySpeed){
-                            maxSpeed = mySpeed;
-                        }
-                        mspeed = String.format("%.1f", mySpeed);
-                        nowSpeed.setText(mspeed+"km/h");
-
-                        // 누적 이동 거리
-                        if (bef_lat != 0.0 && bef_long != 0.0){
-                            cur_lat = latitude;
-                            cur_long = longitude;
-                            CalDistance calDistance = new CalDistance(bef_lat, bef_long, cur_lat, cur_long);
-                            double dist = calDistance.getDistance();
-                            dist = (int)(dist*100) / 100.0;
-                            sum_dist += dist;
-                            Log.e("누적거리 : ", String.valueOf(sum_dist));
-                            ridingDist.setText(String.format("%.2f", sum_dist / 1000)+" km");
-                        }
-
-
-                        // 평균 속도
-                        if (mFirstlocation != null){
-                            deltaTime = (location.getTime() - mFirstlocation.getTime()) / 1000.0;
-                            double aspeed = (sum_dist * 3.6) / deltaTime;
-                            if(deltaTime == 0){
-                                aspeed = 0;
-                            }
-                            avspeed = Double.parseDouble(String.format("%.1f", aspeed));
-                            avgSpeed.setText(avspeed+" km/h");
-                        }
-                        bef_lat = cur_lat;
-                        bef_long = cur_long;
-                        mLastlocation = location;
+//                    if(location.getAccuracy() < 10){
+                    // 현 위치 저장하기.
+                    if(mFirstlocation != null){
+                        LatLng mLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                        mLocationList.add(mLocation);
+                        Log.e("위치 리스트 삽입", mLocationList.toString());
                     }
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    endPoly = new LatLng(latitude, longitude);
+                    drawPath();
+                    startPoly = new LatLng(latitude, longitude);
+
+                    // 현재 속도
+                    double mySpeed = location.getSpeed() * 3.6;
+                    // 최고 속도
+                    if (maxSpeed < mySpeed){
+                        maxSpeed = mySpeed;
+                    }
+                    mspeed = String.format("%.1f", mySpeed);
+                    nowSpeed.setText(mspeed+"km/h");
+
+                    // 누적 이동 거리
+                    if (bef_lat != 0.0 && bef_long != 0.0){
+                        cur_lat = latitude;
+                        cur_long = longitude;
+                        CalDistance calDistance = new CalDistance(bef_lat, bef_long, cur_lat, cur_long);
+                        double dist = calDistance.getDistance();
+                        dist = (int)(dist*100) / 100.0;
+                        sum_dist += dist;
+                        Log.e("누적거리 : ", String.valueOf(sum_dist));
+                        ridingDist.setText(String.format("%.2f", sum_dist / 1000)+" km");
+                    }
+
+
+                    // 평균 속도
+                    if (mFirstlocation != null){
+                        deltaTime = (location.getTime() - mFirstlocation.getTime()) / 1000.0;
+                        double aspeed = (sum_dist * 3.6) / deltaTime;
+                        if(deltaTime == 0){
+                            aspeed = 0;
+                        }
+                        avspeed = Double.parseDouble(String.format("%.1f", aspeed));
+                        avgSpeed.setText(avspeed+" km/h");
+                    }
+                    bef_lat = cur_lat;
+                    bef_long = cur_long;
+                    mLastlocation = location;
                 }
             }
+//            }
         }
     }
 
@@ -671,6 +692,11 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     Toast.makeText(getApplicationContext(), "첫 위치 잡는중.. 시작마세요", Toast.LENGTH_SHORT).show();
                     if(location.getAccuracy() < 10){
                         mFirstlocation = location;
+                        LatLng mLocation = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                        mLocationList.add(mLocation);
+                        String r = mLocationList.get(0).toString();
+                        Log.e("위치 리스트 출력 : ", r);
+
                         startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
                         Log.e("첫 위치 : ", mFirstlocation.toString());
                         bef_lat = location.getLatitude();

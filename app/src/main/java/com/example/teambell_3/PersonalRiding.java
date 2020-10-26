@@ -219,6 +219,19 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                                                 } catch (NullPointerException e){
                                                     Log.e("널 포인트 예외 발생", e.toString());
                                                 }
+                                            } else if (mLastlocation == null){
+                                                try{
+                                                    double aspeed = 0.0;
+                                                    final_avspeed = Double.parseDouble(String.format("%.1f", aspeed));
+
+                                                    // 종료 지점 마커 생성
+                                                    mLastPointPosition = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                                                    endPointTitle = getCurrentAddress(mLastPointPosition);
+                                                    String endPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) + "경도:" + String.valueOf(mFirstlocation.getLongitude());
+                                                    setEndLocation(mFirstlocation, endPointTitle, endPointSnippet);
+                                                } catch (NullPointerException e){
+                                                    Log.e("널 포인트 예외 발생", e.toString());
+                                                }
                                             }
                                             Intent intent = new Intent(getApplicationContext(), PR_result.class);
                                             intent.putExtra("timer", result);
