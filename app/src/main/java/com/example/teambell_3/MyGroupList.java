@@ -50,7 +50,7 @@ public class MyGroupList extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_my_group_list);
 
-        new GetData().execute("http://192.168.11.58:3000/user/myGroup");
+        new GetData().execute("http://106.243.128.187:3000/user/myGroup");
         groups = new ArrayList<>();
         listview = (ListView) findViewById(R.id.mygroup_list);
         adapter = new GroupAdapter(this, groups);
@@ -75,7 +75,7 @@ public class MyGroupList extends AppCompatActivity {
                                     final String idx = (String) listview.getAdapter().getItem(position);
                                     Log.e("확인", idx);
                                     mIdx = idx;
-                                    new JSONTaskDel().execute(String.format("http://192.168.11.58:3000/group/delete/%s", idx));
+                                    new JSONTaskDel().execute(String.format("http://106.243.128.187:3000/group/delete/%s", idx));
                                     groups.remove(position);
                                     adapter.notifyDataSetChanged();
                                 }
@@ -101,7 +101,7 @@ public class MyGroupList extends AppCompatActivity {
                 final String idx = (String) listview.getAdapter().getItem(position);
                 Log.e("확인", idx);
                 mIdx = idx;
-                new JSONTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", idx));
+                new JSONTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", idx));
                 Intent intent = new Intent(MyGroupList.this, GroupRiding.class);
                 intent.putExtra("GroupIdx", idx);
                 startActivity(intent);
@@ -204,6 +204,7 @@ public class MyGroupList extends AppCompatActivity {
         String TAG_GROUPIDX = "groupIdx";
 
 
+
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
@@ -216,8 +217,9 @@ public class MyGroupList extends AppCompatActivity {
                 String name = item.getString(TAG_NAME);
                 String count = item.getString(TAG_COUNT);
                 String leader = item.getString(TAG_LEADER);
+                String info = "";
 
-                groups.add(new GroupData(name,count,leader, groupIdx));
+                groups.add(new GroupData(name,count,leader, groupIdx, info));
                 adapter.notifyDataSetChanged();//변경내용 반영
             }
 

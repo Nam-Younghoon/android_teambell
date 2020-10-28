@@ -36,7 +36,7 @@ public class Stat_Week extends Fragment {
         setHasOptionsMenu(true);
 
         records = new ArrayList<>();
-        new GetData().execute("http://192.168.11.58:3000/record/week");
+        new GetData().execute("http://106.243.128.187:3000/record/week");
         listview = (ListView) v.findViewById(R.id.stat_listView);
         adapter = new StatAdapter(getContext(), records);
         listview.setAdapter(adapter);

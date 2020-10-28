@@ -5,8 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
+
+    <TextView android:text="그룹 정보"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/group_info"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:text="info"
+        android:layout_height="60dp"
+        />
+
     <TextView android:text="비밀번호"
         android:id="@+id/TextView01"
+        android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

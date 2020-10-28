@@ -1,6 +1,9 @@
 package com.example.teambell_3;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -9,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -65,6 +70,11 @@ public class Statistic_Fragment extends Fragment {
 
             }
         });
+
+        // 상단바
+        Toolbar myToolbar = (Toolbar) v.findViewById(R.id.toolbar);
+        myToolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+
 
         vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -153,5 +163,22 @@ public class Statistic_Fragment extends Fragment {
         public int getCount() {
             return 4;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        MenuInflater menuInflater =  ((MainActivity)getActivity()).getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.refresh:
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(Statistic_Fragment.this).attach(Statistic_Fragment.this).commit();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

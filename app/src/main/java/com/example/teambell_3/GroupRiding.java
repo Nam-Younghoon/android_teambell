@@ -80,6 +80,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
@@ -88,6 +89,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
@@ -147,6 +149,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     String SendMsg;
     String gIdx;
     private ArrayList<LatLng> mLocationList = null;
+//    private ArrayList<Marker> othersMarker = null;
 
 
     @Override
@@ -171,6 +174,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         groups = new ArrayList<>();
+//        othersMarker = new ArrayList<>();
 
         ///////////////////////////////////////////////////////////////////////////////////////
         /////////MQTT 통신연결/////////////////////////////////////////////////////////////////
@@ -188,7 +192,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
         gIdx = beforIntent.getStringExtra("GroupIdx");
         try {
-            mqttClient = new MqttClient("tcp://192.168.11.58:1883", "", new MemoryPersistence());
+            mqttClient = new MqttClient("tcp://106.243.128.187:1883", "", new MemoryPersistence());
             mqttClient.connect();
             mqttClient.subscribe(String.format("%s", gIdx));
         } catch (MqttException e) {
@@ -391,7 +395,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 intent.putParcelableArrayListExtra("mLocationRecord", mLocationList);
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
-                new STOPgroupTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", gIdx));
+                new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
                 startActivity(intent);
                 try{
                     mqttClient.disconnect();
@@ -450,7 +454,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             double maxSpeed = 0;
             if (location != null) {
                 if(location.hasSpeed()){
-//                    if(location.getAccuracy() < 10){
+                    if(location.getAccuracy() < 10){
                     // 현 위치 저장하기.
                     if(mFirstlocation != null){
                         LatLng mLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -500,7 +504,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     mLastlocation = location;
                 }
             }
-//            }
+            }
         }
     }
 
@@ -557,7 +561,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String gIdx = beforIntent.getStringExtra("GroupIdx");
                         Log.e("그룹 인덱스 가져오기", gIdx);
-                        new STOPgroupTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", gIdx));
+                        new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
                         try{
                             mqttClient.disconnect();
                             bt.disconnect();
@@ -586,7 +590,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(DialogInterface dialogInterface, int i) {
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
-                new STOPgroupTask().execute(String.format("http://192.168.11.58:3000/member/status/%s", gIdx));
+                new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
                 try{
                     mqttClient.disconnect();
                     bt.disconnect();
@@ -686,32 +690,33 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             List<Location> locationList = locationResult.getLocations();
 
             if (locationList.size() > 0) {
+                mMap.clear();
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
-                if(mFirstlocation == null){
+                if (mFirstlocation == null) {
                     Toast.makeText(getApplicationContext(), "첫 위치 잡는중.. 시작마세요", Toast.LENGTH_SHORT).show();
                     if(location.getAccuracy() < 10){
-                        mFirstlocation = location;
-                        LatLng mLocation = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
-                        mLocationList.add(mLocation);
-                        String r = mLocationList.get(0).toString();
-                        Log.e("위치 리스트 출력 : ", r);
+                    mFirstlocation = location;
+                    LatLng mLocation = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                    mLocationList.add(mLocation);
+                    String r = mLocationList.get(0).toString();
+                    Log.e("위치 리스트 출력 : ", r);
 
-                        startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
-                        Log.e("첫 위치 : ", mFirstlocation.toString());
-                        bef_lat = location.getLatitude();
-                        bef_long = location.getLongitude();
-                        findLocation.setText("첫 위치 잡음. 시작하세요.");
+                    startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                    Log.e("첫 위치 : ", mFirstlocation.toString());
+                    bef_lat = location.getLatitude();
+                    bef_long = location.getLongitude();
+                    findLocation.setText("첫 위치 잡음. 시작하세요.");
 
-                        // 출발점 마커 생성
-                        mFirstPointPosition = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
+                    // 출발점 마커 생성
+                    mFirstPointPosition = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
                         startPointTitle = getCurrentAddress(mFirstPointPosition);
-                        String startPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) +
-                                "경도:" + String.valueOf(mFirstlocation.getLongitude());
-                        setFirstLocation(mFirstlocation, startPointTitle, startPointSnippet);
-                        Toast.makeText(getApplicationContext(), "첫 위치 잡음. 시작버튼을 누르세요", Toast.LENGTH_LONG).show();
-                    }
+//                        String startPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) +
+//                                "경도:" + String.valueOf(mFirstlocation.getLongitude());
+//                    setFirstLocation(mFirstlocation, "출발점");
+                    Toast.makeText(getApplicationContext(), "첫 위치 잡음. 시작버튼을 누르세요", Toast.LENGTH_LONG).show();
                 }
+
 
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
@@ -719,22 +724,23 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
 
-                // 다른 사용자의 위치 표시
-//                LatLng someone = new LatLng (37.466573, 126.889245);
-//                LatLng someone2 = new LatLng (37.467161, 126.889294);
-//                setOthersLocation(someone, "사용자1");
-//                setOthersLocation(someone2, "사용자2");
-                if(groups != null){
-                    for(int i=0; i<groups.size(); i++){
-                        if(othersMarker != null){
-                            othersMarker.remove();
-                        }
+
+                if (groups != null) {
+                    for (int i = 0; i < groups.size(); i++) {
                         LatLng others = new LatLng(Double.parseDouble(groups.get(i).getLatitude()), Double.parseDouble(groups.get(i).getLongitude()));
-                        setOthersLocation(others, groups.get(i).getName());
+//                        setOthersLocation(others, groups.get(i).getName());
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(others);
+                        markerOptions.title(groups.get(i).getName());
+                        markerOptions.alpha(0.5f);
+                        Marker icon = mMap.addMarker(markerOptions);
+                        icon.showInfoWindow();
+
                         Log.e("그룹 사람 데려옴", others.toString());
                     }
-                }
 
+                        groups.clear();
+                }
 
 
                 //이동 위치 변경
@@ -745,15 +751,26 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
-                new LOCATIONTask().execute(String.format("http://192.168.11.58:3000/member/input/%s", gIdx));
-                new GetLocationGroupTask().execute(String.format("http://192.168.11.58:3000/member/output/%s", gIdx));
+                try {
+                    new LOCATIONTask().execute(String.format("http://106.243.128.187:3000/member/input/%s", gIdx)).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    new GetLocationGroupTask().execute(String.format("http://106.243.128.187:3000/member/output/%s", gIdx)).get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
 
-
         }
-
-    };
+    }
+};
 
 
 
@@ -889,20 +906,21 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    public void setOthersLocation(LatLng latlng, String name){
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latlng);
-        markerOptions.title(name);
-        markerOptions.alpha(0.5f);
-        othersMarker = mMap.addMarker(markerOptions);
-    }
+//    public void setOthersLocation(LatLng latlng, String name){
+//        if (othersMarker != null) othersMarker.remove();
+//
+//        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.position(latlng);
+//        markerOptions.title(name);
+//        markerOptions.alpha(0.5f);
+//        othersMarker = mMap.addMarker(markerOptions);
+//    }
 
-    public void setFirstLocation(Location location, String markerTitle, String markerSnippet){
+    public void setFirstLocation(Location location, String markerTitle){
         LatLng startLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(startLatLng);
         markerOptions.title(markerTitle);
-        markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
 
         startPointMarker = mMap.addMarker(markerOptions);
@@ -1250,7 +1268,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            Log.e("응답 ", "response - " + result);
+            Log.e("응답 131313131313", "response - " + result);
             mJsonString = result;
             showResult();
         }
@@ -1272,7 +1290,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.e("응답", "response code - " + responseStatusCode);
+                Log.e("응답131313131313", "response code - " + responseStatusCode);
 
                 InputStream inputStream;
                 if(responseStatusCode == HttpURLConnection.HTTP_OK) {
@@ -1295,14 +1313,14 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
                 bufferedReader.close();
 
-                Log.e("버퍼리더", sb.toString().trim());
+                Log.e("버퍼리더 131313131313", sb.toString().trim());
 
                 return sb.toString().trim();
 
 
             } catch (Exception e) {
 
-                Log.e("오류", "GetData : Error ", e);
+                Log.e("오류13131311", "GetData : Error ", e);
                 errorString = e.toString();
 
                 return null;
@@ -1346,6 +1364,8 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         } catch (JSONException e) {
 
             Log.e("JSONException 발생", "showResult : ", e);
+        } catch (Exception e){
+            Log.e("뭔가 예외발생" , e.toString());
         }
 
     }

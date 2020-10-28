@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -46,7 +48,7 @@ import java.util.concurrent.ExecutionException;
 public class Group_Fragment extends Fragment{
 
     EditText search;
-
+    TextView groupinfo;
     ArrayList<GroupData> groups, save;
     GroupAdapter adapter;
     ListView listview;
@@ -55,7 +57,8 @@ public class Group_Fragment extends Fragment{
     EditText writePassword;
     String mJsonString;
     boolean success;
-    private String idx;
+    private String idx, info;
+    int i = 0;
 
     @Nullable
     @Override
@@ -63,12 +66,11 @@ public class Group_Fragment extends Fragment{
         setHasOptionsMenu(true);
         final View v = inflater.inflate(R.layout.group_fragment, container, false);
         final View layout = inflater.inflate(R.layout.get_in_group_dialog, (ViewGroup) v.findViewById(R.id.layout_root));
-        final String url="http://192.168.11.58:3000/group/groupList";
+        final String url="http://106.243.128.187:3000/group/groupList";
         search = v.findViewById(R.id.group_search);
         createGroup = v.findViewById(R.id.group_add_icon);
         writePassword = (EditText)layout.findViewById(R.id.getinpassword);
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
-
 
         new loadDB().execute(url);
 
@@ -99,14 +101,24 @@ public class Group_Fragment extends Fragment{
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                if (i>0) {ViewGroup dialogParentView = (ViewGroup) layout.getParent(); dialogParentView.removeView(layout);}
                 idx = (String) listview.getAdapter().getItem(position);
-
                 try {
-                    String result = new checkTask().execute(String.format("http://192.168.11.58:3000/group/member/%s", idx)).get();
+                    String result = new checkTask().execute(String.format("http://106.243.128.187:3000/group/member/%s", idx)).get();
+                    Log.e("베베베", result);
                     mJsonString = result;
                     JSONObject jsonObject = new JSONObject(mJsonString);
-                    success = jsonObject.getBoolean( "data" );
+                    success = jsonObject.getJSONObject("data").getBoolean("flag");
+                    info = jsonObject.getJSONObject("data").getString("info");
                     Log.e("완료함", String.format(""+success));
+                    Log.e("완료했다고", info);
+                    groupinfo = (TextView) layout.findViewById(R.id.group_info);
+                    if ( info != "null"){
+                        groupinfo.setText(info);
+                    } else if (info == "null") {
+                        groupinfo.setText("소개 없음");
+                    }
+
                     }
                 catch (JSONException e) {
                     Log.e("JSONException 발생", "showResult : ", e);
@@ -127,9 +139,17 @@ public class Group_Fragment extends Fragment{
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Log.e("확인", idx);
-                            new JSONTask().execute(String.format("http://192.168.11.58:3000/group/join/%s",idx));
+                            try {
+                                new JSONTask().execute(String.format("http://106.243.128.187:3000/group/join/%s",idx)).get();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             dialog.dismiss();
-                            ((ViewGroup)layout.getParent()).removeAllViews();
+                            ViewGroup dialogParentView = (ViewGroup) layout.getParent();
+                            dialogParentView.removeView(layout);
+
 
                         }
                     });
@@ -137,19 +157,22 @@ public class Group_Fragment extends Fragment{
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            i++;
                             dialog.dismiss();
-                            ((ViewGroup)layout.getParent()).removeAllViews();
+
                         }
                     });
                     builder.show();
+
                 } else {
                     Log.e("111122222211111", "11112222222221111111");
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//여기서buttontest는 패키지이름
                     builder.setTitle("방 입장하기");
                     builder.setMessage("이미 속해있는 그룹입니다.");
                     builder.setPositiveButton("확인", null);
+                    i = 0;
                     builder.show();
+
                 }
 
             }
@@ -241,9 +264,10 @@ public class Group_Fragment extends Fragment{
                     String count = json.getString("count");
                     String leader = json.getString("leader");
                     String index = json.getString("groupIdx");
+                    String info = json.getString("info");
                     //name을 ArrayList에 추가
-                    groups.add(new GroupData(name,count,leader, index));
-                    save.add(new GroupData(name, count, leader, index));
+                    groups.add(new GroupData(name,count,leader, index, info));
+                    save.add(new GroupData(name, count, leader, index, info));
                     adapter.notifyDataSetChanged();//변경내용 반영
                 }
             } catch (Exception e) {
@@ -392,7 +416,7 @@ public class Group_Fragment extends Fragment{
             mJsonString = result;
             try {
                 JSONObject jsonObject = new JSONObject(mJsonString);
-                success = jsonObject.getBoolean( "data" );
+                success = jsonObject.getJSONObject( "data" ).getBoolean("flag");
 
 
             } catch (JSONException e) {

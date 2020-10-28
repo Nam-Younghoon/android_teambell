@@ -20,6 +20,7 @@
             style="@style/AppTheme"
             app:titleTextColor="#5C5B5B"
             app:title="@string/title_statistic"
+            app:menu="@menu/menu"
             >
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>

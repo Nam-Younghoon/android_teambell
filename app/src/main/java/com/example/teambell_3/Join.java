@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -61,6 +62,16 @@ public class Join extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
+
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(UserEmail).matches())
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Join.this);
+                    dialog = builder.setMessage("이메일 형식이 아닙니다").setPositiveButton("확인", null).create();
+                    dialog.show();
+                    return;
+                }
+
+
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -139,6 +150,7 @@ public class Join extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), String.format("%s님 가입을 환영합니다.", UserName), Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Join.this, Login.class);
                                     startActivity(intent);
+                                    finish();
 
                                     //회원가입 실패시
                                 } else {
@@ -172,6 +184,12 @@ public class Join extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    // 뒤로가기 물리키 클릭 시
+    @Override
+    public void onBackPressed() {
+                finish();
     }
 
 }

@@ -173,7 +173,7 @@ public class RecordDetail extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions marker2 = new MarkerOptions();
         marker.position(new LatLng(gpxList.get(0).getLatitude(), gpxList.get(0).getLongitude()))
                 .title("시작점").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        marker2.position(new LatLng(gpxList.get(last).getLatitude(), gpxList.get(last).getLongitude())).title("종료지점").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        marker2.position(new LatLng(gpxList.get(last).getLatitude(), gpxList.get(last).getLongitude())).title("종료지점").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         mMap.addMarker(marker).showInfoWindow();
         mMap.addMarker(marker2).showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gpxList.get(0).getLatitude(), gpxList.get(0).getLongitude()), 15));

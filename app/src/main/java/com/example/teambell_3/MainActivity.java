@@ -10,7 +10,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -98,43 +100,30 @@ public class MainActivity extends AppCompatActivity{
     };
 
 
-//    private void BottomNavigate(int id) {  //BottomNavigation 페이지 변경
-//        String tag = String.valueOf(id);
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        Fragment currentFragment = fragmentManager.getPrimaryNavigationFragment();
-//        if (currentFragment != null) {
-//            fragmentTransaction.hide(currentFragment);
-//        }
-//        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-//        if (fragment == null) {
-//            if (id == R.id.home_navigation) {
-//                fragment = new Home_Fragment();
-//            } else if (id == R.id.setting_navigation) {
-//                fragment = new Setting_Fragment();
-//            } else if (id == R.id.statistic_navigation){
-//                fragment = new Statistic_Fragment();
-//            } else if (id == R.id.record_navigation){
-//                fragment = new Record_Fragment();
-//            } else
-//                fragment = new Group_Fragment();
-//            fragmentTransaction.add(R.id.content_layout, fragment, tag);
-//        } else {
-//            fragmentTransaction.show(fragment);
-//        }
-//        fragmentTransaction.setPrimaryNavigationFragment(fragment);
-//        fragmentTransaction.setReorderingAllowed(true);
-//        fragmentTransaction.commitNow();
-//
-//
-//    }
-
-
     public void setActionBarTitle(int title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(title);
         }
+    }
+
+    // 뒤로가기 물리키 클릭 시
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("종료");
+        builder.setMessage("TeamBell을 종료하시겠습니까?");
+        builder.setNegativeButton("취소", null);
+        builder.setPositiveButton("종료", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveTaskToBack(true);
+                finishAndRemoveTask();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
+        builder.show();
     }
 
 

@@ -47,12 +47,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="그룹명"
-            android:paddingLeft="5dp"/>
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"/>
 
         <EditText
             android:id="@+id/group_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:hint="그룹명을 입력"/>
 
 
@@ -61,13 +64,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="그룹 비밀번호"
-            android:paddingLeft="5dp"/>
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/group_password"
-            android:hint="그룹방 비밀번호 입력"/>
+            android:hint="그룹방 비밀번호 입력"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="그룹 소개"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="5dp"
+            android:id="@+id/group_intro"
+            android:hint="그룹을 간단히 소개하세요"
+            android:gravity="top"/>
 
 
     </LinearLayout>

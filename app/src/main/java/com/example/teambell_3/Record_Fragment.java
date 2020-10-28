@@ -7,7 +7,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -17,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -52,10 +58,14 @@ public class Record_Fragment extends Fragment {
 
         final SwipeRefreshLayout refreshLayout = v.findViewById(R.id.swipe_refresh2);
         records = new ArrayList<>();
-        new GetData().execute("http://192.168.11.58:3000/record/today");
+        new GetData().execute("http://106.243.128.187:3000/record/today");
         listview = (ListView) v.findViewById(R.id.record_listView);
         adapter = new RecordAdapter(getContext(), records);
         listview.setAdapter(adapter);
+
+        // 상단바
+        Toolbar myToolbar = (Toolbar) v.findViewById(R.id.toolbar);
+        myToolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -225,6 +235,7 @@ public class Record_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -235,4 +246,19 @@ public class Record_Fragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.refresh:
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(Record_Fragment.this).attach(Record_Fragment.this).commit();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

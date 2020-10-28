@@ -289,7 +289,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
             double maxSpeed = 0;
             if (location != null) {
                 if(location.hasSpeed()){
-//                    if(location.getAccuracy() < 10){
+                    if(location.getAccuracy() < 10){
                         // 현 위치 저장하기.
                     if(mFirstlocation != null){
                         LatLng mLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -339,7 +339,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                         mLastlocation = location;
                      }
                 }
-//            }
+            }
         }
     }
 
@@ -511,7 +511,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                 //location = locationList.get(0);
                 if(mFirstlocation == null){
                     Toast.makeText(getApplicationContext(), "첫 위치 잡는중.. 시작마세요", Toast.LENGTH_SHORT).show();
-//                    if(location.getAccuracy() < 10){
+                    if(location.getAccuracy() < 10){
                         mFirstlocation = location;
                         LatLng mLocation = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
                         mLocationList.add(mLocation);
@@ -531,7 +531,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                                 "경도:" + String.valueOf(mFirstlocation.getLongitude());
                         setFirstLocation(mFirstlocation, startPointTitle, startPointSnippet);
                         Toast.makeText(getApplicationContext(), "첫 위치 잡음. 시작버튼을 누르세요", Toast.LENGTH_LONG).show();
-//                    }
+                    }
                 }
 
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())

@@ -37,7 +37,7 @@ public class Stat_Day extends Fragment {
         setHasOptionsMenu(true);
 
         records = new ArrayList<>();
-        new GetData().execute("http://192.168.11.58:3000/record/day");
+        new GetData().execute("http://106.243.128.187:3000/record/day");
         listview = (ListView) v.findViewById(R.id.stat_listView);
         adapter = new StatAdapter(getContext(), records);
         listview.setAdapter(adapter);

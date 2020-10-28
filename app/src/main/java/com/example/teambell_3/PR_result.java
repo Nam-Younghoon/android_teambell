@@ -153,7 +153,7 @@ public class PR_result extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                new JSONTask().execute("http://192.168.11.58:3000/member/personal");
+                new JSONTask().execute("http://106.243.128.187:3000/member/personal");
                 finish();
             }
 

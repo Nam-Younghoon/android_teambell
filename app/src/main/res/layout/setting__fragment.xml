@@ -93,6 +93,16 @@
             android:background="@android:color/transparent"/>
 
         <Button
+            android:id="@+id/change_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 변경"
+            android:textAlignment="textStart"
+            android:paddingLeft="15dp"
+            android:theme="@style/AppTheme.BlueRipple"
+            android:background="@android:color/transparent"/>
+
+        <Button
             android:id="@+id/logoutOK"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,6 +111,7 @@
             android:paddingLeft="15dp"
             android:theme="@style/AppTheme.BlueRipple"
             android:background="@android:color/transparent"/>
+
 
         <Button
             android:id="@+id/deleteOK"

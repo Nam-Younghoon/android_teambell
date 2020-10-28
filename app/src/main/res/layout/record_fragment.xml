@@ -20,8 +20,16 @@
             style="@style/AppTheme"
             app:titleTextColor="#5C5B5B"
             app:title="@string/title_record"
+            app:menu="@menu/menu"
             >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.appcompat.widget.Toolbar>
+
 
     </com.google.android.material.appbar.AppBarLayout>
 

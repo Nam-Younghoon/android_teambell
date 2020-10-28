@@ -14,13 +14,15 @@ public class GroupAdapter extends BaseAdapter {
     Context mContext = null;
     LayoutInflater mLayoutInflater = null;
     ArrayList<GroupData> sample;
-    String idx;
+    String info;
 
     public GroupAdapter(Context context, ArrayList<GroupData> data){
         mContext = context;
         sample = data;
         mLayoutInflater = LayoutInflater.from(mContext);
     }
+
+
 
     @Override
     public int getCount() {
@@ -51,7 +53,9 @@ public class GroupAdapter extends BaseAdapter {
         GLeader.setText(sample.get(position).getGLeader());
 
 
+
         return view;
     }
+
 
 }

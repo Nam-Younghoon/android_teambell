@@ -41,7 +41,7 @@ import java.nio.channels.AsynchronousChannelGroup;
 
 public class AddGroup extends AppCompatActivity {
 
-    EditText groupName, groupDate, groupPW;
+    EditText groupName, groupPW, groupIntro;
     Button mkGroup;
 
     @Override
@@ -52,12 +52,13 @@ public class AddGroup extends AppCompatActivity {
 
         groupName = (EditText) findViewById(R.id.group_name);
         groupPW = (EditText) findViewById(R.id.group_password);
+        groupIntro = (EditText) findViewById(R.id.group_intro);
         mkGroup = (Button) findViewById(R.id.makeGroup);
 
         mkGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new JSONTask().execute("http://192.168.11.58:3000/group/make");
+                new JSONTask().execute("http://106.243.128.187:3000/group/make");
                 finish();
             }
         });
@@ -73,10 +74,12 @@ public class AddGroup extends AppCompatActivity {
         protected String doInBackground(String... urls) {
             final String groupN = groupName.getText().toString();
             final String groupP = groupPW.getText().toString();
+            final String groupI = groupIntro.getText().toString();
             try {
                 JSONObject group = new JSONObject();
                 group.put("name", groupN);
                 group.put("password", groupP);
+                group.put("info", groupI);
 
                 URL url;
                 HttpURLConnection conn = null;

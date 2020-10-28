@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutionException;
 
 public class Setting_Fragment extends Fragment {
 
-    private Button serviceOK, personalOK, locationOK, helpOK, logoutOK, deleteOK;
+    private Button serviceOK, personalOK, locationOK, helpOK, logoutOK, deleteOK, changePW;
     private EditText writePassword;
     private boolean success;
     private String mJsonString;
@@ -57,9 +57,7 @@ public class Setting_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View v = inflater.inflate(R.layout.setting__fragment, container, false);
-//        final View layout = inflater.inflate(R.layout.get_in_group_dialog, (ViewGroup) v.findViewById(R.id.layout_root));
         mAuth = FirebaseAuth.getInstance();
-//        writePassword = (EditText) layout.findViewById(R.id.getinpassword);
         serviceOK = v.findViewById(R.id.serviceOK);
         serviceOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +94,15 @@ public class Setting_Fragment extends Fragment {
             }
         });
 
+        changePW = v.findViewById(R.id.change_pw);
+        changePW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChangePW.class);
+                startActivity(intent);
+             }
+        });
+
         logoutOK = v.findViewById(R.id.logoutOK);
         logoutOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +119,7 @@ public class Setting_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                         try {
-                            new DELETETask().execute("http://192.168.11.58:3000/user/withdrawal").get();
+                            new DELETETask().execute("http://106.243.128.187:3000/user/withdrawal").get();
                             SaveSharedPreference.clearUserName(getContext());
                             if(mAuth.getCurrentUser().equals(true)){
                                 revokeAccess();

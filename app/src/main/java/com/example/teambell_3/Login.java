@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -389,7 +391,24 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    // 뒤로가기 물리키 클릭 시
+    @Override
+    public void onBackPressed() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("종료");
+        builder.setMessage("TeamBell을 종료하시겠습니까?");
+        builder.setNegativeButton("취소", null);
+        builder.setPositiveButton("종료", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveTaskToBack(true);
+                finishAndRemoveTask();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
+        builder.show();
+    }
 
 
 

@@ -15,15 +15,6 @@
         android:src="@drawable/team_bell"
         android:background="#000000"/>
 
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="80dp"-->
-<!--        android:text="안전한 그룹 라이딩 App"-->
-<!--        android:gravity="center"-->
-<!--        android:textSize="25dp"-->
-<!--        android:background="#0E1A5C"-->
-<!--        android:textColor="#FFFFFF"-->
-<!--        android:fontFamily="@font/nexongothiclight"/>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
