@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawerLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:id="@+id/layout_group_riding"
-    android:background="#FFFFFF">
+    tools:openDrawer="end"
+    tools:context=".GroupRiding"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:id="@+id/layout_group_riding"
+        android:background="#FFFFFF">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -20,10 +30,12 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             style="@style/AppTheme"
             app:titleTextColor="#000000"
+            app:menu="@menu/group"
             app:title="@string/group_riding">
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -32,6 +44,7 @@
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
+
 
 
     <LinearLayout
@@ -170,4 +183,14 @@
     </RelativeLayout>
 
 
-</LinearLayout>
+   </LinearLayout>
+
+    <ListView
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:id="@+id/drawer"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/white"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

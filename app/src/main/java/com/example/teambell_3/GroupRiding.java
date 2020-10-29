@@ -26,11 +26,15 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -87,6 +93,8 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -149,7 +157,14 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     String SendMsg;
     String gIdx;
     private ArrayList<LatLng> mLocationList = null;
-//    private ArrayList<Marker> othersMarker = null;
+    private DrawerLayout mDrawerLayout;
+    View drawerView;
+    ListView listView = null;
+    ArrayList<RidingPeople> peoples;
+    int j = 1;
+    PeopleAdapter adapter;
+    List<Marker> AllMarkers;
+
 
 
     @Override
@@ -174,7 +189,9 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         groups = new ArrayList<>();
-//        othersMarker = new ArrayList<>();
+        peoples = new ArrayList<>();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerView = (View) findViewById(R.id.drawer);
 
         ///////////////////////////////////////////////////////////////////////////////////////
         /////////MQTT 통신연결/////////////////////////////////////////////////////////////////
@@ -284,7 +301,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
         /////////////////////////////////////////////////////////////////////////////////////
 
-
+        AllMarkers = new ArrayList<Marker>();
 
 
         // 현재속도
@@ -331,6 +348,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         // 속도용 LocationListener
         locationListener = new SpeedActionListener();
         mLocationList = new ArrayList<>();
+        adapter = new PeopleAdapter(GroupRiding.this, peoples);
 
 
         // 라이딩 시작버튼
@@ -529,6 +547,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     Message msg = new Message();
                     handler.sendMessage(msg);
                     msg.arg1 = i++;
+                    j++;
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -573,6 +592,9 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 });
                 builder.show();
             }
+
+            case R.id.person:
+                mDrawerLayout.openDrawer(Gravity.RIGHT);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -581,30 +603,40 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onBackPressed() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("알림");
-        builder.setMessage("라이딩을 종료하시겠습니까?");
-        builder.setNegativeButton("취소", null);
-        builder.setPositiveButton("종료", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String gIdx = beforIntent.getStringExtra("GroupIdx");
-                Log.e("그룹 인덱스 가져오기", gIdx);
-                new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
-                try{
-                    mqttClient.disconnect();
-                    bt.disconnect();
-                } catch(MqttException e){
-                    e.printStackTrace();
+        if(mDrawerLayout.isDrawerOpen(Gravity.RIGHT)){
+            mDrawerLayout.closeDrawers();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("알림");
+            builder.setMessage("라이딩을 종료하시겠습니까?");
+            builder.setNegativeButton("취소", null);
+            builder.setPositiveButton("종료", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    String gIdx = beforIntent.getStringExtra("GroupIdx");
+                    Log.e("그룹 인덱스 가져오기", gIdx);
+                    new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
+                    try{
+                        mqttClient.disconnect();
+                        bt.disconnect();
+                    } catch(MqttException e){
+                        e.printStackTrace();
+                    }
+                    finish();
                 }
-                finish();
-            }
-        });
-        builder.show();
+            });
+            builder.show();
+        }
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.group, menu);
 
+        return true;
 
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////
     @Override
@@ -690,7 +722,11 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             List<Location> locationList = locationResult.getLocations();
 
             if (locationList.size() > 0) {
-                mMap.clear();
+                ++j;
+//                mMap.clear();
+
+                peoples.clear();
+
                 location = locationList.get(locationList.size() - 1);
                 //location = locationList.get(0);
                 if (mFirstlocation == null) {
@@ -726,6 +762,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
 
                 if (groups != null) {
+                    removeAllMarkers();
                     for (int i = 0; i < groups.size(); i++) {
                         LatLng others = new LatLng(Double.parseDouble(groups.get(i).getLatitude()), Double.parseDouble(groups.get(i).getLongitude()));
 //                        setOthersLocation(others, groups.get(i).getName());
@@ -733,10 +770,20 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                         markerOptions.position(others);
                         markerOptions.title(groups.get(i).getName());
                         markerOptions.alpha(0.5f);
-                        Marker icon = mMap.addMarker(markerOptions);
-                        icon.showInfoWindow();
+                        Marker mLocationMarker = mMap.addMarker(markerOptions);
+                        mLocationMarker.showInfoWindow();
+                        AllMarkers.add(mLocationMarker);
 
-                        Log.e("그룹 사람 데려옴", others.toString());
+//                        Log.e("그룹 사람 데려옴", others.toString());
+                        Log.e("시간", String.format(""+j));
+                        peoples.add(new RidingPeople(groups.get(i).getName()));
+                        if (j % 3 == 0) {
+                            Log.e("사람들", peoples.toString());
+                            adapter = new PeopleAdapter(GroupRiding.this,  peoples);
+                            listView = (ListView) findViewById(R.id.drawer);
+                            listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
 
                         groups.clear();
@@ -771,7 +818,12 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 };
-
+    private void removeAllMarkers(){
+        for (Marker mLocationMarker : AllMarkers){
+            mLocationMarker.remove();
+        }
+        AllMarkers.clear();
+    }
 
 
     private void startLocationUpdates() {
