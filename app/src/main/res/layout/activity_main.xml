@@ -24,6 +24,10 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
             app:menu="@menu/bottom_nav"
+            app:labelVisibilityMode="unlabeled"
+            app:itemTextColor="@drawable/menu_selector_color"
+            app:itemIconTint="@drawable/menu_selector_color"
+
             />
 
 

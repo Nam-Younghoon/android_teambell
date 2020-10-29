@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.channels.AsynchronousChannelGroup;
+import java.util.zip.Inflater;
 
 public class AddGroup extends AppCompatActivity {
 
@@ -53,20 +56,14 @@ public class AddGroup extends AppCompatActivity {
         groupName = (EditText) findViewById(R.id.group_name);
         groupPW = (EditText) findViewById(R.id.group_password);
         groupIntro = (EditText) findViewById(R.id.group_intro);
-        mkGroup = (Button) findViewById(R.id.makeGroup);
 
-        mkGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new JSONTask().execute("http://106.243.128.187:3000/group/make");
-                finish();
-            }
-        });
+
 
         // 상단바
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     public class JSONTask extends AsyncTask<String, String, String>{
@@ -163,7 +160,18 @@ public class AddGroup extends AppCompatActivity {
             case android.R.id.home:{
                 finish();
             }
+
+            case R.id.check:
+                new JSONTask().execute("http://106.243.128.187:3000/group/make");
+                finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.check, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

@@ -316,6 +316,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         mStartBtn = (Button) findViewById(R.id.btn_start);
         mStopBtn = (Button) findViewById(R.id.btn_stop);
         mPauseBtn = (Button) findViewById(R.id.btn_pause);

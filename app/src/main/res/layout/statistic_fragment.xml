@@ -15,10 +15,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFFFFF"
+            android:background="#3379fe"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             style="@style/AppTheme"
-            app:titleTextColor="#5C5B5B"
+            app:titleTextColor="#FFFFFF"
             app:title="@string/title_statistic"
             app:menu="@menu/menu"
             >

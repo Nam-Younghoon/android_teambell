@@ -10,16 +10,18 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFFFFF"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:background="#3379fe"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             style="@style/AppTheme"
-            app:titleTextColor="#000000"
+            app:titleTextColor="#FFFFFF"
             app:title="@string/personal_riding">
         </androidx.appcompat.widget.Toolbar>
 

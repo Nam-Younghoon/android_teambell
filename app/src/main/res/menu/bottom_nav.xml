@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/record_navigation"
         android:icon="@drawable/ic_baseline_access_time_24"
@@ -15,9 +14,11 @@
 
     <item
         android:id="@+id/home_navigation"
-        android:icon="@drawable/ic_baseline_home_24"
+        android:icon="@drawable/home_btn"
+        android:iconTint="#3379fe"
         android:title="Home"
         android:visible="true"
+
         android:fontFamily="@font/nexongothiclight"
         />
 

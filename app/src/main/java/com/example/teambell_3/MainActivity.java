@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity{
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
+
         fm.beginTransaction().add(R.id.content_layout, fragment5, "5").hide(fragment5).commit();
         fm.beginTransaction().add(R.id.content_layout, fragment4, "4").hide(fragment4).commit();
         fm.beginTransaction().add(R.id.content_layout, fragment3, "3").hide(fragment3).commit();
@@ -125,6 +126,8 @@ public class MainActivity extends AppCompatActivity{
         });
         builder.show();
     }
+
+
 
 
 }

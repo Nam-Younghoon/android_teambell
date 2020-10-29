@@ -10,6 +10,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -52,7 +56,7 @@ public class Group_Fragment extends Fragment{
     ArrayList<GroupData> groups, save;
     GroupAdapter adapter;
     ListView listview;
-    Button createGroup;
+
     SwipeRefreshLayout refreshLayout;
     EditText writePassword;
     String mJsonString;
@@ -68,7 +72,7 @@ public class Group_Fragment extends Fragment{
         final View layout = inflater.inflate(R.layout.get_in_group_dialog, (ViewGroup) v.findViewById(R.id.layout_root));
         final String url="http://106.243.128.187:3000/group/groupList";
         search = v.findViewById(R.id.group_search);
-        createGroup = v.findViewById(R.id.group_add_icon);
+
         writePassword = (EditText)layout.findViewById(R.id.getinpassword);
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
 
@@ -80,6 +84,10 @@ public class Group_Fragment extends Fragment{
         listview = (ListView) v.findViewById(R.id.group_listview);
         adapter = new GroupAdapter(getContext(), groups);
         listview.setAdapter(adapter);
+
+        // 상단바
+        Toolbar myToolbar = (Toolbar) v.findViewById(R.id.toolbar);
+        myToolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -182,13 +190,6 @@ public class Group_Fragment extends Fragment{
 
 
 
-        createGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AddGroup.class);
-                startActivity(intent);
-            }
-        });
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -480,4 +481,22 @@ public class Group_Fragment extends Fragment{
 
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.addgroup, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.addgroup:
+                Intent intent = new Intent(getContext(), AddGroup.class);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

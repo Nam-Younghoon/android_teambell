@@ -16,11 +16,12 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#FFFFFF"
+                android:background="#3379fe"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 style="@style/AppTheme"
-                app:titleTextColor="#5C5B5B"
+                app:titleTextColor="#FFFFFF"
                 app:title="@string/title_group"
+                app:menu="@menu/addgroup"
                 >
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -37,16 +38,7 @@
                         android:layout_marginLeft="30dp"
                         app:layout_constraintTop_toTopOf="parent"
                         android:textSize="9pt"/>
-                    <Button
-                        android:id="@+id/group_add_icon"
-                        android:background="@android:color/transparent"
-                        android:layout_width="50dp"
-                        android:layout_marginLeft="20dp"
-                        app:layout_constraintStart_toEndOf="@+id/group_search"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:layout_height="match_parent"
-                        android:drawableEnd="@drawable/ic_baseline_group_add_24"/>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

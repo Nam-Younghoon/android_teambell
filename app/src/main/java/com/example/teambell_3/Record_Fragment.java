@@ -67,6 +67,7 @@ public class Record_Fragment extends Fragment {
         Toolbar myToolbar = (Toolbar) v.findViewById(R.id.toolbar);
         myToolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
 
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -261,4 +262,6 @@ public class Record_Fragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

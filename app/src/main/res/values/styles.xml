@@ -2,10 +2,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#000000</item>
-        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="colorPrimary">#3379fe</item>
+        <item name="colorPrimaryDark">#3379fe</item>
         <item name="colorAccent">#000000</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">#3379fe</item>
+        <item name="colorControlNormal">#000000</item>
+
     </style>
     <style name="AppTheme.BlueRipple">
         <item name="colorControlHighlight">#0000ff</item>
@@ -13,6 +16,9 @@
     <style name="defaultButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:colorAccent">#283268</item>
     </style>
+
+
+
 
 
 
