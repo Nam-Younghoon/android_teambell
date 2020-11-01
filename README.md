@@ -31,7 +31,7 @@
 - 어플 실행 시 발생할 화면입니다.
      
 ### 1. Main 
-![메인](https://user-images.githubusercontent.com/58909988/97797796-5b0f4700-1c63-11eb-8e79-b6b806576cbd.jpg)
+![메인](https://user-images.githubusercontent.com/58909988/97797796-5b0f4700-1c63-11eb-8e79-b6b806576cbd.jpg){: width="150" height="150"}
 
 - 어플의 메인 화면 입니다. 개인 라이딩/그룹 라이딩을 선택하여 라이딩을 할 수 있습니다.
 
