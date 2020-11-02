@@ -299,8 +299,10 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
                         endPoly = new LatLng(latitude, longitude);
-                        drawPath();
-                        startPoly = new LatLng(latitude, longitude);
+                        if(startPoly != null){
+                            drawPath();
+                            startPoly = new LatLng(latitude, longitude);
+                        }
 
                         // 현재 속도
                         double mySpeed = location.getSpeed() * 3.6;

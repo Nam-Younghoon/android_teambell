@@ -14,12 +14,12 @@
         android:id="@+id/mainbg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="#000000"
         android:src="@drawable/main_bg"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="#000000"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
         <Button
