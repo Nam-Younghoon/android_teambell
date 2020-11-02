@@ -473,7 +473,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             double maxSpeed = 0;
             if (location != null) {
                 if(location.hasSpeed()){
-//                    if(location.getAccuracy() < 10){
+                    if(location.getAccuracy() < 10){
                     // 현 위치 저장하기.
                     if(mFirstlocation != null){
                         LatLng mLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -526,7 +526,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     mLastlocation = location;
                 }
             }
-//            }
+            }
         }
     }
 
