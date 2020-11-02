@@ -251,13 +251,16 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 isRunning = !isRunning;
                 if (isRunning) {
-                    mPauseBtn.setText("일시정지");
+                    mStartBtn.setVisibility(View.GONE);
+                    mStopBtn.setVisibility(View.VISIBLE);
+                    mPauseBtn.setVisibility(View.VISIBLE);
+                    mPauseBtn.setSelected(false);
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 } else {
-                    mPauseBtn.setText("시작");
+                    mPauseBtn.setSelected(true);
                     locationManager.removeUpdates(locationListener);
                 }
             }

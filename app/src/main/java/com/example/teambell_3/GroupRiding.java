@@ -104,7 +104,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private Button mStartBtn, mStopBtn, mPauseBtn;
+    private Button mStartBtn, mStopBtn, mPauseBtn, mReplayBtn;
     private TextView mTimeTextView, nowSpeed, ridingDist, avgSpeed, findLocation;
     private Thread timeThread = null;
     private Boolean isRunning = true;
@@ -434,13 +434,16 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 isRunning = !isRunning;
                 if (isRunning) {
-                    mPauseBtn.setText("일시정지");
+                    mStartBtn.setVisibility(View.GONE);
+                    mStopBtn.setVisibility(View.VISIBLE);
+                    mPauseBtn.setVisibility(View.VISIBLE);
+                    mPauseBtn.setSelected(false);
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 } else {
-                    mPauseBtn.setText("시작");
+                    mPauseBtn.setSelected(true);
                     locationManager.removeUpdates(locationListener);
                 }
             }
