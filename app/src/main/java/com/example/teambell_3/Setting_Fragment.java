@@ -106,8 +106,16 @@ public class Setting_Fragment extends Fragment {
         changePW.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChangePW.class);
-                startActivity(intent);
+                AlertDialog.Builder ad = new AlertDialog.Builder(getActivity());
+                ad.setTitle("비밀번호 변경");
+                ad.setMessage("소셜 회원은 비밀번호를 변경할 필요가 없습니다.\n일반 회원만 변경하세요");
+                ad.setPositiveButton("일반회원", ((dialog, which) -> {
+                    Intent intent = new Intent(getActivity(), ChangePW.class);
+                    startActivity(intent);
+                    dialog.dismiss();
+                }));
+                ad.setNegativeButton("소셜회원", null);
+                ad.show();
              }
         });
 

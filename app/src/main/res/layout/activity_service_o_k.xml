@@ -20,6 +20,7 @@
             android:background="#3379fe"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             style="@style/AppTheme"
+            app:title="서비스 이용약관"
             app:titleTextColor="#FFFFFF"
             >
         </androidx.appcompat.widget.Toolbar>
@@ -27,9 +28,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
+        android:id="@+id/serviceOK"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="서비스 이용약관 적을 곳"
-        android:textSize="100dp"/>
+        android:textSize="15dp"
+        android:scrollbars="vertical"
+        />
+
 
 </LinearLayout>

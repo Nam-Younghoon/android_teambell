@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:weightSum="10"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#3379fe"
+            app:titleTextColor="#FFFFFF"
+            app:title="개인정보 처리방침"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            style="@style/AppTheme"
+            >
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/personalOK"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="개인정보 처리방침"
+        android:textSize="15dp"
+        android:scrollbars="vertical"
+        />
+
+</LinearLayout>

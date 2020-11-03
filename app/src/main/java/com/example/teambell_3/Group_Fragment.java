@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +70,7 @@ public class Group_Fragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         final View v = inflater.inflate(R.layout.group_fragment, container, false);
-        final View layout = inflater.inflate(R.layout.get_in_group_dialog, (ViewGroup) v.findViewById(R.id.layout_root));
+        final LinearLayout layout = (LinearLayout) View.inflate(getActivity(), R.layout.get_in_group_dialog, null);
         final String url="http://106.243.128.187:3000/group/groupList";
         search = v.findViewById(R.id.group_search);
 
@@ -109,7 +110,8 @@ public class Group_Fragment extends Fragment{
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                if (i>0) {ViewGroup dialogParentView = (ViewGroup) layout.getParent(); dialogParentView.removeView(layout);}
+                if (layout.getParent() != null)
+                    ((ViewGroup) layout.getParent()).removeView(layout);
                 idx = (String) listview.getAdapter().getItem(position);
                 try {
                     String result = new checkTask().execute(String.format("http://106.243.128.187:3000/group/member/%s", idx)).get();
@@ -140,7 +142,7 @@ public class Group_Fragment extends Fragment{
                 Log.e("444444", "4444444444");
                 if(!success){
                     Log.e("111111111", "11111111111");
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());//
                     builder.setTitle("방 입장하기");
                     builder.setView(layout);
                     builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -155,33 +157,24 @@ public class Group_Fragment extends Fragment{
                                 e.printStackTrace();
                             }
                             dialog.dismiss();
-                            ViewGroup dialogParentView = (ViewGroup) layout.getParent();
-                            dialogParentView.removeView(layout);
-
-
                         }
                     });
-
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            i++;
                             dialog.dismiss();
-
                         }
                     });
                     builder.show();
-
                 } else {
                     Log.e("111122222211111", "11112222222221111111");
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());//여기서buttontest는 패키지이름
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());//여기서buttontest는 패키지이름
                     builder.setTitle("방 입장하기");
                     builder.setMessage("이미 속해있는 그룹입니다.");
                     builder.setPositiveButton("확인", null);
-                    i = 0;
                     builder.show();
-
                 }
+
 
             }
 
