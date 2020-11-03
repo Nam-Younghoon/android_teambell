@@ -219,7 +219,6 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() { //데이터 수신
             public void onDataReceived(byte[] data, String message) {
                 Log.e("버튼누름", message);
-                Toast.makeText(GroupRiding.this, message, Toast.LENGTH_LONG).show();
                 ReceivedMsg = message;
                 try{
                     mqttClient.publish(String.format("%s", gIdx), new MqttMessage(ReceivedMsg.getBytes()));
@@ -241,9 +240,6 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                                 if (topic.equals(String.format("%s", gIdx))){
                                     SendMsg = new String(message.getPayload());
                                     Log.e("보낼 메세지", SendMsg);
-                                    Toast.makeText(getApplication(), SendMsg, Toast.LENGTH_LONG).show();
-                                    ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_ALARM,100);
-                                    toneGen1.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT, 300);
                                     byte[] send = SendMsg.getBytes();
                                     bt.send(send, true);
                                 }

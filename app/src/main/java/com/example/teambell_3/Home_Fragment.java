@@ -53,38 +53,38 @@ public class Home_Fragment extends Fragment {
         group_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() { //연결됐을 때
-//                    public void onDeviceConnected(String name, String address) {
-//                        Toast.makeText(getActivity()
-//                                , "Connected to " + name + "\n" + address
-//                                , Toast.LENGTH_SHORT).show();
-//                        Log.e("블루투스 ", bt.toString());
-//                    }
-//
-//                    public void onDeviceDisconnected() { //연결해제
-//                        Toast.makeText(getActivity()
-//                                , "Connection lost", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    public void onDeviceConnectionFailed() { //연결실패
-//                        Toast.makeText(getActivity()
-//                                , "Unable to connect", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                if (!bt.isServiceAvailable()){
-//                    bt.setupService();
-//                    bt.startService(BluetoothState.DEVICE_OTHER);
-//                } else if(!bt.isBluetoothEnabled()){
-//                    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                    startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
-//                } else if(bt.getServiceState() != BluetoothState.STATE_CONNECTED){
-//                    Intent intent2 = new Intent(getActivity(), DeviceList.class);
-//                    startActivityForResult(intent2, BluetoothState.REQUEST_CONNECT_DEVICE);
-//                } else {
+                bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() { //연결됐을 때
+                    public void onDeviceConnected(String name, String address) {
+                        Toast.makeText(getActivity()
+                                , "Connected to " + name + "\n" + address
+                                , Toast.LENGTH_SHORT).show();
+                        Log.e("블루투스 ", bt.toString());
+                    }
+
+                    public void onDeviceDisconnected() { //연결해제
+                        Toast.makeText(getActivity()
+                                , "Connection lost", Toast.LENGTH_SHORT).show();
+                    }
+
+                    public void onDeviceConnectionFailed() { //연결실패
+                        Toast.makeText(getActivity()
+                                , "Unable to connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                if (!bt.isServiceAvailable()){
+                    bt.setupService();
+                    bt.startService(BluetoothState.DEVICE_OTHER);
+                } else if(!bt.isBluetoothEnabled()){
+                    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
+                } else if(bt.getServiceState() != BluetoothState.STATE_CONNECTED){
+                    Intent intent2 = new Intent(getActivity(), DeviceList.class);
+                    startActivityForResult(intent2, BluetoothState.REQUEST_CONNECT_DEVICE);
+                } else {
                     Intent intent = new Intent(getActivity(), MyGroupList.class);
                     MyApplication.bt = bt;
                     startActivity(intent);
-//                }
+                }
 
             }
         });
