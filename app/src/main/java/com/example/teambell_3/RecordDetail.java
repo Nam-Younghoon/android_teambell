@@ -81,20 +81,17 @@ public class RecordDetail extends AppCompatActivity implements OnMapReadyCallbac
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);//
             builder.setTitle("오류");
             builder.setMessage("이동 기록이 없어 종료합니다.");
-            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+            builder.setPositiveButton("확인", (dialog, which) -> {
 
-                    dialog.dismiss();
-                    finish();
-                }
+                dialog.dismiss();
+                finish();
             });
             builder.show();
         }
 
 
-
-        dist.setText(myDist+" km");
+        double d = Double.parseDouble(myDist);
+        dist.setText(String.format("%.1f km", d));
         avgSpeed.setText(mySpeed+" km/h");
         time.setText(myTime);
 

@@ -124,8 +124,9 @@ public class Login extends AppCompatActivity {
                             if(success) {//로그인 성공시
                                 Intent intent = new Intent( Login.this, MainActivity.class );
                                 startActivity( intent );
-                                SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("accessToken"));
+                                SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("name"), jsonObject.getJSONObject("data").getString("email"), jsonObject.getJSONObject("data").getString("accessToken"));
                                 Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
+                                Log.e("리스폰스", jsonObject.getJSONObject("data").toString());
                                 finish();
 
                             } else {//로그인 실패시
@@ -241,7 +242,8 @@ public class Login extends AppCompatActivity {
                                 Intent intent1 = new Intent( Login.this, MainActivity.class );
                                 startActivity(intent1);
                                 Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
-                                SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("accessToken"));
+                                Log.e("리스폰스", jsonObject.getJSONObject("data").toString());
+                                SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("name"), jsonObject.getJSONObject("data").getString("email"), jsonObject.getJSONObject("data").getString("accessToken"));
                                 finish();
 
                             } else {//로그인 실패시
@@ -361,7 +363,7 @@ public class Login extends AppCompatActivity {
                                     Intent intent1 = new Intent( Login.this, MainActivity.class );
                                     startActivity(intent1);
                                     Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
-                                    SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("accessToken"));
+                                    SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("name"), jsonObject.getJSONObject("data").getString("email"), jsonObject.getJSONObject("data").getString("accessToken"));
                                     finish();
 
                                 } else {//로그인 실패시

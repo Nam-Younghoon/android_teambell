@@ -51,12 +51,20 @@ public class Setting_Fragment extends Fragment {
     private boolean success;
     private String mJsonString;
     private FirebaseAuth mAuth;
+    private TextView a,b;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View v = inflater.inflate(R.layout.setting__fragment, container, false);
+
+        a = (TextView) v.findViewById(R.id.username);
+        b = (TextView) v.findViewById(R.id.useremail);
+
+        a.setText(SaveSharedPreference.getUserName(getContext()));
+        b.setText(SaveSharedPreference.getUserEmail(getContext()));
+
         mAuth = FirebaseAuth.getInstance();
         serviceOK = v.findViewById(R.id.serviceOK);
         serviceOK.setOnClickListener(new View.OnClickListener() {
@@ -107,10 +115,18 @@ public class Setting_Fragment extends Fragment {
         logoutOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SaveSharedPreference.clearUserName(getContext());
-                Intent logoutIntent = new Intent(getContext(), Login.class);
-                logoutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(logoutIntent);
+                AlertDialog.Builder ad = new AlertDialog.Builder(getActivity());
+                ad.setTitle("로그아웃");
+                ad.setMessage("로그아웃 하시겠습니까?");
+                ad.setPositiveButton("네", (dialog, which) -> {
+                    SaveSharedPreference.clearUserName(getContext());
+                    Intent logoutIntent = new Intent(getContext(), Login.class);
+                    logoutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(logoutIntent);
+                    dialog.dismiss();
+                });
+                ad.setNegativeButton("아니요", null);
+                ad.show();
             }
         });
 
@@ -118,62 +134,71 @@ public class Setting_Fragment extends Fragment {
         deleteOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        try {
-                            new DELETETask().execute("http://106.243.128.187:3000/user/withdrawal").get();
-                            SaveSharedPreference.clearUserName(getContext());
-                            if(mAuth.getCurrentUser().equals(true)){
-                                revokeAccess();
-                                Intent intent = new Intent(getContext(), Login.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                            else if (UserManagement.getInstance().equals(true)){
-                                UserManagement.getInstance().requestUnlink(new UnLinkResponseCallback() {
-                                    @Override
-                                    public void onFailure(ErrorResult errorResult) { //회원탈퇴 실패 시
-                                        int result = errorResult.getErrorCode(); //에러코드 받음
-
-                                        if (result == ApiErrorCode.CLIENT_ERROR_CODE) { //클라이언트 에러인 경우 -> 네트워크 오류
-                                            Toast.makeText(getContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
-                                        } else { //클라이언트 에러가 아닌 경우 -> 기타 오류
-                                            Toast.makeText(getContext(), "회원탈퇴에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onSessionClosed(ErrorResult errorResult) { //처리 도중 세션이 닫힌 경우
-                                        Toast.makeText(getContext(), "로그인 세션이 닫혔습니다. 다시 로그인해 주세요.", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getContext(), Login.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    }
-
-                                    @Override
-                                    public void onNotSignedUp() { //가입된 적이 없는 계정에서 탈퇴를 요구하는 경우
-                                        Toast.makeText(getContext(), "가입되지 않은 계정입니다. 다시 로그인해 주세요.", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getContext(), Login.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    }
-
-                                    @Override
-                                    public void onSuccess(Long result) { //회원탈퇴에 성공한 경우
-                                        Toast.makeText(getContext(), "회원탈퇴에 성공했습니다.", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getContext(), Login.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    }
-                                });
-                            } else {
-                                Intent intent = new Intent(getContext(), Login.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                AlertDialog.Builder ad = new AlertDialog.Builder(getActivity());
+                ad.setTitle("회원탈퇴");
+                ad.setMessage("회원탈퇴 시 저장된 기록들이 삭제됩니다.\n그래도 회원탈퇴 하시겠습니까?");
+                ad.setPositiveButton("네", ((dialog, which) -> {
+                    try {
+                        new DELETETask().execute("http://106.243.128.187:3000/user/withdrawal").get();
+                        SaveSharedPreference.clearUserName(getContext());
+                        if(mAuth.getCurrentUser().equals(true)){
+                            revokeAccess();
+                            Intent intent = new Intent(getContext(), Login.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            dialog.dismiss();
                         }
+                        else if (UserManagement.getInstance().equals(true)){
+                            UserManagement.getInstance().requestUnlink(new UnLinkResponseCallback() {
+                                @Override
+                                public void onFailure(ErrorResult errorResult) { //회원탈퇴 실패 시
+                                    int result = errorResult.getErrorCode(); //에러코드 받음
+
+                                    if (result == ApiErrorCode.CLIENT_ERROR_CODE) { //클라이언트 에러인 경우 -> 네트워크 오류
+                                        Toast.makeText(getContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                                    } else { //클라이언트 에러가 아닌 경우 -> 기타 오류
+                                        Toast.makeText(getContext(), "회원탈퇴에 실패했습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onSessionClosed(ErrorResult errorResult) { //처리 도중 세션이 닫힌 경우
+                                    Toast.makeText(getContext(), "로그인 세션이 닫혔습니다. 다시 로그인해 주세요.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(), Login.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onNotSignedUp() { //가입된 적이 없는 계정에서 탈퇴를 요구하는 경우
+                                    Toast.makeText(getContext(), "가입되지 않은 계정입니다. 다시 로그인해 주세요.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(), Login.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onSuccess(Long result) { //회원탈퇴에 성공한 경우
+                                    Toast.makeText(getContext(), "회원탈퇴에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(), Login.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                }
+                            });
+                        } else {
+                            Intent intent = new Intent(getContext(), Login.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            dialog.dismiss();
+                        }
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }));
+                ad.setNegativeButton("아니요", null);
+                ad.show();
                     }
                 });
 

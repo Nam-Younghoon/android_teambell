@@ -30,6 +30,8 @@
                     <EditText
                         android:drawableLeft="@drawable/ic_baseline_search_24"
                         android:hint="그룹명으로 검색 하세요"
+                        android:textColorHint="#80FFFFFF"
+                        android:backgroundTint="#FFFFFF"
                         android:id="@+id/group_search"
                         android:layout_width="230dp"
                         android:layout_height="wrap_content"
@@ -37,6 +39,7 @@
                         app:layout_constraintLeft_toRightOf="parent"
                         android:layout_marginLeft="30dp"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:textColor="#FFFFFF"
                         android:textSize="9pt"/>
 
 
