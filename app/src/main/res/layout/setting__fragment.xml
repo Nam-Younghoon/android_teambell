@@ -52,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Default@deFault"
+            android:layout_marginTop="5dp"
             android:textSize="25dp"
             android:textAlignment="center"/>
 
@@ -59,6 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="#DAD8D8"/>
 
     </LinearLayout>

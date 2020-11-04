@@ -151,6 +151,7 @@ public class Group_Fragment extends Fragment{
                             Log.e("확인", idx);
                             try {
                                 new JSONTask().execute(String.format("http://106.243.128.187:3000/group/join/%s",idx)).get();
+                                writePassword.setText(null);
                             } catch (ExecutionException e) {
                                 e.printStackTrace();
                             } catch (InterruptedException e) {
@@ -163,6 +164,7 @@ public class Group_Fragment extends Fragment{
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            writePassword.setText(null);
                         }
                     });
                     builder.show();
