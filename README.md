@@ -24,6 +24,9 @@
 10.26
      구글 로그인 추가
      카카오 로그인 
+
+11.04
+     세세한 디자인 변경
      
 ### 0. Splash
 <img src="https://user-images.githubusercontent.com/58909988/97797799-5c407400-1c63-11eb-8afa-60dc9e8cdc58.jpg" width="50%" height="50%">
