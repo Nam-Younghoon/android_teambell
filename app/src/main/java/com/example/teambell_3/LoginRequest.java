@@ -1,5 +1,7 @@
 package com.example.teambell_3;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.AuthFailureError;
         import com.android.volley.Response;
         import com.android.volley.toolbox.StringRequest;
@@ -13,8 +15,8 @@ public class LoginRequest extends StringRequest {
     final static private String URL = "http://106.243.128.187:3000/user/signin";
     private Map<String, String> map;
 
-    public LoginRequest(String UserEmail, String UserPwd, Response.Listener<String> listener) {
-        super(Method.POST, URL, listener, null);
+    public LoginRequest(String UserEmail, String UserPwd, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+        super(Method.POST, URL, listener, errorListener);
 
         map = new HashMap<>();
         map.put("email", UserEmail);
@@ -24,5 +26,12 @@ public class LoginRequest extends StringRequest {
     @Override
     protected Map<String, String>getParams() throws AuthFailureError {
         return map;
+    }
+
+    @Nullable
+    @Override
+    public Response.ErrorListener getErrorListener() {
+        return super.getErrorListener();
+
     }
 }

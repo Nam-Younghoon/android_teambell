@@ -14,10 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -69,7 +71,8 @@ import okhttp3.internal.http2.ErrorCode;
 public class Login extends AppCompatActivity {
 
     EditText loginEmail, loginPassword;
-    Button register, signin;
+    Button  signin;
+    TextView register;
     private FirebaseAuth mAuth = null;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
@@ -89,7 +92,7 @@ public class Login extends AppCompatActivity {
 
         loginEmail = (EditText)findViewById(R.id.login_email);
         loginPassword = (EditText)findViewById(R.id.login_password);
-        register = (Button) findViewById(R.id.join_button);
+        register = (TextView) findViewById(R.id.join_button);
         signin = (Button) findViewById(R.id.login_button);
 
         signInButton = findViewById(R.id.sign_in_button);
@@ -127,10 +130,11 @@ public class Login extends AppCompatActivity {
                                 SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("name"), jsonObject.getJSONObject("data").getString("email"), jsonObject.getJSONObject("data").getString("accessToken"));
                                 Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
                                 Log.e("리스폰스", jsonObject.getJSONObject("data").toString());
+                                Toast.makeText( getApplication(), String.format("%s님, 반가워요!", jsonObject.getJSONObject("data").getString("name")), Toast.LENGTH_SHORT ).show();
                                 finish();
 
                             } else {//로그인 실패시
-                                Toast.makeText( getApplicationContext(), "로그인에 실패하셨습니다.", Toast.LENGTH_SHORT ).show();
+                                Toast.makeText( getApplication(), "로그인에 실패하셨습니다.", Toast.LENGTH_SHORT ).show();
                                 return;
                             }
 
@@ -138,8 +142,16 @@ public class Login extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+
                 };
-                LoginRequest loginRequest = new LoginRequest( UserEmail, UserPwd, responseListener );
+
+                Response.ErrorListener errorListener = new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText( getApplication(), "로그인에 실패하셨습니다.\n로그인 정보를 확인하세요. ", Toast.LENGTH_SHORT ).show();
+                    }
+                };
+                LoginRequest loginRequest = new LoginRequest( UserEmail, UserPwd, responseListener, errorListener );
                 RequestQueue queue = Volley.newRequestQueue( Login.this );
                 queue.add( loginRequest );
             }
@@ -244,6 +256,7 @@ public class Login extends AppCompatActivity {
                                 Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
                                 Log.e("리스폰스", jsonObject.getJSONObject("data").toString());
                                 SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("name"), jsonObject.getJSONObject("data").getString("email"), jsonObject.getJSONObject("data").getString("accessToken"));
+                                Toast.makeText( getApplication(), String.format("%s님, 반가워요!", jsonObject.getJSONObject("data").getString("name")), Toast.LENGTH_SHORT ).show();
                                 finish();
 
                             } else {//로그인 실패시
@@ -364,6 +377,7 @@ public class Login extends AppCompatActivity {
                                     startActivity(intent1);
                                     Log.e("토큰값 받았음", jsonObject.getJSONObject("data").getString("accessToken"));
                                     SaveSharedPreference.setUserToken(Login.this, jsonObject.getJSONObject("data").getString("name"), jsonObject.getJSONObject("data").getString("email"), jsonObject.getJSONObject("data").getString("accessToken"));
+                                    Toast.makeText( getApplication(), String.format("%s님, 반가워요!", jsonObject.getJSONObject("data").getString("name")), Toast.LENGTH_SHORT ).show();
                                     finish();
 
                                 } else {//로그인 실패시

@@ -68,6 +68,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.maps.android.ui.IconGenerator;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -506,7 +507,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                         dist = (int)(dist*100) / 100.0;
                         sum_dist += dist;
                         Log.e("누적거리 : ", String.valueOf(sum_dist));
-                        ridingDist.setText(String.format("%.2f", sum_dist / 1000)+" km");
+                        ridingDist.setText(String.format("%.1f", sum_dist / 1000)+" km");
                     }
 
 
@@ -771,9 +772,12 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 //                        setOthersLocation(others, groups.get(i).getName());
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(others);
-                        markerOptions.title(groups.get(i).getName());
                         markerOptions.alpha(0.5f);
                         Marker mLocationMarker = mMap.addMarker(markerOptions);
+                        IconGenerator iconFactory = new IconGenerator(getApplicationContext());
+                        iconFactory.setStyle(IconGenerator.STYLE_BLUE);
+                        iconFactory.setTextAppearance(R.style.text1);
+                        mLocationMarker.setIcon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(groups.get(i).getName())));
                         mLocationMarker.showInfoWindow();
                         AllMarkers.add(mLocationMarker);
 

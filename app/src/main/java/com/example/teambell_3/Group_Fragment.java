@@ -341,7 +341,7 @@ public class Group_Fragment extends Fragment{
                             } else if (status == 404){
                                 Toast.makeText(getContext(), "경로 에러.", Toast.LENGTH_LONG).show();
                             } else if (status == 400){
-                                Toast.makeText(getContext(), "데이터 오류.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "잘못된 비밀번호 입니다..", Toast.LENGTH_LONG).show();
                             } else{
                                 Toast.makeText(getContext(), "알 수 없는 오류.", Toast.LENGTH_LONG).show();
                             }

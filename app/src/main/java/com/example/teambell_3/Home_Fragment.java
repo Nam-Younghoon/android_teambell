@@ -53,24 +53,24 @@ public class Home_Fragment extends Fragment {
         group_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() { //연결됐을 때
-//                    public void onDeviceConnected(String name, String address) {
-//                        Toast.makeText(getActivity()
-//                                , "Connected to " + name + "\n" + address
-//                                , Toast.LENGTH_SHORT).show();
-//                        Log.e("블루투스 ", bt.toString());
-//                    }
-//
-//                    public void onDeviceDisconnected() { //연결해제
-//                        Toast.makeText(getActivity()
-//                                , "Connection lost", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    public void onDeviceConnectionFailed() { //연결실패
-//                        Toast.makeText(getActivity()
-//                                , "Unable to connect", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() { //연결됐을 때
+                    public void onDeviceConnected(String name, String address) {
+                        Toast.makeText(getActivity()
+                                , "Connected to " + name + "\n" + address
+                                , Toast.LENGTH_SHORT).show();
+                        Log.e("블루투스 ", bt.toString());
+                    }
+
+                    public void onDeviceDisconnected() { //연결해제
+                        Toast.makeText(getActivity()
+                                , "Connection lost", Toast.LENGTH_SHORT).show();
+                    }
+
+                    public void onDeviceConnectionFailed() { //연결실패
+                        Toast.makeText(getActivity()
+                                , "Unable to connect", Toast.LENGTH_SHORT).show();
+                    }
+                });
 //                if (!bt.isServiceAvailable()){
 //                    bt.setupService();
 //                    bt.startService(BluetoothState.DEVICE_OTHER);
@@ -84,9 +84,9 @@ public class Home_Fragment extends Fragment {
                     Intent intent = new Intent(getActivity(), MyGroupList.class);
                     MyApplication.bt = bt;
                     startActivity(intent);
-//                }
+                }
 
-            }
+//            }
         });
 
         return v;

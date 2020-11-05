@@ -325,7 +325,7 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
                             dist = (int)(dist*100) / 100.0;
                             sum_dist += dist;
                             Log.e("누적거리 : ", String.valueOf(sum_dist));
-                            ridingDist.setText(String.format("%.2f", sum_dist / 1000)+" km");
+                            ridingDist.setText(String.format("%.1f", sum_dist / 1000)+" km");
                         }
 
 

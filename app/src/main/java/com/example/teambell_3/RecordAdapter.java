@@ -48,7 +48,7 @@ public class RecordAdapter extends BaseAdapter {
         TextView RArr = (TextView)view.findViewById(R.id.arr);
 
         RDate.setText(sample.get(position).getRDate());
-        RDistance.setText(sample.get(position).getRDistance()+"km");
+        RDistance.setText(String.format("%.1f", Double.parseDouble(sample.get(position).getRDistance()))+"km");
         RTime.setText(sample.get(position).getRTime());
         RSpeed.setText(sample.get(position).getRSpeed()+"km/h");
         RDep.setText(sample.get(position).getRDep());
