@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top"
-    android:weightSum="10"
     android:orientation="vertical"
     android:background="#FFFFFF">
 
@@ -27,13 +26,45 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/helpOK"
+    <Button
+        android:id="@+id/help_bluetooth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="도움말"
-        android:textSize="15dp"
-        android:scrollbars="vertical"
-        />
+        android:background="@android:color/transparent"
+        android:text="블루투스 연결"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"/>
+
+    <Button
+        android:id="@+id/help_getin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="그룹 가입"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"/>
+
+    <Button
+    android:id="@+id/help_groupriding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:text="그룹 라이딩 참여"
+    android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"/>
+
+    <Button
+        android:id="@+id/help_riding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="라이딩 시 주의사항"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"/>
+
+    <Button
+        android:id="@+id/help_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="상세 기록 보기"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"/>
 
 </LinearLayout>
+

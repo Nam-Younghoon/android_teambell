@@ -71,22 +71,22 @@ public class Home_Fragment extends Fragment {
                                 , "Unable to connect", Toast.LENGTH_SHORT).show();
                     }
                 });
-//                if (!bt.isServiceAvailable()){
-//                    bt.setupService();
-//                    bt.startService(BluetoothState.DEVICE_OTHER);
-//                } else if(!bt.isBluetoothEnabled()){
-//                    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                    startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
-//                } else if(bt.getServiceState() != BluetoothState.STATE_CONNECTED){
-//                    Intent intent2 = new Intent(getActivity(), DeviceList.class);
-//                    startActivityForResult(intent2, BluetoothState.REQUEST_CONNECT_DEVICE);
-//                } else {
+                if (!bt.isServiceAvailable()){
+                    bt.setupService();
+                    bt.startService(BluetoothState.DEVICE_OTHER);
+                } else if(!bt.isBluetoothEnabled()){
+                    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
+                } else if(bt.getServiceState() != BluetoothState.STATE_CONNECTED){
+                    Intent intent2 = new Intent(getActivity(), DeviceList.class);
+                    startActivityForResult(intent2, BluetoothState.REQUEST_CONNECT_DEVICE);
+                } else {
                     Intent intent = new Intent(getActivity(), MyGroupList.class);
                     MyApplication.bt = bt;
                     startActivity(intent);
                 }
 
-//            }
+            }
         });
 
         return v;

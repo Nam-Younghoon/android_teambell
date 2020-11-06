@@ -126,7 +126,7 @@ public class AddGroup extends AppCompatActivity {
                             } else if (status == 404){
                                 Toast.makeText(getApplication(), "경로 에러.", Toast.LENGTH_LONG).show();
                             } else if (status == 400){
-                                Toast.makeText(getApplication(), "데이터 오류.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplication(), "취소했습니다.", Toast.LENGTH_LONG).show();
                             } else{
                                 Toast.makeText(getApplication(), "알 수 없는 오류.", Toast.LENGTH_LONG).show();
                             }
