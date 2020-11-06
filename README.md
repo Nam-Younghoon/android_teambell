@@ -29,9 +29,14 @@
      세세한 디자인 변경
      
 ### 0. Splash
-<img src="https://user-images.githubusercontent.com/58909988/97797799-5c407400-1c63-11eb-8afa-60dc9e8cdc58.jpg" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/58909988/98332296-c2e9d700-2041-11eb-868a-1bbe610233f7.jpg" width="50%" height="50%">
 
 - 어플 실행 시 발생할 화면입니다.
+
+### 0-2. Login
+<img src="https://user-images.githubusercontent.com/58909988/98332311-c54c3100-2041-11eb-9e2b-7a14371c097b.jpg" width="50%" height="50%">
+
+- 로그인 페이지 입니다.
      
 ### 1. Main 
 <img src="https://user-images.githubusercontent.com/58909988/97797796-5b0f4700-1c63-11eb-8e79-b6b806576cbd.jpg" width="50%" height="50%">
@@ -65,7 +70,7 @@
 - 내 라이딩 기록의 통계입니다. 일/주/월/년 단위로 라이딩 간단 내역을 확인할 수 있습니다.
 
 ### 6. Group-List
-<img src="https://user-images.githubusercontent.com/58909988/97797806-5f3b6480-1c63-11eb-9a13-174b1b303ec7.jpg" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/58909988/98332314-c67d5e00-2041-11eb-8795-5027b8d38747.jpg" width="50%" height="50%">
 
 - 개설된 총 그룹리스트들 입니다. 원하는 방에 가입을 할 수 있고, 검색을 통해 방을 찾을 수 있습니다.
 
@@ -85,12 +90,12 @@
 - 개인 라이딩 시에는 진행 시간, 평균 속도, 현재 속도, 누적 이동 거리를 알려줍니다. 이동 시에 내 첫 출발점을 Marker로 알려주고 그 위치에서 부터 이동할 때마다 PolyLine으로 그려줍니다.
 
 ### 10. Find_My_Location
-<img src="https://user-images.githubusercontent.com/58909988/97797805-5ea2ce00-1c63-11eb-9117-63ddaadb8119.jpg" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/58909988/98332313-c5e4c780-2041-11eb-81f5-2eb4c2aed4a1.jpg" width="50%" height="50%">
 
 - 첫 위치를 잡고 있는 모습입니다. 첫 위치를 잡고 시작해야 제대로 된 기록을 할 수 있습니다.
 
 ### 11. Riding
-<img src="https://user-images.githubusercontent.com/58909988/97797795-5a76b080-1c63-11eb-9a3c-e3c6b4eaf00d.jpg" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/58909988/98332312-c5e4c780-2041-11eb-8eb6-6de156feff1b.jpg" width="50%" height="50%">
 
 - 라이딩 도중의 모습입니다.
 
@@ -100,12 +105,12 @@
 - 라이딩 종료 시, 보여주는 기록창입니다. 사용자는 내용을 기록할 지, 그냥 일회성으로 보고 지울 지 선택권이 있습니다.
 
 ### 13. Real-Time_Group_Location
-<img src="https://user-images.githubusercontent.com/58909988/97797800-5cd90a80-1c63-11eb-9cdd-86f4fad32b03.jpg" width="50%" height="50%">
-
+<img src="https://user-images.githubusercontent.com/58909988/98332308-c54c3100-2041-11eb-99f4-fc96f2d12b2a.jpg" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/58909988/98332305-c4b39a80-2041-11eb-9110-71cfb11bb716.jpg" width="50%" height="50%">
 - 그룹 라이딩에서의 실시간 위치 추적 입니다. 사진과 같이 라이딩을 같이하고 있는 그룹들의 위치가 실시간으로 표시됩니다. 
 - MQTT통신을 통해 내 자전거의 벨을 누를 시에, 참여하고 있는 모든 그룹원들에게 알림을 보낼 수 있는 기능이 있습니다.
 
 ### 14. Setting
-<img src="https://user-images.githubusercontent.com/58909988/97797798-5c407400-1c63-11eb-8b17-b2b024209ed2.jpg" width="50%" height="50%">
+<img src="https://user-images.githubusercontent.com/58909988/98332303-c41b0400-2041-11eb-8c08-9674e2a55e07.jpg" width="50%" height="50%">
 
 - 설정창입니다. 
