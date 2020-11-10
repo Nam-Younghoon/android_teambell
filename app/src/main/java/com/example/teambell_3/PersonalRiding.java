@@ -95,7 +95,6 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
     // 앱을 실행하기 위해 필요한 퍼미션을 정의합니다.
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};  // 외부 저장소
     Location mCurrentLocatiion;
-    LatLng currentPosition;
     LatLng mFirstPointPosition;
     LatLng mLastPointPosition;
     String startPointTitle;
@@ -107,7 +106,6 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
     // (참고로 Toast에서는 Context가 필요했습니다.)
     private LatLng startPoly;
     private LatLng endPoly;
-    private List<Polyline> polylines;
 
     private ArrayList<LatLng> mLocationList = null;
 
@@ -350,7 +348,6 @@ public class PersonalRiding extends AppCompatActivity implements OnMapReadyCallb
 
     private void drawPath(){        //polyline을 그려주는 메소드
         PolylineOptions options = new PolylineOptions().add(startPoly).add(endPoly).width(15).color(Color.BLACK).geodesic(true);
-//        polylines.add(mMap.addPolyline(options));
         mMap.addPolyline(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoly, 15));
     }

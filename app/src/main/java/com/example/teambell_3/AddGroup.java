@@ -45,7 +45,6 @@ import java.util.zip.Inflater;
 public class AddGroup extends AppCompatActivity {
 
     EditText groupName, groupPW, groupIntro;
-    Button mkGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

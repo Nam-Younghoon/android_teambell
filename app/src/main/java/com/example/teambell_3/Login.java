@@ -221,12 +221,10 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-//                            Snackbar.make(findViewById(R.id.layout_main), "Authentication Successed.", Snackbar.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-//                            Snackbar.make(findViewById(R.id.layout_main), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
                         }
                     }
@@ -365,7 +363,6 @@ public class Login extends AppCompatActivity {
                         Log.e("이메일", email);
                         String refresh = Session.getCurrentSession().getTokenInfo().getRefreshToken();
                         Log.e("리프레시", refresh);
-//                        Log.e("refresh", refresh);
                         Response.Listener<String> responseListener = response -> {
                             try {
                                 JSONObject jsonObject = new JSONObject( response );

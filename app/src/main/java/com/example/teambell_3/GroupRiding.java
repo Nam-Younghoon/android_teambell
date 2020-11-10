@@ -105,7 +105,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private Button mStartBtn, mStopBtn, mPauseBtn, mReplayBtn;
+    private Button mStartBtn, mStopBtn, mPauseBtn;
     private TextView mTimeTextView, nowSpeed, ridingDist, avgSpeed, findLocation;
     private Thread timeThread = null;
     private Boolean isRunning = true;
@@ -117,15 +117,10 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     public String result, mspeed;
     public double avspeed, final_avspeed;
     private LocationManager locationManager;
-
-    Home_Fragment hf = new Home_Fragment();
-
-
-    private GoogleMap mMap;
+        private GoogleMap mMap;
     private Marker currentMarker = null;
     private Marker startPointMarker = null;
     private Marker endPointMarker = null;
-    private Marker othersMarker = null;
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
@@ -148,7 +143,6 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     // (참고로 Toast에서는 Context가 필요했습니다.)
     private LatLng startPoly;
     private LatLng endPoly;
-    private List<Polyline> polylines;
     private Intent beforIntent;
     private String mJsonString;
     ArrayList<GroupLocationData> groups;
@@ -532,7 +526,6 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
     private void drawPath(){        //polyline을 그려주는 메소드
         PolylineOptions options = new PolylineOptions().add(startPoly).add(endPoly).width(15).color(Color.BLACK).geodesic(true);
-//        polylines.add(mMap.addPolyline(options));
         mMap.addPolyline(options);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoly, 15));
     }
@@ -646,14 +639,10 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         Log.d(TAG, "onMapReady :");
-
         mMap = googleMap;
-
         //런타임 퍼미션 요청 대화상자나 GPS 활성 요청 대화상자 보이기전에
         //지도의 초기위치를 서울로 이동
         setDefaultLocation();
-
-
 
         //런타임 퍼미션 처리
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
@@ -662,57 +651,36 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
-
-
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
                 hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
-
             // 2. 이미 퍼미션을 가지고 있다면
             // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
-
-
             startLocationUpdates(); // 3. 위치 업데이트 시작
-
-
         }else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
-
             // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
-
                 // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
                 Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                         Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
-
                     @Override
                     public void onClick(View view) {
-
                         // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
                         ActivityCompat.requestPermissions( GroupRiding.this, REQUIRED_PERMISSIONS,
                                 PERMISSIONS_REQUEST_CODE);
                     }
                 }).show();
-
-
             } else {
                 // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
                 // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
                 ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
-
         }
 
-
-
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        // 현재 오동작을 해서 주석처리
-
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
             @Override
             public void onMapClick(LatLng latLng) {
-
                 Log.d( TAG, "onMapClick :");
             }
         });
@@ -722,17 +690,11 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
-
             List<Location> locationList = locationResult.getLocations();
-
             if (locationList.size() > 0) {
                 ++j;
-//                mMap.clear();
-
                 peoples.clear();
-
                 location = locationList.get(locationList.size() - 1);
-                //location = locationList.get(0);
                 if (mFirstlocation == null) {
                     Toast.makeText(getApplicationContext(), "첫 위치 잡는중.. 시작마세요", Toast.LENGTH_SHORT).show();
                     if(location.getAccuracy() < 10){
@@ -741,35 +703,23 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     mLocationList.add(mLocation);
                     String r = mLocationList.get(0).toString();
                     Log.e("위치 리스트 출력 : ", r);
-
                     startPoly = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
                     Log.e("첫 위치 : ", mFirstlocation.toString());
                     bef_lat = location.getLatitude();
                     bef_long = location.getLongitude();
                     findLocation.setText("첫 위치 잡음. 시작하세요.");
-
                     // 출발점 마커 생성
                     mFirstPointPosition = new LatLng(mFirstlocation.getLatitude(), mFirstlocation.getLongitude());
-                        startPointTitle = getCurrentAddress(mFirstPointPosition);
-//                        String startPointSnippet = "위도:" + String.valueOf(mFirstlocation.getLatitude()) +
-//                                "경도:" + String.valueOf(mFirstlocation.getLongitude());
-//                    setFirstLocation(mFirstlocation, "출발점");
+                    startPointTitle = getCurrentAddress(mFirstPointPosition);
                     Toast.makeText(getApplicationContext(), "첫 위치 잡음. 시작버튼을 누르세요", Toast.LENGTH_LONG).show();
                 }
-
-
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
-
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
-
-
-
                 if (groups != null) {
                     removeAllMarkers();
                     for (int i = 0; i < groups.size(); i++) {
                         LatLng others = new LatLng(Double.parseDouble(groups.get(i).getLatitude()), Double.parseDouble(groups.get(i).getLongitude()));
-//                        setOthersLocation(others, groups.get(i).getName());
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(others);
                         markerOptions.alpha(0.5f);
@@ -780,8 +730,6 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                         mLocationMarker.setIcon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(groups.get(i).getName())));
                         mLocationMarker.showInfoWindow();
                         AllMarkers.add(mLocationMarker);
-
-//                        Log.e("그룹 사람 데려옴", others.toString());
                         Log.e("시간", String.format(""+j));
                         peoples.add(new RidingPeople(groups.get(i).getName()));
                         if (j % 3 == 0) {
@@ -792,17 +740,11 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                             adapter.notifyDataSetChanged();
                         }
                     }
-
                         groups.clear();
                 }
-
-
                 //이동 위치 변경
                 setCurrentLocation(location);
-
                 mCurrentLocatiion = location;
-
-
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
                 try {
@@ -819,12 +761,11 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
     }
 };
+
     private void removeAllMarkers(){
         for (Marker mLocationMarker : AllMarkers){
             mLocationMarker.remove();
@@ -965,15 +906,6 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-//    public void setOthersLocation(LatLng latlng, String name){
-//        if (othersMarker != null) othersMarker.remove();
-//
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(latlng);
-//        markerOptions.title(name);
-//        markerOptions.alpha(0.5f);
-//        othersMarker = mMap.addMarker(markerOptions);
-//    }
 
     public void setFirstLocation(Location location, String markerTitle){
         LatLng startLatLng = new LatLng(location.getLatitude(), location.getLongitude());

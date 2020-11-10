@@ -19,18 +19,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".HelpDetail"></activity>
-        <activity android:name=".HelpRiding" />
-        <activity android:name=".HelpGetin" />
-        <activity android:name=".HelpGroup" />
-        <activity android:name=".HelpBluetooth" />
-        <activity android:name=".ChangePW" />
+        <activity android:name=".HelpDetail"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".HelpRiding"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".HelpGetin"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".HelpGroup"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".HelpBluetooth"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChangePW"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name=".RecordDetail" />
+        <activity android:name=".RecordDetail"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MyGroupList"
             android:screenOrientation="portrait" />

@@ -27,7 +27,7 @@ public class Splash extends Activity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_splash);
-//        SaveSharedPreference.clearUserName(getApplication());
+
 
         mContext = this;
         mAuth = FirebaseAuth.getInstance();
@@ -37,10 +37,7 @@ public class Splash extends Activity {
             Handler hd = new Handler();
             hd.postDelayed(new splashhandler(), 2000); // 1초 후에 hd handler 실행  3000ms = 3초
         }
-//        else if (mAuth.getCurrentUser() != null) {
-//            Handler hd3 = new Handler();
-//            hd3.postDelayed(new splashhandler3(), 2000);
-//        }
+
         else {
             Handler hd2 = new Handler();
             hd2.postDelayed(new splashhandler2(), 2000);
@@ -63,15 +60,6 @@ public class Splash extends Activity {
         }
     }
 
-//    private class splashhandler3 implements Runnable{
-//        @Override
-//        public void run() {
-//            Intent intent = new Intent(Splash.this, MainActivity.class);
-//            intent.putExtra("Token", idToken);
-//            startActivity(intent);
-//            Splash.this.finish();
-//        }
-//    }
 
     @Override
     public void onBackPressed() {

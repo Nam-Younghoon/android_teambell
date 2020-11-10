@@ -143,7 +143,6 @@ public class Record_Fragment extends Fragment {
                 String token = SaveSharedPreference.getUserToken(getContext());
                 Log.e("토큰 ", token);
                 httpURLConnection.setRequestProperty("token", token);
-                //httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
 
 
