@@ -10,7 +10,7 @@ import java.util.Map;
 public class SocialKakaoLoginRequest extends StringRequest {
 
     //서버 URL 설정(php 파일 연동)
-    final static private String URL = "http://106.243.128.187:3000/social/kakao";
+    final static private String URL = "http://183.111.253.176:3000/social/kakao";
     private Map<String, String> map;
 
     public SocialKakaoLoginRequest(String id, String email, String name, String token, Response.Listener<String> listener) {

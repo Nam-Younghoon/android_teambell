@@ -58,7 +58,7 @@ public class Record_Fragment extends Fragment {
 
         final SwipeRefreshLayout refreshLayout = v.findViewById(R.id.swipe_refresh2);
         records = new ArrayList<>();
-        new GetData().execute("http://106.243.128.187:3000/record/today");
+        new GetData().execute("http://183.111.253.176:3000/record/today");
         listview = (ListView) v.findViewById(R.id.record_listView);
         adapter = new RecordAdapter(getContext(), records);
         listview.setAdapter(adapter);

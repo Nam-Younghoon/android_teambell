@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ValidateRequest extends StringRequest {
     //서버 url 설정(php파일 연동)
-    final static  private String URL="http://106.243.128.187:3000/user/checkEmail";
+    final static  private String URL="http://183.111.253.176:3000/user/checkEmail";
     private Map<String, String> map;
 
     public ValidateRequest(String UserEmail, Response.Listener<String> listener){

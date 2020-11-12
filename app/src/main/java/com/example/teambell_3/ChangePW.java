@@ -67,7 +67,7 @@ public class ChangePW extends AppCompatActivity {
                     return;
                 } else {
                     try {
-                        new JSONTask().execute("http://106.243.128.187:3000/user/passwd").get();
+                        new JSONTask().execute("http://183.111.253.176:3000/user/passwd").get();
                         Toast.makeText(ChangePW.this, "재로그인 해주세요~", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(ChangePW.this, Login.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

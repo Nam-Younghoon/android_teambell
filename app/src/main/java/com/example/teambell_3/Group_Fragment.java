@@ -71,7 +71,7 @@ public class Group_Fragment extends Fragment{
         setHasOptionsMenu(true);
         final View v = inflater.inflate(R.layout.group_fragment, container, false);
         final LinearLayout layout = (LinearLayout) View.inflate(getActivity(), R.layout.get_in_group_dialog, null);
-        final String url="http://106.243.128.187:3000/group/groupList";
+        final String url="http://183.111.253.176:3000/group/groupList";
         search = v.findViewById(R.id.group_search);
 
         writePassword = (EditText)layout.findViewById(R.id.getinpassword);
@@ -114,7 +114,7 @@ public class Group_Fragment extends Fragment{
                     ((ViewGroup) layout.getParent()).removeView(layout);
                 idx = (String) listview.getAdapter().getItem(position);
                 try {
-                    String result = new checkTask().execute(String.format("http://106.243.128.187:3000/group/member/%s", idx)).get();
+                    String result = new checkTask().execute(String.format("http://183.111.253.176:3000/group/member/%s", idx)).get();
                     Log.e("베베베", result);
                     mJsonString = result;
                     JSONObject jsonObject = new JSONObject(mJsonString);
@@ -150,7 +150,7 @@ public class Group_Fragment extends Fragment{
                         public void onClick(DialogInterface dialog, int which) {
                             Log.e("확인", idx);
                             try {
-                                new JSONTask().execute(String.format("http://106.243.128.187:3000/group/join/%s",idx)).get();
+                                new JSONTask().execute(String.format("http://183.111.253.176:3000/group/join/%s",idx)).get();
                                 writePassword.setText(null);
                             } catch (ExecutionException e) {
                                 e.printStackTrace();

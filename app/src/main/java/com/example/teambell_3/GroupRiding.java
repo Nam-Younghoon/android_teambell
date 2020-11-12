@@ -204,7 +204,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
 
         gIdx = beforIntent.getStringExtra("GroupIdx");
         try {
-            mqttClient = new MqttClient("tcp://106.243.128.187:1883", "", new MemoryPersistence());
+            mqttClient = new MqttClient("tcp://183.111.253.176:1883", "", new MemoryPersistence());
             mqttClient.connect();
             mqttClient.subscribe(String.format("%s", gIdx));
         } catch (MqttException e) {
@@ -405,7 +405,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 intent.putParcelableArrayListExtra("mLocationRecord", mLocationList);
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
-                new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
+                new STOPgroupTask().execute(String.format("http://183.111.253.176:3000/member/status/%s", gIdx));
                 startActivity(intent);
                 try{
                     mqttClient.disconnect();
@@ -577,7 +577,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String gIdx = beforIntent.getStringExtra("GroupIdx");
                         Log.e("그룹 인덱스 가져오기", gIdx);
-                        new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
+                        new STOPgroupTask().execute(String.format("http://183.111.253.176:3000/member/status/%s", gIdx));
                         try{
                             mqttClient.disconnect();
                             bt.disconnect();
@@ -612,7 +612,7 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 public void onClick(DialogInterface dialogInterface, int i) {
                     String gIdx = beforIntent.getStringExtra("GroupIdx");
                     Log.e("그룹 인덱스 가져오기", gIdx);
-                    new STOPgroupTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", gIdx));
+                    new STOPgroupTask().execute(String.format("http://183.111.253.176:3000/member/status/%s", gIdx));
                     try{
                         mqttClient.disconnect();
                         bt.disconnect();
@@ -748,14 +748,14 @@ public class GroupRiding extends AppCompatActivity implements OnMapReadyCallback
                 String gIdx = beforIntent.getStringExtra("GroupIdx");
                 Log.e("그룹 인덱스 가져오기", gIdx);
                 try {
-                    new LOCATIONTask().execute(String.format("http://106.243.128.187:3000/member/input/%s", gIdx)).get();
+                    new LOCATIONTask().execute(String.format("http://183.111.253.176:3000/member/input/%s", gIdx)).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 try {
-                    new GetLocationGroupTask().execute(String.format("http://106.243.128.187:3000/member/output/%s", gIdx)).get();
+                    new GetLocationGroupTask().execute(String.format("http://183.111.253.176:3000/member/output/%s", gIdx)).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {

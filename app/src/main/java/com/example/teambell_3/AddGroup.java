@@ -161,7 +161,7 @@ public class AddGroup extends AppCompatActivity {
             }
 
             case R.id.check:
-                new JSONTask().execute("http://106.243.128.187:3000/group/make");
+                new JSONTask().execute("http://183.111.253.176:3000/group/make");
                 finish();
         }
         return super.onOptionsItemSelected(item);

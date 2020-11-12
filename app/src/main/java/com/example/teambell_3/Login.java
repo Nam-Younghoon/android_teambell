@@ -96,6 +96,7 @@ public class Login extends AppCompatActivity {
         signin = (Button) findViewById(R.id.login_button);
 
         signInButton = findViewById(R.id.sign_in_button);
+        setGooglePlusButtonText(signInButton, "Google로 로그인");
         mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -423,6 +424,17 @@ public class Login extends AppCompatActivity {
         builder.show();
     }
 
+    protected void setGooglePlusButtonText(SignInButton signInButton, String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
 
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
+    }
 
 }

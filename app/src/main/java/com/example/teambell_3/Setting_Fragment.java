@@ -147,7 +147,7 @@ public class Setting_Fragment extends Fragment {
                 ad.setMessage("회원탈퇴 시 저장된 기록들이 삭제됩니다.\n그래도 회원탈퇴 하시겠습니까?");
                 ad.setPositiveButton("네", ((dialog, which) -> {
                     try {
-                        new DELETETask().execute("http://106.243.128.187:3000/user/withdrawal").get();
+                        new DELETETask().execute("http://183.111.253.176:3000/user/withdrawal").get();
                         SaveSharedPreference.clearUserName(getContext());
                         if(mAuth.getCurrentUser().equals(true)){
                             revokeAccess();

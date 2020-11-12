@@ -50,7 +50,7 @@ public class MyGroupList extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_my_group_list);
 
-        new GetData().execute("http://106.243.128.187:3000/user/myGroup");
+        new GetData().execute("http://183.111.253.176:3000/user/myGroup");
         groups = new ArrayList<>();
         listview = (ListView) findViewById(R.id.mygroup_list);
         adapter = new GroupAdapter(this, groups);
@@ -75,7 +75,7 @@ public class MyGroupList extends AppCompatActivity {
                                     final String idx = (String) listview.getAdapter().getItem(position);
                                     Log.e("확인", idx);
                                     mIdx = idx;
-                                    new JSONTaskDel().execute(String.format("http://106.243.128.187:3000/group/delete/%s", idx));
+                                    new JSONTaskDel().execute(String.format("http://183.111.253.176:3000/group/delete/%s", idx));
                                     groups.remove(position);
                                     adapter.notifyDataSetChanged();
                                 }
@@ -101,7 +101,7 @@ public class MyGroupList extends AppCompatActivity {
                 final String idx = (String) listview.getAdapter().getItem(position);
                 Log.e("확인", idx);
                 mIdx = idx;
-                new JSONTask().execute(String.format("http://106.243.128.187:3000/member/status/%s", idx));
+                new JSONTask().execute(String.format("http://183.111.253.176:3000/member/status/%s", idx));
                 Intent intent = new Intent(MyGroupList.this, GroupRiding.class);
                 intent.putExtra("GroupIdx", idx);
                 startActivity(intent);
